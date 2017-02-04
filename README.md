@@ -11,7 +11,7 @@ and: https://deepsec.net/docs/Slides/2014/Why_Antivirus_Fails_-_Daniel_Sauder.pd
 What & Why:
 - when running an exe file made with msfpayload & co, the exe file will often be recognized by the antivirus software
 - avet is a antivirus evasion tool targeting windows machines
-- avet includes two tools, avet.exe with different antivirus eavasion techniques and make_avet for compiling a preconfigured binary file
+- avet includes two tools, avet.exe with different antivirus evasion techniques and make_avet for compiling a preconfigured binary file
 - avet.exe loads ASCII encoded shellcode from a textfile or from a webserver, further it is using an av evasion technique to avoid sandboxing and emulation
 - for encoding the shellcode the tool format.sh and sh_format are included
 - this readme applies for Kali 2 and tdm-gcc
@@ -111,5 +111,7 @@ $ wine gcc.exe -m32 -o avet.exe avet.c
 ```
 
 Have a look for build.sh for easier handling.
+
+Do not upload your samples to virustotal or similar platforms.
 
 For adding more random (and lower chances of detection) to the binary additionaly use msf encoders like shikata ga nai.
