@@ -210,7 +210,7 @@ void print_start()
 "  \\ \\  \\ \\  \\ \\    / /   \\ \\  \\_|\\ \\  \\ \\  \\ \n"
 "   \\ \\__\\ \\__\\ \\__/ /     \\ \\_______\\  \\ \\__\\\n"
 "    \\|__|\\|__|\\|__|/       \\|_______|   \\|__|\n"
-    "\n\nAnti Virus Evasion Tool by Daniel Sauder (c) 2014\n"
+    "\n\nAnti Virus Evasion Tool by Daniel Sauder (c) 2017\n"
     "use -h for help\n\n";
     printf("\n%s", output);
 }
