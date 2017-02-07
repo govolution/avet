@@ -1,0 +1,26 @@
+CHANGELOG
+---------
+Version 1.0
+- added to public github repo
+- tested with Kali 2 and update README
+- made GPL
+
+Version 0.4
+- translate almost everything to English
+- added some documentation
+- changed ASCII art
+- rewrite some parts for easier usage
+- added -f option to make_avet
+- added evasion with read file from c:\windows\system.ini
+- added build.sh
+
+Version 0.3
+- make_avet added
+
+Version 0.2
+- -u works with Windows 7
+- -p for debugging
+
+Version 0.1
+- -f works with Windows XP and Windows 7
+- -u works with Windows XP
