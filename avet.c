@@ -4,6 +4,26 @@ License: https://www.gnu.org/licenses/gpl.txt or LICENSE file
 Web: https://github.com/govolution/avet
 */
 
+//     "         .==,_                                          \n"
+//     "        .===,_`\\                                        \n"
+//     "      .====,_ ` \\      .====,__                         \n"
+//     "---     .==-,`~. \\           `:`.__,                    \n"
+//     " ---      `~~=-.  \\           /^^^     MEEP MEEP        \n"
+//     "   ---       `~~=. \\         /                          \n"
+//     "                `~. \\       /                           \n"
+//     "                  ~. \\____./                            \n"
+//     "                    `.=====)                            \n"
+//     "                 ___.--~~~--.__                         \n"
+//     "       ___\\.--~~~              ~~~---.._|/              \n"
+//     "       ~~~\\\"                             /              \n"
+//     " ________  ___      ___ _______  _________  \n" 
+//     "|\\   __  \\|\\  \\    /  /|\\  ___ \\|\\___   ___\\ \n"
+//     "\\ \\  \\|\\  \\ \\  \\  /  / | \\   __/\\|___ \\  \\_| \n"
+//     " \\ \\   __  \\ \\  \\/  / / \\ \\  \\_|/__  \\ \\  \\  \n"
+//     "  \\ \\  \\ \\  \\ \\    / /   \\ \\  \\_|\\ \\  \\ \\  \\ \n"
+//     "   \\ \\__\\ \\__\\ \\__/ /     \\ \\_______\\  \\ \\__\\\n"
+//     "    \\|__|\\|__|\\|__|/       \\|_______|   \\|__|\n"
+//         "\n\nAnti Virus Evasion Tool by Daniel Sauder\n"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -14,7 +34,6 @@ Web: https://github.com/govolution/avet
 #include "defs.h"
 
 void print_help();
-void print_start();
 int get_filesize(char *fvalue);
 unsigned char* load_textfile(char *fvalue, unsigned char *buf, int size2);
 unsigned char* decode_shellcode(unsigned char *buffer, unsigned char *shellcode, int size);
@@ -25,8 +44,6 @@ int print_debug;
 
 int main (int argc, char **argv)
 {
-  print_start();
-
   print_debug = 0;
   char *dvalue = NULL;
   char *evalue = NULL;
@@ -184,36 +201,6 @@ void print_help()
 //  printf("avet.exe -f shellcode.txt >> enc_sh.txt -e key.txt\n");
 }
 
-/* 
- * http://patorjk.com/software/taag/#p=display&f=3D-ASCII&t=avet
- */
-void print_start()
-{
-  char output[] =
-    
-//     "         .==,_                                          \n"
-//     "        .===,_`\\                                        \n"
-//     "      .====,_ ` \\      .====,__                         \n"
-//     "---     .==-,`~. \\           `:`.__,                    \n"
-//     " ---      `~~=-.  \\           /^^^     MEEP MEEP        \n"
-//     "   ---       `~~=. \\         /                          \n"
-//     "                `~. \\       /                           \n"
-//     "                  ~. \\____./                            \n"
-//     "                    `.=====)                            \n"
-//     "                 ___.--~~~--.__                         \n"
-//     "       ___\\.--~~~              ~~~---.._|/              \n"
-//     "       ~~~\\\"                             /              \n"
-" ________  ___      ___ _______  _________  \n" 
-"|\\   __  \\|\\  \\    /  /|\\  ___ \\|\\___   ___\\ \n"
-"\\ \\  \\|\\  \\ \\  \\  /  / | \\   __/\\|___ \\  \\_| \n"
-" \\ \\   __  \\ \\  \\/  / / \\ \\  \\_|/__  \\ \\  \\  \n"
-"  \\ \\  \\ \\  \\ \\    / /   \\ \\  \\_|\\ \\  \\ \\  \\ \n"
-"   \\ \\__\\ \\__\\ \\__/ /     \\ \\_______\\  \\ \\__\\\n"
-"    \\|__|\\|__|\\|__|/       \\|_______|   \\|__|\n"
-    "\n\nAnti Virus Evasion Tool by Daniel Sauder (c) 2017\n"
-    "use -h for help\n\n";
-    printf("\n%s", output);
-}
 
 int get_filesize(char *fvalue)
 {
