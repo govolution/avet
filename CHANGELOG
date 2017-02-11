@@ -1,6 +1,7 @@
 CHANGELOG
 ---------
 Version 1.0
+- cleanup and reduce code base of avet.c
 - added to public github repo
 - tested with Kali 2 and update README
 - made GPL
