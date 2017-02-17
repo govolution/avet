@@ -1,5 +1,13 @@
 CHANGELOG
 ---------
+Version 1.1
+- more cleanup of avet.c
+- removed all options from avet.c itself for reducing codebase (less detectable in the future)
+- added options from avet to make_avet
+- added build scripts
+- added -F for explicit fopen sandbox escape
+- added -X for 64 bit support
+
 Version 1.0
 - cleanup and reduce code base of avet.c
 - added to public github repo

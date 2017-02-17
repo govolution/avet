@@ -4,6 +4,7 @@ License: https://www.gnu.org/licenses/gpl.txt or LICENSE file
 Web: https://github.com/govolution/avet
  */
 
+#include <getopt.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -26,6 +27,7 @@ int main (int argc, char **argv)
 	char *wvalue = NULL;
 	int hflag = 0;
 	int Fflag = 0;
+	int Xflag = 0;
 
 	int index;
 	int c;
@@ -33,7 +35,7 @@ int main (int argc, char **argv)
 	opterr = 0;
 
 	// compute the options
-	while ((c = getopt (argc, argv, "d:e:f:u:w:lphF")) != -1)
+	while ((c = getopt (argc, argv, "d:e:f:u:w:lphFX")) != -1)
 		switch (c)
 		{
 			case 'd':
@@ -59,6 +61,9 @@ int main (int argc, char **argv)
 				break;
 			case 'F':
 				Fflag = 1;
+				break;
+			case 'X':
+				Xflag = 1;
 				break;
 			case 'p':
 				print_debug = 1;
@@ -171,7 +176,6 @@ int main (int argc, char **argv)
 				return -1;
 			}
 
-			//fseek (file_def, 0, SEEK_END);
 			fprintf (file_def, "#define PRINT_DEBUG\n");
 			fclose(file_def);
 
@@ -180,7 +184,6 @@ int main (int argc, char **argv)
 	//write SANDBOX_FOPEN to defs.h
 	if(Fflag)
 	{
-		
 			FILE *file_def;
 			file_def = fopen ("defs.h","a");
 
@@ -190,15 +193,29 @@ int main (int argc, char **argv)
 				return -1;
 			}
 
-			//fseek (file_def, 0, SEEK_END);
 			fprintf (file_def, "#define SANDBOX_FOPEN\n");
 			fclose(file_def);
 
 	}
 
+	//write X64 to defs.h
+	if(Xflag)
+	{
+			FILE *file_def;
+			file_def = fopen ("defs.h","a");
+
+			if (file_def == NULL)
+			{
+				printf ("Error open defs.h\n");
+				return -1;
+			}
+
+			fprintf (file_def, "#define X64\n");
+			fclose(file_def);
+
+	}
+
 } //main
-
-
 
 void print_help()
 {
@@ -206,7 +223,8 @@ void print_help()
 	printf("-l load and exec shellcode from given file, call is with mytrojan.exe myshellcode.txt");
 	printf("-f compile shellcode into avet.exe, needs filename\n");
 	printf("-u load and exec shellcode from url using internet explorer (url is compiled into executable)\n");
-	printf("-F use fopen sandbox evasion");
+	printf("-F use fopen sandbox evasion\n");
+	printf("-X compile for 64 bit\n");
 	printf("-p print debug information\n");
 	printf("-h help\n\n");
 	printf("Example usage:\n");
