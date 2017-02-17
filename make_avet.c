@@ -59,6 +59,7 @@ int main (int argc, char **argv)
 				break;
 			case 'F':
 				Fflag = 1;
+				break;
 			case 'p':
 				print_debug = 1;
 				break;

