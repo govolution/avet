@@ -2,7 +2,7 @@
 Author: Daniel Sauder
 License: https://www.gnu.org/licenses/gpl.txt or LICENSE file
 Web: https://github.com/govolution/avet
- */
+*/
 
 #include <getopt.h>
 #include <stdio.h>
@@ -28,6 +28,7 @@ int main (int argc, char **argv)
 	int hflag = 0;
 	int Fflag = 0;
 	int Xflag = 0;
+	int Eflag = 0;
 
 	int index;
 	int c;
@@ -35,7 +36,7 @@ int main (int argc, char **argv)
 	opterr = 0;
 
 	// compute the options
-	while ((c = getopt (argc, argv, "d:e:f:u:w:lphFX")) != -1)
+	while ((c = getopt (argc, argv, "d:e:f:u:w:lphFXE")) != -1)
 		switch (c)
 		{
 			case 'd':
@@ -64,6 +65,9 @@ int main (int argc, char **argv)
 				break;
 			case 'X':
 				Xflag = 1;
+				break;
+			case 'E':
+				Eflag = 1;
 				break;
 			case 'p':
 				print_debug = 1;
@@ -164,56 +168,32 @@ int main (int argc, char **argv)
 		fclose (file_def);
 	}
 
+	//write flags to defs.h
+	FILE *file_def;
+	file_def = fopen ("defs.h","a");
+	if (file_def == NULL)
+	{
+		printf ("Error open defs.h\n");
+		return -1;
+	}
+
 	//write LVALUE to defs.h
 	if(print_debug)
-	{		
-			FILE *file_def;
-			file_def = fopen ("defs.h","a");
+		fprintf (file_def, "#define PRINT_DEBUG\n");
 
-			if (file_def == NULL)
-			{
-				printf ("Error open defs.h\n");
-				return -1;
-			}
-
-			fprintf (file_def, "#define PRINT_DEBUG\n");
-			fclose(file_def);
-
-	}
-	
 	//write SANDBOX_FOPEN to defs.h
 	if(Fflag)
-	{
-			FILE *file_def;
-			file_def = fopen ("defs.h","a");
-
-			if (file_def == NULL)
-			{
-				printf ("Error open defs.h\n");
-				return -1;
-			}
-
-			fprintf (file_def, "#define SANDBOX_FOPEN\n");
-			fclose(file_def);
-
-	}
+		fprintf (file_def, "#define SANDBOX_FOPEN\n");
 
 	//write X64 to defs.h
 	if(Xflag)
-	{
-			FILE *file_def;
-			file_def = fopen ("defs.h","a");
+		fprintf (file_def, "#define X64\n");
+	
+	//write ENCRYPT to defs.h
+	if(Eflag)
+		fprintf (file_def, "#define ENCRYPT\n");
 
-			if (file_def == NULL)
-			{
-				printf ("Error open defs.h\n");
-				return -1;
-			}
-
-			fprintf (file_def, "#define X64\n");
-			fclose(file_def);
-
-	}
+	fclose(file_def);
 
 } //main
 

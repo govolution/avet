@@ -1,12 +1,16 @@
 CHANGELOG
 ---------
 Version 1.1
+- avet_fabric for assisted execution of the build scripts
 - more cleanup of avet.c
 - removed all options from avet.c itself for reducing codebase (less detectable in the future)
 - added options from avet to make_avet
 - added build scripts
 - added -F for explicit fopen sandbox escape
 - added -X for 64 bit support
+- added -E for explicit usage of avets ASCII encoder
+  users now can use shellcode encoders without avets ASCII encoder
+- fixed compiler warning in make_avet.c
 
 Version 1.0
 - cleanup and reduce code base of avet.c

