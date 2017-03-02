@@ -109,6 +109,8 @@ int main (int argc, char **argv)
 
 	#ifdef ENCRYPT 
 		#ifdef PRINT_DEBUG
+		printf ("size %d\n",size);
+		//printf ("%s\n",FVALUE);
 		printf("exec shellcode with decode_shellcode\n");
 		#endif
 		shellcode = decode_shellcode(buffer,shellcode,size);
@@ -164,6 +166,7 @@ int main (int argc, char **argv)
 	return 0;
 }
 
+#ifdef LVALUE
 // TODO use ifdef here too
 int get_filesize(char *fvalue)
 {
@@ -183,7 +186,9 @@ int get_filesize(char *fvalue)
 
 	return size;
 }
+#endif
 
+#ifdef LVALUE
 // return pointer to text buffer
 unsigned char* load_textfile(char *fvalue, unsigned char *buffer, int size)
 {
@@ -218,6 +223,7 @@ unsigned char* load_textfile(char *fvalue, unsigned char *buffer, int size)
 	fclose(fp);
 	return buffer;
 }
+#endif
 
 // return pointer to shellcode
 unsigned char* decode_shellcode(unsigned char *buffer, unsigned char *shellcode, int size)
