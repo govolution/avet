@@ -12,6 +12,7 @@ Version 1.1
   users now can use shellcode encoders without avets ASCII encoder
 - fixed compiler warning in make_avet.c
 
+
 Version 1.0
 - cleanup and reduce code base of avet.c
 - added to public github repo
