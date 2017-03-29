@@ -166,8 +166,7 @@ int main (int argc, char **argv)
 	return 0;
 }
 
-#ifdef LVALUE
-// TODO use ifdef here too
+#if defined(LVALUE) || defined(UVALUE)
 int get_filesize(char *fvalue)
 {
 	int size,rc1;
@@ -188,7 +187,7 @@ int get_filesize(char *fvalue)
 }
 #endif
 
-#ifdef LVALUE
+#if defined(LVALUE) || defined(UVALUE)
 // return pointer to text buffer
 unsigned char* load_textfile(char *fvalue, unsigned char *buffer, int size)
 {
