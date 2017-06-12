@@ -17,7 +17,7 @@ banner = """
  ___|  '-'     '    ""       '-'   '-.'    '`      |____
 jgs~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-AVET 1.1 Blackhat Asia 2017 edition
+AVET 1.2 Blackhat USA 2017 edition
 by Daniel Sauder
 """
 

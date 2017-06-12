@@ -1,5 +1,10 @@
 CHANGELOG
 ---------
+Version 1.2
+- AVET now has support for metasploits psexec
+- basic support for metasploits ASCII encoder, more to come
+- of cource more build scripts
+
 Version 1.1
 - avet_fabric for assisted execution of the build scripts
 - more cleanup of avet.c

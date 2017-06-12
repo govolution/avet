@@ -29,6 +29,7 @@ int main (int argc, char **argv)
 	int Fflag = 0;
 	int Xflag = 0;
 	int Eflag = 0;
+	int Aflag = 0;
 
 	int index;
 	int c;
@@ -36,7 +37,7 @@ int main (int argc, char **argv)
 	opterr = 0;
 
 	// compute the options
-	while ((c = getopt (argc, argv, "d:e:f:u:w:lphFXE")) != -1)
+	while ((c = getopt (argc, argv, "d:e:f:u:w:lphFXEA")) != -1)
 		switch (c)
 		{
 			case 'd':
@@ -68,6 +69,9 @@ int main (int argc, char **argv)
 				break;
 			case 'E':
 				Eflag = 1;
+				break;
+			case 'A':
+				Aflag = 1;
 				break;
 			case 'p':
 				print_debug = 1;
@@ -197,6 +201,10 @@ int main (int argc, char **argv)
 	if(Eflag)
 		fprintf (file_def, "#define ENCRYPT\n");
 
+	//write ASCIIMSF to defs.h
+	if(Aflag)
+		fprintf (file_def, "#define ASCIIMSF\n");
+
 	fclose(file_def);
 
 } //main
@@ -209,6 +217,7 @@ void print_help()
 	printf("-u load and exec shellcode from url using internet explorer (url is compiled into executable)\n");
 	printf("-E use avets ASCII encryption, often do not has to be used\n");
 	printf("   Note: with -l -E is mandatory\n");
+	//printf("-A use metasploits ASCII encryption, usage is like -E\n");
 	printf("-F use fopen sandbox evasion\n");
 	printf("-X compile for 64 bit\n");
 	printf("-p print debug information\n");
