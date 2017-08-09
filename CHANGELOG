@@ -4,6 +4,7 @@ Version 1.2
 - AVET now has support for metasploits psexec
 - basic support for metasploits ASCII encoder, more to come
 - of cource more build scripts
+- support for msf ASCII call via cmd
 
 Version 1.1
 - avet_fabric for assisted execution of the build scripts
