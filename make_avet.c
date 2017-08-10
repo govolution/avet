@@ -23,6 +23,7 @@ int main (int argc, char **argv)
 	char *dvalue = NULL;
 	char *evalue = NULL;
 	char *fvalue = NULL;
+	char *kvalue = NULL;
 	char *uvalue = NULL;
 	char *wvalue = NULL;
 	int hflag = 0;
@@ -37,7 +38,7 @@ int main (int argc, char **argv)
 	opterr = 0;
 
 	// compute the options
-	while ((c = getopt (argc, argv, "d:e:f:u:w:lphFXEA")) != -1)
+	while ((c = getopt (argc, argv, "d:e:f:k:u:w:lphFXEA")) != -1)
 		switch (c)
 		{
 			case 'd':
@@ -51,6 +52,9 @@ int main (int argc, char **argv)
 				break;
 			case 'f':
 				fvalue = optarg;
+				break;
+			case 'k':
+				kvalue = optarg;
 				break;
 			case 'u':
 				uvalue = optarg;
@@ -83,6 +87,8 @@ int main (int argc, char **argv)
 					fprintf (stderr, "Option -%c requires an argument.\n", optopt);
 				else if (optopt == 'f')
 					fprintf (stderr, "Option -%c requires an argument.\n", optopt);
+				else if (optopt == 'k')
+					fprintf (stderr, "Option -%c requires an argument.\n", optopt);
 				else if (optopt == 'u')
 					fprintf (stderr, "Option -%c requires an argument.\n", optopt);
 				else if (optopt == 'w')
@@ -111,10 +117,27 @@ int main (int argc, char **argv)
 			return -1;
 		}
 
-		//fseek (file_def, 0, SEEK_END);
 		fprintf (file_def, "#define LVALUE\n");
 		fclose(file_def);
 	}
+	else if (kvalue)
+	{
+		//write KVALUE to defs.h
+		FILE *file_def;
+		file_def = fopen ("defs.h","w");
+
+		if (file_def == NULL)
+		{
+			printf ("Error open defs.h\n");
+			return -1;
+		}
+
+		fseek (file_def, 0, SEEK_END);
+		//fprintf (file_def, "#define UVALUE \"%s\"\n", uvalue);
+		fprintf (file_def, "#define KVALUE \"%s\"\n", kvalue);
+		fclose(file_def);
+	}
+	
 	// write shellcode from a given file to defs.h
 	else if (fvalue)
 	{
