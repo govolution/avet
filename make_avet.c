@@ -120,22 +120,6 @@ int main (int argc, char **argv)
 		fprintf (file_def, "#define LVALUE\n");
 		fclose(file_def);
 	}
-	else if (kvalue)
-	{
-		//write KVALUE to defs.h
-		FILE *file_def;
-		file_def = fopen ("defs.h","w");
-
-		if (file_def == NULL)
-		{
-			printf ("Error open defs.h\n");
-			return -1;
-		}
-
-		fseek (file_def, 0, SEEK_END);
-		fprintf (file_def, "#define KVALUE \"%s\"\n", kvalue);
-		fclose(file_def);
-	}
 	
 	// write shellcode from a given file to defs.h
 	else if (fvalue)
@@ -229,6 +213,24 @@ int main (int argc, char **argv)
 
 	fclose(file_def);
 
+	//the killswitch
+	if (kvalue)
+	{
+		//write KVALUE to defs.h
+		FILE *file_def;
+		file_def = fopen ("defs.h","a");
+
+		if (file_def == NULL)
+		{
+			printf ("Error open defs.h\n");
+			return -1;
+		}
+
+		fseek (file_def, 0, SEEK_END);
+		fprintf (file_def, "#define KVALUE \"%s\"\n", kvalue);
+		fclose(file_def);
+	}
+
 } //main
 
 void print_help()
@@ -241,6 +243,7 @@ void print_help()
 	printf("   Note: with -l -E is mandatory\n");
 	//printf("-A use metasploits ASCII encryption, usage is like -E\n");
 	printf("-F use fopen sandbox evasion\n");
+	printf("-k \"killswitch\" sandbox evasion with gethostbyname\n");
 	printf("-X compile for 64 bit\n");
 	printf("-p print debug information\n");
 	printf("-h help\n\n");
