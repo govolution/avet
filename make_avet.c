@@ -133,7 +133,6 @@ int main (int argc, char **argv)
 		}
 
 		fseek (file_def, 0, SEEK_END);
-		//fprintf (file_def, "#define UVALUE \"%s\"\n", uvalue);
 		fprintf (file_def, "#define KVALUE \"%s\"\n", kvalue);
 		fclose(file_def);
 	}
