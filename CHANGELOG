@@ -5,6 +5,7 @@ Version 1.2
 - basic support for metasploits ASCII encoder, more to come
 - of cource more build scripts
 - support for msf ASCII call via cmd
+- added "killswitch" (gethostbyname) evasion technique
 
 Version 1.1
 - avet_fabric for assisted execution of the build scripts

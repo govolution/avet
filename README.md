@@ -177,6 +177,12 @@ C:\> pwn.exe PYIIIIIIIIIIIIIIII7QZjAXP0A0AkAAQ2AB2BB0BBABXP8ABuJIYlzHOrgpwpEPapL
 An example makefile is: build/build_win32_meterpreter_rev_https_ASCIIMSF_cmd.sh
 
 
+Example 7, use the "killswitch" sandbox evasion technique
+---------------------------------------------------------
+This technique is using the gethostbyname command. See help from make_avet, for an example please refer:
+build/build_win32_meterpreter_rev_https_killswitch_shikata.sh
+
+
 avet_fabric.py
 --------------
 avet_fabric is an assistant, that loads all build scripts in the build directory (name has to be build*.sh) and then lets the user edit the settings line by line. This is under huge development.
