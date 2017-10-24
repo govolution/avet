@@ -27,7 +27,7 @@ https://govolution.wordpress.com/2017/02/04/using-tdm-gcc-with-kali-2/
 
 How to use make_avet and build scripts
 --------------------------------------
-Compile if needed:
+Compile if needed, for example if you use a 32 bit system:
 ```
 $ gcc -o make_avet make_avet.c
 ```
