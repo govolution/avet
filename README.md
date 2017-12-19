@@ -36,14 +36,22 @@ The purpose of make_avet is to preconfigure a definition file (defs.h) so that t
 
 Let's have a look at the options from make_avet, examples will be given below:
 -l load and exec shellcode from given file, call is with mytrojan.exe myshellcode.txt
+
 -f compile shellcode into .exe, needs filename of shellcode file
+
 -u load and exec shellcode from url using internet explorer (url is compiled into executable)
+
 -E use avets ASCII encryption, often do not has to be used
    Note: with -l -E is mandatory
+   
 -F use fopen sandbox evasion
+
 -X compile for 64 bit
+
 -p print debug information
+
 -h help
+
 
 Of course it is possible to run all commands step by step from command line. But it is strongly recommended to use build scripts or the avet_fabric.py.
 
