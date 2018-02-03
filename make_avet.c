@@ -31,6 +31,7 @@ int main (int argc, char **argv)
 	int Xflag = 0;
 	int Eflag = 0;
 	int Aflag = 0;
+	int qflag = 0;
 
 	int index;
 	int c;
@@ -38,7 +39,7 @@ int main (int argc, char **argv)
 	opterr = 0;
 
 	// compute the options
-	while ((c = getopt (argc, argv, "d:e:f:k:u:w:lphFXEA")) != -1)
+	while ((c = getopt (argc, argv, "d:e:f:k:u:w:lphFXEAq")) != -1)
 		switch (c)
 		{
 			case 'd':
@@ -76,6 +77,9 @@ int main (int argc, char **argv)
 				break;
 			case 'A':
 				Aflag = 1;
+				break;
+			case 'q':
+				qflag = 1;
 				break;
 			case 'p':
 				print_debug = 1;
@@ -211,6 +215,9 @@ int main (int argc, char **argv)
 	if(Aflag)
 		fprintf (file_def, "#define ASCIIMSF\n");
 
+	if(qflag)
+		fprintf (file_def, "#define QUIET\n");
+
 	fclose(file_def);
 
 	//the killswitch
@@ -246,6 +253,7 @@ void print_help()
 	printf("-k \"killswitch\" sandbox evasion with gethostbyname\n");
 	printf("-X compile for 64 bit\n");
 	printf("-p print debug information\n");
+	printf("-q quiet mode (hide console window)\n");
 	printf("-h help\n\n");
 	printf("Please refer README.md for more information\n");
 }

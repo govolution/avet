@@ -6,6 +6,7 @@ Version 1.2
 - of cource more build scripts
 - support for msf ASCII call via cmd
 - added "killswitch" (gethostbyname) evasion technique
+- added -q for quiet mode (hiding window)
 
 Version 1.1
 - avet_fabric for assisted execution of the build scripts
