@@ -55,11 +55,10 @@ The build scripts themselves are written so as they have to be called from withi
 root@kalidan:~/tools/avet# ./build/build_win32_meterpreter_rev_https_20xshikata.sh
 ```
 
-Here are some explained examples for building the .exe files from the build directory. Please have a look at the other build scripts for further explanation.
-
-
 Examples
 --------
+Here are the commented examples for building the .exe files from the build directory. 
+
 ```
 buildsvc_win32_meterpreter_bind_tcp_20xshikata.sh
 Service example for win32.
