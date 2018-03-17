@@ -85,7 +85,10 @@ build_win32_meterpreter_rev_https_fopen_shikata.sh
 See previous example.
 
 build_win32_meterpreter_rev_https_killswitch_shikata.sh
-AV evasion with the killswitch technique,
+AV evasion with the killswitch technique.
+
+build_win32_meterpreter_rev_https_shikata_downloadexecshellcode.sh
+This one downloads a shellcode from a webserver into memory and executes the shellcode.
 
 build_win32_meterpreter_rev_https_shikata_fopen.sh
 Sandbox evasion with fopen and additional encoding
@@ -104,6 +107,9 @@ Unstaged payload with dlls included. For more see https://govolution.wordpress.c
 
 build_win32_shell_rev_tcp_shikata_fopen_kaspersky.sh
 Build this one for Kaspersky, don't know if it is still unrecognized.
+
+build_win64_meterpreter_rev_tcp_xor_downloadexecshellcode.sh
+This one downloads a shellcode from a webserver into memory and executes the shellcode.
 
 build_win64_meterpreter_rev_tcp_xor_fopen.sh
 64bit executable with fopen evasion.
