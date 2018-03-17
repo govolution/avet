@@ -87,6 +87,11 @@ See previous example.
 build_win32_meterpreter_rev_https_killswitch_shikata.sh
 AV evasion with the killswitch technique.
 
+build_win32_meterpreter_rev_https_shikata_downloadexecshellcode_DKMC.sh
+Like build_win32_meterpreter_rev_https_shikata_downloadexecshellcode.sh, but also builds the
+payload with DKMC, a tool by https://github.com/mrun1k0d3r.
+For more: https://govolution.wordpress.com/2018/03/02/download-exec-poc-and-dkmc/
+
 build_win32_meterpreter_rev_https_shikata_downloadexecshellcode.sh
 This one downloads a shellcode from a webserver into memory and executes the shellcode.
 
