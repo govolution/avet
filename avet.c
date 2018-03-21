@@ -143,7 +143,11 @@ int main (int argc, char **argv)
 		#endif
 		shellcode = decode_shellcode(buffer,shellcode,size);
 	#endif
+
 	#ifndef ENCRYPT
+		#ifdef LVALUE
+		unsigned char *buf = buffer; //that does the trick, although not nice. Needed for raw sc execution with -l
+		#endif
 	#ifndef ASCIIMSF 
 	#ifndef DOWNLOADEXECSC
 		#ifdef PRINT_DEBUG
@@ -153,6 +157,7 @@ int main (int argc, char **argv)
 	#endif
 	#endif
 	#endif
+
 	#ifndef X64 
 	#ifndef ASCIIMSF
 		exec_shellcode(shellcode);
