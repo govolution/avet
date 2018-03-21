@@ -107,6 +107,9 @@ This is a bit tricky and might not work on the first shot. The executable will s
 build_win32_meterpreter_rev_https_shikata_load_ie_debug.sh
 Same as before with debug output.
 
+build_win32_meterpreter_rev_https_shikata_raw_loadfile.sh
+Example for loading raw shellcode files.
+
 build_win32_meterpreter_unstaged_rev_https_40xshikata.sh
 Unstaged payload with dlls included. For more see https://govolution.wordpress.com/2017/05/06/avet-and-unstaged-payloads/
 
