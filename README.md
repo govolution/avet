@@ -24,6 +24,9 @@ What & Why:
 How to install tdm-gcc with wine:
 https://govolution.wordpress.com/2017/02/04/using-tdm-gcc-with-kali-2/
 
+Important Note
+--------------
+Not all techniques will evade every AV engine. If one technique or build script does not work please test another one.
 
 How to use make_avet and build scripts
 --------------------------------------
