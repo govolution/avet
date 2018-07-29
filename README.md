@@ -11,6 +11,9 @@ For basics about antivirus evasion, AVET & more information have a look here:
 - https://deepsec.net/docs/Slides/2014/Why_Antivirus_Fails_-_Daniel_Sauder.pdf
 - https://twitter.com/DanielX4v3r
 
+Comparison of Antivirus Evasion tools:
+http://dione.lib.unipi.gr/xmlui/bitstream/handle/un
+
 What & Why:
 - when running an exe file made with msfpayload & co, the exe file will often be recognized by the antivirus software
 - avet is a antivirus evasion tool targeting windows machines with executable files
