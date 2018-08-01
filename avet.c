@@ -101,6 +101,9 @@ int main (int argc, char **argv)
 		printf("url: %s\n", download);
 	#endif
 	system(download);
+	#ifdef PRINT_DEBUG
+		printf("download done\n");
+	#endif
 #endif
 
 #ifdef DOWNLOADPOWERSHELL
