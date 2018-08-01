@@ -17,8 +17,7 @@ banner = """
  ___|  '-'     '    ""       '-'   '-.'    '`      |____
 jgs~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-AVET 1.2 Blackhat USA 2017 edition
-by Daniel Sauder
+AVET Fabric by Daniel Sauder
 """
 
 def rlinput(prompt, prefill=''):
