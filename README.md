@@ -5,14 +5,11 @@ AVET is an AntiVirus Evasion Tool, which was developed for making life easier fo
 In version 1.3 new stuff was introduced, for a complete overview have a look at the CHANGELOG file.
 
 For basics about antivirus evasion, AVET & more information have a look here: 
-- https://govolution.wordpress.com/2017/07/27/paper-avet-blackhat-usa-2017/
+- https://govolution.wordpress.com/2018/08/07/paper-avet-blackhat-usa-arsenal-2018/
 - https://govolution.wordpress.com/2017/06/11/avet-video/
 - https://govolutionde.files.wordpress.com/2014/05/avevasion_pentestmag.pdf
 - https://deepsec.net/docs/Slides/2014/Why_Antivirus_Fails_-_Daniel_Sauder.pdf
 - https://twitter.com/DanielX4v3r
-
-Comparison of Antivirus Evasion tools:
-http://dione.lib.unipi.gr/xmlui/bitstream/handle/un
 
 What & Why:
 - when running an exe file made with msfpayload & co, the exe file will often be recognized by the antivirus software
@@ -288,3 +285,6 @@ Domain : ARBEITSGRUPPE
 Logged On Users : 2
 Meterpreter : x86/windows
 ```
+
+Comparison of Antivirus Evasion tools:
+http://dione.lib.unipi.gr/xmlui/bitstream/handle/unipi/11232/Kalogranis_mte1512.pdf
