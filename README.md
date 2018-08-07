@@ -163,8 +163,7 @@ Example:
  ___|  '-'     '    ""       '-'   '-.'    '`      |____
 jgs~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-AVET 1.2 Blackhat USA 2017 edition
-by Daniel Sauder
+AVET Fabric by Daniel Sauder
 
 avet_fabric.py is an assistant for building exe files with shellcode payloads for targeted attacks and antivirus evasion.
 
@@ -175,6 +174,7 @@ avet_fabric.py is an assistant for building exe files with shellcode payloads fo
 4: build_win32_meterpreter_rev_https_20xshikata.sh
 5: build_win32_meterpreter_rev_https_shikata_load_ie.sh
 6: build_win64_meterpreter_rev_tcp.sh
+...
 Input number of the script you want use and hit enter: 6
 
 Now you can edit the build script line by line.
