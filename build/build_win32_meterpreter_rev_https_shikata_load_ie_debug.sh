@@ -1,5 +1,9 @@
 #!/bin/bash          
 # simple example script for building the .exe file
+
+# include script containing the compiler var $win64_compiler
+# you can edit the compiler in build/global_win64.sh
+# or enter $win64_compiler="mycompiler" here
 . build/global_win64.sh
 
 # configure your connect-back settings here

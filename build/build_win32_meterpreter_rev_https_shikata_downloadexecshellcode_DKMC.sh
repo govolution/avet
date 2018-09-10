@@ -4,6 +4,10 @@
 # DKMC has to be in a directory side by side to avet eg. ~/tools/avet ~/tools/DKMC for running this script
 # for more look here https://govolution.wordpress.com/2018/03/02/download-exec-poc-and-dkmc/
 # please note that the bmp file will be written to /var/www/html/sc.bmp
+
+# include script containing the compiler var $win32_compiler
+# you can edit the compiler in build/global_win32.sh
+# or enter $win32_compiler="mycompiler" here
 . build/global_win32.sh
 
 # configure your connect-back settings here

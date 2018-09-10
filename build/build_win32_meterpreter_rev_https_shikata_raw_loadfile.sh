@@ -1,5 +1,6 @@
 #!/bin/bash          
 # build the .exe file that loads the payload from a given text file
+
 # include script containing the compiler var $win32_compiler
 # you can edit the compiler in build/global_win32.sh
 # or enter $win32_compiler="mycompiler" here
