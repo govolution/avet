@@ -23,7 +23,7 @@ AVET Fabric by Daniel Sauder
 def rlinput(prompt, prefill=''):
 	readline.set_startup_hook(lambda: readline.insert_text(prefill))
 	try:
-		return input(prompt)
+		return raw_input(prompt)
 	finally:
 		readline.set_startup_hook()
 
@@ -40,7 +40,7 @@ for file in glob.glob("build*.sh"):
 	file_list.append(file)
 	file_counter+=1
 
-choice=input("Input number of the script you want use and hit enter: ")
+choice=raw_input("Input number of the script you want use and hit enter: ")
 fname=file_list[int(choice)]
 
 print("\nNow you can edit the build script line by line.\n")
@@ -50,18 +50,19 @@ commands.append("#/bin/bash")
 with open(fname) as fi:
 	for line in fi:
 		line=line.rstrip()
-		if line[0:2]!="#!" and line[0]=="#":
-			print(line.lstrip('#').lstrip())
-		elif line[0:2]!="#!":
-			cmd=rlinput("$ ", line)
-			commands.append(cmd)
+		if len(line) != 0:
+			if line[0:2]!="#!" and line[0]=="#":
+				print(line.lstrip('#').lstrip())
+			elif line[0:2]!="#!":
+				cmd=rlinput("$ ", line)
+				commands.append(cmd)
 
 print("\nThe following commands will be executed:")
 
 for cmd in commands:
 	print(cmd)
 
-input("\nPress enter to continue.")
+raw_input("\nPress enter to continue.")
 
 os.chdir("..")
 with open("build/tmpbuildscript.sh", mode="w") as f:
