@@ -50,11 +50,12 @@ commands.append("#/bin/bash")
 with open(fname) as fi:
 	for line in fi:
 		line=line.rstrip()
-		if line[0:2]!="#!" and line[0]=="#":
-			print(line.lstrip('#').lstrip())
-		elif line[0:2]!="#!":
-			cmd=rlinput("$ ", line)
-			commands.append(cmd)
+		if len(line) != 0:
+			if line[0:2]!="#!" and line[0]=="#":
+				print(line.lstrip('#').lstrip())
+			elif line[0:2]!="#!":
+				cmd=rlinput("$ ", line)
+				commands.append(cmd)
 
 print("\nThe following commands will be executed:")
 
