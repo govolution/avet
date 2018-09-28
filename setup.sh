@@ -11,6 +11,10 @@ echo "+++ Building make_avetsvc executable"
 gcc -o make_avetsvc make_avetsvc.c
 
 echo "+++ Installing wine and wine32"
+# add missing sources for wine32
+echo "deb http://http.kali.org/kali kali-rolling main contrib non-free" >> /etc/apt/sources.list
+echo "deb http://old.kali.org/kali sana main non-free contrib" >> /etc/apt/sources.list
+echo "deb http://old.kali.org/kali moto main non-free contrib" >> /etc/apt/sources.list
 dpkg --add-architecture i386
 apt update
 apt install wine -y
