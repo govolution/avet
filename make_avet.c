@@ -23,8 +23,7 @@ int main (int argc, char **argv)
 	print_debug = 0;
 	load_from_file = 0;
 	char *evalue = NULL;
-	char *fvalue = NULL;
-	char *kvalue = NULL;
+	char *fvalue = NULL;	
 	char *uvalue = NULL;
 	char *wvalue = NULL;
 	int hflag = 0;	
@@ -40,7 +39,7 @@ int main (int argc, char **argv)
 	opterr = 0;
 
 	// compute the options
-	while ((c = getopt (argc, argv, "e:f:k:u:d:w:lphXEAq")) != -1)
+	while ((c = getopt (argc, argv, "e:f:u:d:w:lphXEAq")) != -1)
 		switch (c)
 		{
 			case 'd':
@@ -54,10 +53,7 @@ int main (int argc, char **argv)
 				break;
 			case 'f':
 				fvalue = optarg;
-				break;
-			case 'k':
-				kvalue = optarg;
-				break;
+				break;			
 			case 'u':
 				uvalue = optarg;
 				break;
@@ -220,25 +216,7 @@ int main (int argc, char **argv)
 			fprintf (file_def, "#define DOWNLOADPOWERSHELL\n");
 	}
 	
-	fclose(file_def);
-
-	//the killswitch
-	if (kvalue)
-	{
-		//write KVALUE to defs.h
-		FILE *file_def;
-		file_def = fopen ("defs.h","a");
-
-		if (file_def == NULL)
-		{
-			printf ("Error open defs.h\n");
-			return -1;
-		}
-
-		fseek (file_def, 0, SEEK_END);
-		fprintf (file_def, "#define KVALUE \"%s\"\n", kvalue);
-		fclose(file_def);
-	}
+	fclose(file_def);	
 
 } //main
 
