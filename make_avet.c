@@ -237,8 +237,7 @@ void print_help()
 	printf("      call: pwn thepayload.bin http://server/thepayload.bin\n");
 	printf("-E use avets ASCII encryption, often do not has to be used\n");
 	printf("   Can be used with -l\n");
-	//printf("-A use metasploits ASCII encryption, usage is like -E\n");	
-	printf("-k \"killswitch\" sandbox evasion with gethostbyname\n");
+	//printf("-A use metasploits ASCII encryption, usage is like -E\n");		
 	printf("-X compile for 64 bit\n");
 	printf("-p print debug information\n");
 	printf("-q quiet mode (hide console window)\n");
