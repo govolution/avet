@@ -32,9 +32,6 @@ Web: https://github.com/govolution/avet
 #include <unistd.h>
 #include <string.h>
 #include <tchar.h>
-#ifdef KVALUE
-	#include <winsock2.h>
-#endif
 #ifdef DOWNLOADEXECSC
 	#include "WinSock2.h"
 	#include "Ws2tcpip.h"

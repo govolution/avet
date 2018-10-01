@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <winsock2.h>
 
 
 //evading with gethostbyname technique
