@@ -27,7 +27,7 @@ function append_code() {
 #
 # BEWARE: Currently only sets strings
 function append_value() {
-	echo "#define $1 \"$2\"" >> techniques.h
+	echo -e "\n#define $1 \"$2\"\n" >> techniques.h
 }
 
 
