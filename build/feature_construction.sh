@@ -44,5 +44,5 @@ function add_feature() {
 
 # Resets the contents of the techniques.h file. To be called after payload compilation.
 function cleanup_techniques() {
-	#tbd
+	echo "" > techniques.h
 }
