@@ -69,6 +69,9 @@ int main (int argc, char **argv)
 	int c;
 
 	opterr = 0;	
+	
+	// Include evasion techniques to be used here
+	#include "techniques.h"	
 
 //#if defined(DOWNLOADCERTUTIL) || defined(DOWNLOADPOWERSHELL)
 //download a file and write to disk
