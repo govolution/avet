@@ -1,6 +1,3 @@
-FEATURE_LOCATION="../evasion"
-
-
 # Appends the content of a file to techniques.h
 #
 # First argument:	Name of the file (without file type suffix)
@@ -15,19 +12,20 @@ function append_code() {
 }
 
 
-# Writes a define into techniques.h
+# Appends a define at the end of a the specified file
 #
 # First argument: 	Name of the define
 # Second argument:  Value of the define
+# Third argument:	Name of the file to append to
 #
 # Example usage:
-# append_value MYDEFINE abcdef
+# append_value MYDEFINE abcdef techniques.h
 #
 # Writes (appends) #define MYDEFINE "abcdef" into techniques.h
 #
 # BEWARE: Currently only sets strings
 function append_value() {
-	echo -e "\n#define $1 \"$2\"\n" >> techniques.h
+	echo -e "\n#define $1 \"$2\"\n" >> $3
 }
 
 
@@ -39,6 +37,16 @@ function add_feature() {
 	
 	# Copy contents of specified feature into techniques.h
 	append_code $1	
+}
+
+
+# Specifies how the payload shellcode will be called
+#
+# First Argument: Name of the shellcode binding technique (= name of the file containinig the respective code, without the file suffix)
+function shellcode_binding() {
+	# Assume that techniques.h already exists and is properly set up
+	
+	# Copy contents of specified feature into techniques.h	
 }
 
 
