@@ -54,11 +54,7 @@ unsigned char* downloadshellcode(char* uri);
 #endif
 
 int main (int argc, char **argv)
-{
-	#ifdef QUIET
-		ShowWindow(GetConsoleWindow(), SW_HIDE);
-	#endif
-		
+{		
 	char *uvalue = NULL;
 	char *fvalue = NULL;
 

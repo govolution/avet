@@ -29,8 +29,7 @@ int main (int argc, char **argv)
 	int hflag = 0;	
 	int Xflag = 0;
 	int Eflag = 0;
-	int Aflag = 0;
-	int qflag = 0;
+	int Aflag = 0;	
 	char *dvalue = NULL;
 
 	int index;
@@ -39,7 +38,7 @@ int main (int argc, char **argv)
 	opterr = 0;
 
 	// compute the options
-	while ((c = getopt (argc, argv, "e:f:u:d:w:lphXEAq")) != -1)
+	while ((c = getopt (argc, argv, "e:f:u:d:w:lphXEA")) != -1)
 		switch (c)
 		{
 			case 'd':
@@ -71,10 +70,7 @@ int main (int argc, char **argv)
 				break;
 			case 'A':
 				Aflag = 1;
-				break;
-			case 'q':
-				qflag = 1;
-				break;
+				break;			
 			case 'p':
 				print_debug = 1;
 				break;
@@ -201,10 +197,7 @@ int main (int argc, char **argv)
 
 	//write ASCIIMSF to defs.h
 	if(Aflag)
-		fprintf (file_def, "#define ASCIIMSF\n");
-
-	if(qflag)
-		fprintf (file_def, "#define QUIET\n");
+		fprintf (file_def, "#define ASCIIMSF\n");	
 
 	if(dvalue)
 	{
@@ -239,8 +232,7 @@ void print_help()
 	printf("   Can be used with -l\n");
 	//printf("-A use metasploits ASCII encryption, usage is like -E\n");		
 	printf("-X compile for 64 bit\n");
-	printf("-p print debug information\n");
-	printf("-q quiet mode (hide console window)\n");
+	printf("-p print debug information\n");	
 	printf("-h help\n\n");
 	printf("Please refer README.md for more information\n");
 }

