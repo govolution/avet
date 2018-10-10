@@ -26,7 +26,7 @@ add_feature fopen_sandbox_evasion
 add_feature hide_console
 
 # set shellcode source
-shellcode_source from_file
+shellcode_source static_from_file
 
 # set shellcode binding technique
 shellcode_binding exec_shellcode

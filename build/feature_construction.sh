@@ -33,7 +33,7 @@ function add_feature() {
 function shellcode_source() {
 	printf "\n\n" >> get_shellcode.h	
 	# If retrieval from file, assume that file sc.txt contains shellcode that is already in a c-compatible format
-	if [ $1 = "from_file" ]
+	if [ $1 = "static_from_file" ]
 	then
     	cat sc.txt >> get_shellcode.h
 	fi	
