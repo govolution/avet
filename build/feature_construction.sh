@@ -32,11 +32,13 @@ function add_feature() {
 # Second Argument:  Can be used to deliver further data about the source, e.g. the file name when retrieving from a file or the URL when downloading from a URL
 function shellcode_source() {
 	printf "\n\n" >> get_shellcode.h	
+	
 	# If retrieval from file, assume that file sc.txt contains shellcode that is already in a c-compatible format
 	if [ $1 = "static_from_file" ]
 	then
-    	cat sc.txt >> get_shellcode.h
+    	cat sc.txt >> get_shellcode.h		
 	fi	
+		
 	# Copy code of retrieval method
 	cat source/get_shellcode/$1.h >> get_shellcode.h
 }
