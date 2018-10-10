@@ -1,17 +1,3 @@
-# Appends the content of a file to techniques.h
-#
-# First argument:	Name of the file (without file type suffix)
-#
-# Example usage:
-# append_code fopen0_sandbox_evasion
-# Appends the contents of the file evasion/fopen_sandbox_evasion.h to techniques.h
-#
-# BEWARE: Currenty only works for evasion techniques
-function append_code() {
-	cat evasion/$1.h >> techniques.h 	
-}
-
-
 # Appends a define at the end of a the specified file
 #
 # First argument: 	Name of the define
@@ -36,7 +22,7 @@ function add_feature() {
 	# Assume that techiques.h already exists and is properly set up
 	
 	# Copy contents of specified feature into techniques.h
-	append_code $1	
+	cat source/evasion/$1.h >> techniques.h	
 }
 
 
@@ -44,13 +30,15 @@ function add_feature() {
 #
 # First Argument: Name of the shellcode binding technique (= name of the file containinig the respective code, without the file suffix)
 function shellcode_binding() {
-	# Assume that techniques.h already exists and is properly set up
+	# Assume that shellcode_binding.h already exists and is properly set up
 	
-	# Copy contents of specified feature into techniques.h	
+	# Copy contents of specified feature into shellcode_binding.h
+	cat source/shellcode_binding/$1.h >> shellcode_binding.h
 }
 
 
-# Resets the contents of the techniques.h file. To be called after payload compilation.
+# Resets the contents of the techniques.h and shellcode_binding.h files. To be called after payload compilation.
 function cleanup_techniques() {
 	echo "" > techniques.h
+	echo "" > shellcode_binding.h
 }

