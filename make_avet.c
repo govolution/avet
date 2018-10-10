@@ -20,7 +20,6 @@ int main (int argc, char **argv)
 {
 	print_start();
 
-	print_debug = 0;
 	load_from_file = 0;
 	char *evalue = NULL;
 	char *uvalue = NULL;
@@ -35,7 +34,7 @@ int main (int argc, char **argv)
 	opterr = 0;
 
 	// compute the options
-	while ((c = getopt (argc, argv, "e:u:d:w:lphE")) != -1)
+	while ((c = getopt (argc, argv, "e:u:d:w:lhE")) != -1)
 		switch (c)
 		{
 			case 'd':
@@ -58,10 +57,7 @@ int main (int argc, char **argv)
 				break;				
 			case 'E':
 				Eflag = 1;
-				break;					
-			case 'p':
-				print_debug = 1;
-				break;
+				break;				
 			case '?':
 				if (optopt == 'e')
 					fprintf (stderr, "Option -%c requires an argument.\n", optopt);
@@ -126,11 +122,7 @@ int main (int argc, char **argv)
 	{
 		printf ("Error open defs.h\n");
 		return -1;
-	}
-
-	//write LVALUE to defs.h
-	if(print_debug)
-		fprintf (file_def, "#define PRINT_DEBUG\n");		
+	}	
 	
 	//write ENCRYPT to defs.h
 	if(Eflag)
@@ -166,7 +158,6 @@ void print_help()
 	printf("      call: pwn thepayload.bin http://server/thepayload.bin\n");
 	printf("-E use avets ASCII encryption, often do not has to be used\n");
 	printf("   Can be used with -l\n");		
-	printf("-p print debug information\n");	
 	printf("-h help\n\n");
 	printf("Please refer README.md for more information\n");
 }
