@@ -27,7 +27,7 @@ add_feature fopen_sandbox_evasion
 #add_feature hide_console
 
 # set shellcode source
-shellcode_source dynamic_from_file
+shellcode_source internet_explorer
 
 # set shellcode binding technique
 shellcode_binding exec_shellcode

