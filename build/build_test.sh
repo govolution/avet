@@ -33,7 +33,7 @@ shellcode_source internet_explorer
 shellcode_binding exec_shellcode
 
 # enable debug printing
-append_value PRINT_DEBUG "" shellcode_binding.h	
+append_value PRINT_DEBUG "" source/shellcode_binding.h	
 
 # add gethostbyname killswitch evasion feature
 #append_value KVALUE localhost
