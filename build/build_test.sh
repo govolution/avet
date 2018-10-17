@@ -40,7 +40,7 @@ append_value PRINT_DEBUG "" shellcode_binding.h
 #add_feature gethostbyname_sandbox_evasion
 
 # compile
-$win32_compiler -o pwn.exe avet.c
+$win32_compiler -o output/pwn.exe source/avet.c
 
 # cleanup
 # rm sc.txt

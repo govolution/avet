@@ -22,7 +22,7 @@ function add_feature() {
 	# Assume that techiques.h already exists and is properly set up
 	
 	# Copy contents of specified feature into techniques.h
-	cat source/evasion/$1.h >> techniques.h	
+	cat source/evasion/$1.h >> source/techniques.h	
 }
 
 
@@ -31,16 +31,16 @@ function add_feature() {
 # First Argument: 	Name of the technique (= name of the file containing the respective code, without the file suffix)
 # Second Argument:  Can be used to deliver further data about the source, e.g. the file name when retrieving from a file or the URL when downloading from a URL
 function shellcode_source() {
-	printf "\n\n" >> get_shellcode.h	
+	printf "\n\n" >> source/get_shellcode.h	
 	
 	# If retrieval from file, assume that file sc.txt contains shellcode that is already in a c-compatible format
 	if [ $1 = "static_from_file" ]
 	then
-    	cat sc.txt >> get_shellcode.h		
+    	cat sc.txt >> source/get_shellcode.h		
 	fi	
 		
 	# Copy code of retrieval method
-	cat source/get_shellcode/$1.h >> get_shellcode.h
+	cat source/get_shellcode/$1.h >> source/get_shellcode.h
 }
 
 
@@ -51,13 +51,13 @@ function shellcode_binding() {
 	# Assume that shellcode_binding.h already exists and is properly set up
 	
 	# Copy contents of specified feature into shellcode_binding.h
-	cat source/shellcode_binding/$1.h >> shellcode_binding.h
+	cat source/shellcode_binding/$1.h >> source/shellcode_binding.h
 }
 
 
 # Resets the contents of the techniques.h and shellcode_binding.h files. To be called after payload compilation.
 function cleanup_techniques() {
-	echo "" > techniques.h
-	echo "" > shellcode_binding.h
-	echo "" > get_shellcode.h
+	echo "" > source/techniques.h
+	echo "" > source/shellcode_binding.h
+	echo "" > source/get_shellcode.h
 }
