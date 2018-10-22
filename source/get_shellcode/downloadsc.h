@@ -1,7 +1,10 @@
 #include <stdio.h>
 #include "WinSock2.h"
 #include "Ws2tcpip.h"
-#include "windows.h"
+#include <windows.h>
+
+
+// Link with -lws2_32 when compiling
 
 
 // Downloads the shellcode from the specified URI.
