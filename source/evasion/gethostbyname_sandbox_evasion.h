@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-// WARNING: Does not link gethostbyname() properly
 // evading with gethostbyname technique
+// Link with -lws2_32 switch when compiling
 #ifdef PRINT_DEBUG
 	printf("use  gethostbyname sandbox evasion\n");
 #endif
