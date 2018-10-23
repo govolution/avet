@@ -74,9 +74,7 @@ int main (int argc, char **argv)
 
 	if(dvalue)
 	{
-		if (strcmp(dvalue, "certutil")==0)
-			fprintf (file_def, "#define DOWNLOADCERTUTIL\n");
-		else if (strcmp(dvalue, "powershell")==0)
+		if (strcmp(dvalue, "powershell")==0)
 			fprintf (file_def, "#define DOWNLOADPOWERSHELL\n");
 	}
 	
@@ -87,9 +85,7 @@ int main (int argc, char **argv)
 void print_help()
 {
 	printf("Options:\n");	
-	printf("   when called with -E call with mytrojan.exe shellcode.txt\n");
-	printf("-d download the shellcode file using different techniques\n");	
-	printf("   -d certutil -> use certutil.exe for downloading the file\n");
+	printf("   when called with -E call with mytrojan.exe shellcode.txt\n");	
 	printf("   -d powershell -> use powershell for downloading the file\n");
 	printf("      usage of -d certutil/powershell in combination with -f\n");
 	printf("      for executing the raw shellcode after downloading\n");

