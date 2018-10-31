@@ -130,3 +130,27 @@ unsigned char *shellcode_from_file(const char *filename, int *shellcode_size) {
 	return shellcode;	
 }
 
+
+// Appends the given key to the specified file in a format that AVET expects as input.
+// The output consists of an array unsigned char key[], which contains the key.
+// The output file can be directly included in AVET sources to get key access.
+// key_length is counted in bytes.
+void append_key_to_file(const unsigned char *key, const int key_length, const char *filename) {
+	// Append key to file
+	FILE *shellcode_file = fopen(filename, "a");
+		
+	fputs("\n", shellcode_file);
+	fputs("unsigned char key[] = \"", shellcode_file);
+	
+	char current_hex[4];
+	
+	for(int i = 0; i < key_length; i++) {
+		sprintf(current_hex, "\\x%02x", key[i]);
+		fputs(current_hex, shellcode_file);
+	}
+	
+	fputs("\";", shellcode_file);
+	fputs("\n", shellcode_file);
+	fclose(shellcode_file);
+
+}
