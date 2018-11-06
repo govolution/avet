@@ -2,7 +2,7 @@
 #include <stdlib.h>
 
 
-// Retrieves the shellcode from a "01ab23cd..." format hex string given by arg1.
+// Retrieves the shellcode from a "11aabb22..." format hex string given by arg1.
 // Can be used to retrieve shellcode of such format from the command line if arg1 = argv[1].
 //
 // shellcode_size receives the size of the shellcode in bytes.
