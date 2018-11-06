@@ -49,11 +49,12 @@ int main (int argc, char **argv)
 	// Include evasion techniques to be used here
 	#include "techniques.h"	
 	
-	// Retrieve shellcode	
-	unsigned char *encoded_shellcode = get_shellcode(argv[1]);	
+	// Retrieve shellcode
+	int shellcode_size = 0;	
+	unsigned char *encoded_shellcode = get_shellcode(argv[1], &shellcode_size);	
 	
 	// Decode shellcode
-	//void decode_shellcode(const unsigned char *ciphertext, unsigned char *plaintext, const int ciphetext_length, const unsigned char key)
+	//void decode_shellcode(const unsigned char *ciphertext, unsigned char *plaintext, const int ciphertext_length, const unsigned char key)
 	
 	
 	// Bind and execute shellcode here

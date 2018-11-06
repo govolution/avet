@@ -58,10 +58,13 @@ unsigned char *load_textfile(char *fvalue, int size)
 }
 
 
-// Dynamic retrieval of shellcode from file
+// Dynamic retrieval of raw shellcode data from file
 // Dynamic in this context means that the shellcode to be executed is not statically compiled into the executable,
 // but instead is retrieved from a file at run time.
-unsigned char *get_shellcode(char *arg1) {	
+//
+// arg1 specifies the filename to fetch the shellcode from.
+// shellcode_size receives the size of the shellcode in bytes.
+unsigned char *get_shellcode(char *arg1, int *shellcode_size) {	
 	// First command line argument specifies the file name to read from
 	char *filename = arg1;	
 	
@@ -69,7 +72,7 @@ unsigned char *get_shellcode(char *arg1) {
 		printf("get shellcode from file %s\n", filename);
 	#endif
 	
-	int size = get_filesize(filename);
+	*shellcode_size = get_filesize(filename);
 	// Memory allocation is handled by load_textfile
-	return load_textfile(filename, size);		
+	return load_textfile(filename, *shellcode_size);		
 }

