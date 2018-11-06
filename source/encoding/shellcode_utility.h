@@ -33,7 +33,7 @@ static void remove_all_chars(char *str, const char chr) {
 }
 
 
-// Writes the given shellcode to the specified file in a format that AVET expects as input.
+// Writes the given shellcode in array format into the specified file.
 // ------
 // THE PREVIOUS CONTENTS OF THE FILE WILL BE OVERWRITTEN!
 // ------
@@ -64,7 +64,28 @@ void shellcode_to_file(const unsigned char *shellcode, const int shellcode_size,
 }
 
 
-// Reads shellcode from a file, given in format unsigned char buf[] = "\xaa\xbb\xcc...");
+// Writes the given shellcode into the specified file.
+// ------
+// THE PREVIOUS CONTENS OF THE FILE WILL BE OVERWRITTEN!
+// ------
+// This will copy the shellcode bytes "as is".
+void shellcode_to_file_raw(const unsigned char *shellcode, const int shellcode_size, const char *filename) {
+	// Remove previous file contents
+	FILE *shellcode_file = fopen(filename, "w");
+	fclose(shellcode_file);
+	
+	// Write shellcode to file
+	shellcode_file = fopen(filename, "a");
+	
+	for(int i = 0; i < shellcode_size; i++) {
+		fwrite(shellcode, 1, shellcode_size, shellcode_file);
+	}
+	
+	fclose(shellcode_file);
+}
+
+
+// Reads shellcode from a file, given in format unsigned char buf[] = "\xaa\xbb\xcc...";
 // Returns pointer to the shellcode read into memory. Required memory will be allocated by the function.
 // shellcode_size will be filled with the size of the shellcode in bytes.
 unsigned char *shellcode_from_file(const char *filename, int *shellcode_size) {		
@@ -128,6 +149,29 @@ unsigned char *shellcode_from_file(const char *filename, int *shellcode_size) {
 	free(file_content);	
 	
 	return shellcode;	
+}
+
+
+// Reads raw shellcode data from a file.
+// Returns pointer to the shellcode in memory. Required memory will be allocated by the function.
+// shellcode_size will be filled with the size of the shellcode in bytes.
+unsigned char *shellcode_from_file_raw(const char *filename, int *shellcode_size) {
+	// Assume that file only contains the shellcode data
+	FILE *shellcode_file = fopen(filename, "r");
+	
+	// Get file size = shellcode size
+	fseek(shellcode_file, 0L, SEEK_END);
+	*shellcode_size = ftell(shellcode_file);
+	rewind(shellcode_file);
+	
+	// Allocate memory for shellcode
+	unsigned char *shellcode = (unsigned char *) malloc(*shellcode_size);
+	
+	// Read shellcode from file
+	fread(shellcode, 1, *shellcode_size, shellcode_file);
+	
+	fclose(shellcode_file);
+	return shellcode;
 }
 
 

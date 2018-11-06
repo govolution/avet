@@ -55,9 +55,31 @@ function shellcode_binding() {
 }
 
 
+# Specifies which decoder function should be applied to the shellcode
+#
+# First Argument: 	Name of the shellcode decoder (= name of the folder containinig the respective code)
+function set_decoder() {
+	# Assume that encoding.h already exists and is properly set up
+	
+	# Copy the specified decoding function into encoding.h
+	cat source/encoding/$1_decoder.h >> source/encoding.h
+}
+
+
+# Encodes the shellcode in the specified file by applying the specified encoding method
+#
+# First Argument:	Name of the encoding technique to be applied (= name of the folder containing the respective code)
+# Second Argument:	Name of the file containing the shellcode to be encoded
+# Third Argument:	Name of the file where the encoded shellcode shall be written to
+function encode_shellcode() {
+	source/encoding/$1_encoder $2 $3
+}
+
+
 # Resets the contents of the techniques.h and shellcode_binding.h files. To be called after payload compilation.
 function cleanup_techniques() {
 	echo "" > source/techniques.h
 	echo "" > source/shellcode_binding.h
 	echo "" > source/get_shellcode.h
+	echo "" > source/encoding.h
 }
