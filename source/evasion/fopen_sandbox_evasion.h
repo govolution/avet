@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-
 // do evading here with fopen technique
 #ifdef PRINT_DEBUG
 	printf("use fopen sandbox escape\n");

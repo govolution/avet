@@ -20,10 +20,12 @@ void xor_encode(const unsigned char *plaintext, unsigned char *ciphertext, const
 
 // Arguments expected:
 // argv[1]: Name of the file containing the shellcode to be encoded
+// argv[2]: Name of the file where the encoded shellcode shall be written to
 int main(int argc, char **argv) {	
 	int shellcode_size;
+	
 	// Read shellcode from file into memory
-	unsigned char *shellcode =  shellcode_from_file("sc.txt", &shellcode_size);
+	unsigned char *shellcode =  shellcode_from_file(argv[1], &shellcode_size);
 	
 	// Generate random encryption key
 	unsigned char key = generate_random_byte();
@@ -31,10 +33,10 @@ int main(int argc, char **argv) {
 	// Encrypt and overwrite old shellcode file contents with ciphertext
 	unsigned char *ciphertext = (unsigned char *) malloc(shellcode_size);
 	xor_encode(shellcode, ciphertext, shellcode_size, key);	
-	shellcode_to_file(ciphertext, shellcode_size, "scenc.txt");
+	shellcode_to_file(ciphertext, shellcode_size, argv[2]);
 	
 	// Deliver key together with ciphertext in the file
-	append_key_to_file(&key, 1, "scenc.txt");		
+	append_key_to_file(&key, 1, argv[2]);		
 	
 	return 0;
 }
