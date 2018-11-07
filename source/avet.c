@@ -27,13 +27,6 @@ Web: https://github.com/govolution/avet
 //         "\n\nAnti Virus Evasion Tool by Daniel Sauder\n"
 
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <string.h>
-#include <tchar.h>
-
-
 // Include shellcode decoding method to be used here
 #include "encoding.h"
 
