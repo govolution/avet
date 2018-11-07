@@ -30,17 +30,20 @@ function add_evasion() {
 #
 # First Argument: 	Name of the technique (= name of the file containing the respective code, without the file suffix)
 # Second Argument:  Can be used to deliver further data about the source, e.g. the file name when retrieving from a file or the URL when downloading from a URL
-function shellcode_source() {
-	printf "\n\n" >> source/get_shellcode.h	
+function set_shellcode_source() {
+	printf "\n\n" >> source/get_shellcode/get_shellcode.include
+	printf "\n\n" >> source/get_shellcode/get_shellcode.include
 	
 	# If retrieval from file, assume that file sc.txt contains shellcode that is already in a c-compatible format
 	if [ $1 = "static_from_file" ]
 	then
-    	cat sc.txt >> source/get_shellcode.h		
+    	cat sc.txt >> source/get_shellcode/get_shellcode.include		
 	fi	
 		
-	# Copy code of retrieval method
-	cat source/get_shellcode/$1.h >> source/get_shellcode.h
+	# Set include in get_shellcode.include to import the needed data retrieval method
+	printf "\n#include \"../retrieve_data/$1.h\"\n" >> source/get_shellcode/get_shellcode.include
+	# Write an assignment of the selected function to get_shellcode into the get_shellcode.assign file
+	printf "\nget_shellcode = $1;\n" >> source/get_shellcode/get_shellcode.assign
 }
 
 
@@ -62,7 +65,7 @@ function set_decoder() {
 	# Assume that encoding.h already exists and is properly set up
 	
 	# Copy the specified decoding function into encoding.h
-	cat source/encoding/$1_decoder.h >> source/encoding.h
+	cat source/encoding/$1/$1_decoder.h >> source/encoding.h
 }
 
 
@@ -80,6 +83,7 @@ function encode_shellcode() {
 function cleanup_techniques() {
 	echo "" > source/evasion.h
 	echo "" > source/shellcode_binding.h
-	echo "" > source/get_shellcode.h
+	echo "" > source/get_shellcode/get_shellcode.include
+	echo "" > source/get_shellcode/get_shellcode.assign
 	echo "" > source/encoding.h
 }

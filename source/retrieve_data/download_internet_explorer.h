@@ -26,7 +26,7 @@ static int get_filesize(char *fvalue)
 
 // Returns pointer to buffer that contains the file content
 // Automatically allocates memory for this
-static unsigned char *load_textfile(char *fvalue, int size)
+unsigned char *load_textfile(char *fvalue, int size)
 {
 	#ifdef PRINT_DEBUG
 		printf("load_textfile called: fvalue: %s, size: %d\n", fvalue, size);
@@ -63,7 +63,7 @@ static unsigned char *load_textfile(char *fvalue, int size)
 
 // return pointer to the filename
 // string = url
-static char* ie_download(char* string)
+char* ie_download(char* string)
 {
 	char ie[500];
 	GetEnvironmentVariable("PROGRAMFILES",ie,100);

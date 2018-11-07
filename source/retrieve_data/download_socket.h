@@ -12,7 +12,7 @@
 // Downloads data from the specified URI, using sockets
 // Returns pointer to data, memory is allocated by the function.
 // data_size receives the size of the data in bytes.
-static unsigned char* download_data(char* uri, int *data_size)
+unsigned char* download_data(char* uri, int *data_size)
 {
 	struct WSAData* wd = (struct WSAData*)malloc(sizeof(struct WSAData));
 	if (WSAStartup(MAKEWORD(2, 0), wd))

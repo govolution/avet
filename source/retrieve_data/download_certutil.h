@@ -7,7 +7,7 @@
 
 // Searches for the last occurence of the '/' character and returns the string remaining after that last occurence
 // Note that the return value will be pointing to the same string
-static char *get_filename_from_url(char *url) 
+char *get_filename_from_url(char *url) 
 {
     int index = -1;
     int i = 0;
@@ -25,7 +25,7 @@ static char *get_filename_from_url(char *url)
 }
 
 
-static int get_filesize(char *fvalue)
+int get_filesize(char *fvalue)
 {
 	int size,rc1;
 	FILE *fp1 = fopen(fvalue, "rb");
@@ -47,7 +47,7 @@ static int get_filesize(char *fvalue)
 
 // Returns pointer to buffer that contains the file content
 // Automatically allocates memory for this
-static unsigned char *load_textfile(char *fvalue, int size)
+unsigned char *load_textfile(char *fvalue, int size)
 {
 	#ifdef PRINT_DEBUG
 		printf("load_textfile called: fvalue: %s, size: %d\n", fvalue, size);
