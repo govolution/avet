@@ -15,14 +15,14 @@ function append_value() {
 }
 
 
-# Adds a feature (evasion technique etc.) to be included in the final avet executable
+# Adds an evasion technique to be included in the final avet executable
 #
 # First Argument: 	Name of the technique (= name of the file containing the respective code, without the file suffix)
-function add_feature() {
-	# Assume that techiques.h already exists and is properly set up
+function add_evasion() {
+	# Assume that evasion.h already exists and is properly set up
 	
-	# Copy contents of specified feature into techniques.h
-	cat source/evasion/$1.h >> source/techniques.h	
+	# Copy contents of specified feature into evasion.h
+	cat source/evasion/$1.h >> source/evasion.h	
 }
 
 
@@ -78,7 +78,7 @@ function encode_shellcode() {
 
 # Resets the contents of the techniques.h and shellcode_binding.h files. To be called after payload compilation.
 function cleanup_techniques() {
-	echo "" > source/techniques.h
+	echo "" > source/evasion.h
 	echo "" > source/shellcode_binding.h
 	echo "" > source/get_shellcode.h
 	echo "" > source/encoding.h

@@ -21,11 +21,11 @@ LHOST=$GLOBAL_LHOST
 . build/feature_construction.sh
 
 # add fopen sandbox evasion feature
-add_feature fopen_sandbox_evasion
+add_evasion fopen_sandbox_evasion
 
 # add gethostbyname killswitch evasion feature
 append_value KVALUE localhost source/evasion.h
-add_feature gethostbyname_sandbox_evasion
+add_evasion gethostbyname_sandbox_evasion
 
 # hide console window
 #add_feature hide_console
