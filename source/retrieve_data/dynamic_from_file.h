@@ -3,7 +3,7 @@
 #include <stdio.h>
 
 
-int get_filesize(char *fvalue)
+static int get_filesize(char *fvalue)
 {
 	int size,rc1;
 	FILE *fp1 = fopen(fvalue, "rb");
@@ -25,7 +25,7 @@ int get_filesize(char *fvalue)
 
 // Returns pointer to buffer that contains the file content
 // Automatically allocates memory for this
-unsigned char *load_textfile(char *fvalue, int size)
+static unsigned char *load_textfile(char *fvalue, int size)
 {
 	#ifdef PRINT_DEBUG
 		printf("load_textfile called: fvalue: %s, size: %d\n", fvalue, size);
@@ -60,21 +60,21 @@ unsigned char *load_textfile(char *fvalue, int size)
 }
 
 
-// Dynamic retrieval of raw shellcode data from file
-// Dynamic in this context means that the shellcode to be executed is not statically compiled into the executable,
+// Dynamic retrieval of data from file
+// Dynamic in this context means that the data is not statically compiled into the executable,
 // but instead is retrieved from a file at run time.
 //
-// arg1 specifies the filename to fetch the shellcode from.
-// shellcode_size receives the size of the shellcode in bytes.
-unsigned char *get_shellcode(char *arg1, int *shellcode_size) {	
+// arg1 specifies the filename to fetch the data from.
+// data_size receives the size of the data in bytes.
+unsigned char *dynamic_from_file(char *arg1, int *data_size) {	
 	// First command line argument specifies the file name to read from
 	char *filename = arg1;	
 	
 	#ifdef PRINT_DEBUG
-		printf("get shellcode from file %s\n", filename);
+		printf("get data from file %s\n", filename);
 	#endif
 	
-	*shellcode_size = get_filesize(filename);
+	*data_size = get_filesize(filename);
 	// Memory allocation is handled by load_textfile
-	return load_textfile(filename, *shellcode_size);		
+	return load_textfile(filename, *data_size);		
 }

