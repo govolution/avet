@@ -38,8 +38,7 @@ function add_evasion() {
 # First Argument: 	Name of the technique (= name of the file containing the respective code, without the file suffix)
 # Second Argument:  Can be used to deliver further data about the source, e.g. the file name when retrieving from a file or the URL when downloading from a URL
 function set_shellcode_source() {
-	printf "\n\n" >> source/get_shellcode/get_shellcode.include
-	printf "\n\n" >> source/get_shellcode/get_shellcode.include
+	printf "\n\n" >> source/get_shellcode/get_shellcode.include	
 	
 	# If retrieval from file, assume that file sc.txt contains shellcode that is already in a c-compatible format
 	if [ $1 = "static_from_file" ]
@@ -48,7 +47,7 @@ function set_shellcode_source() {
 	fi	
 		
 	# Set include in get_shellcode.include to import the needed data retrieval method
-	printf "\n#include \"../retrieve_data/$1.h\"\n" >> source/get_shellcode/get_shellcode.include
+	printf "\n#include \"implementations/retrieve_data/$1.h\"\n" >> source/get_shellcode/get_shellcode.include
 	# Write an assignment of the selected function to get_shellcode into the get_shellcode.assign file
 	printf "\nget_shellcode = $1;\n" >> source/get_shellcode/get_shellcode.assign
 }

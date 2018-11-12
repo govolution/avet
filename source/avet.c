@@ -71,6 +71,10 @@ int main (int argc, char **argv)
 		evasion_functions[i];
 	}
 	
+	// Retrieve encoded shellcode
+	int shellcode_size = 0;
+	get_shellcode(argv[1], &shellcode_size);
+	
 	
 	
 	return 0;
