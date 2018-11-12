@@ -52,7 +52,10 @@ function set_shellcode_source() {
 	printf "\nget_shellcode = $1;\n" >> source/get_shellcode/get_shellcode.assign
 }
 
-
+# Specifies where to get the crypto key from
+#
+# First Argument:	Name of the technique (=name of the file containing the respective code, without the file suffix)
+# Second Argument:	Can be used to deliver further data about the source, e.g. the file name when retrieving from a file or the URL when downloading from a URL
 function set_key_source() {
 	printf "\n\n" >> source/get_key/get_key.include	
 	
