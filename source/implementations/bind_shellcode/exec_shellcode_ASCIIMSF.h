@@ -3,7 +3,7 @@
 #include <stdio.h>
 
 
-void bind_shellcode(unsigned char *shellcode) {
+void exec_shellcode_ASCIIMSF(unsigned char *shellcode) {
 	#ifdef PRINT_DEBUG
 		printf("exec_shellcode_ASCIIMSF\n ");
 		int size=strlen(shellcode);

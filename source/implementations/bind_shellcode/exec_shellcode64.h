@@ -4,7 +4,7 @@
 #include <windows.h>
 
 
-void bind_shellcode(unsigned char *shellcode) {
+void exec_shellcode64(unsigned char *shellcode) {
 	#ifdef PRINT_DEBUG
 		printf("exec_shellcode64\n ");
 		int size=strlen(shellcode);

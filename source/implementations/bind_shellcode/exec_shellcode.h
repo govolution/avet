@@ -4,7 +4,7 @@
 #include <string.h>
 
 
-void bind_shellcode(unsigned char *shellcode) {
+void exec_shellcode(unsigned char *shellcode) {
 	#ifdef PRINT_DEBUG
 		printf("exec_shellcode\n ");
 		int size = strlen((char *)shellcode);

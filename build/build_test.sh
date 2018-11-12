@@ -41,7 +41,7 @@ set_decoder none
 shellcode_binding exec_shellcode
 
 # enable debug printing
-append_value PRINT_DEBUG "" source/shellcode_binding.h	
+append_value PRINT_DEBUG "" source/get_shellcode/get_shellcode.include	
 
 # compile
 $win32_compiler -o output/pwn.exe source/avet.c -lws2_32

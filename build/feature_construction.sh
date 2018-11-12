@@ -75,11 +75,11 @@ function set_key_source() {
 # Specifies how the payload shellcode will be called
 #
 # First Argument: 	Name of the shellcode binding technique (= name of the file containinig the respective code, without the file suffix)
-function shellcode_binding() {
-	# Assume that shellcode_binding.h already exists and is properly set up
-	
-	# Copy contents of specified feature into shellcode_binding.h
-	cat source/shellcode_binding/$1.h >> source/shellcode_binding.h
+function set_shellcode_binding() {
+	# Set include in bind_shellcode.include to import the implemented binding function
+	printf "\n#include \"implementations/bind_shellcode/$1.h\"\n" >> source/bind_shellcode/bind_shellcode.include
+	# Write an assignment of the selected function to bind_shellcode into the bind_shellcode.assign file
+	printf "\nbind_shellcode = $1;\n" >> source/bind_shellcode/bind_shellcode.assign
 }
 
 
@@ -114,4 +114,6 @@ function cleanup_techniques() {
 	echo "" > source/get_key/get_key.assign
 	echo "" > source/decode_shellcode/decode_shellcode.include
 	echo "" > source/decode_shellcode/decode_shellcode.assign
+	echo "" > source/bind_shellcode/bind_shellcode.include
+	echo "" > source/bind_shellcode/bind_shellcode.assign
 }
