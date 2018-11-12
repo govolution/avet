@@ -17,12 +17,19 @@ function append_value() {
 
 # Adds an evasion technique to be included in the final avet executable
 #
+# NUM_TECHNIQUES is a counter that keeps track on how many (not necessarily different individual) techniques were added in total.
+NUM_TECHNIQUES=0
+#
 # First Argument: 	Name of the technique (= name of the file containing the respective code, without the file suffix)
 function add_evasion() {
-	# Assume that evasion.h already exists and is properly set up
+	# Set include in evasion.include to import the selected evasion technique implementation
+	printf "\n#include \"implementations/evasion/$1.h\"\n" >> source/evasion/evasion.include
 	
-	# Copy contents of specified feature into evasion.h
-	cat source/evasion/$1.h >> source/evasion.h	
+	# Write an assignment of the selected function to the evasion function array into the evasion.assign file
+	printf "\nevasion_functions[$NUM_TECHNIQUES] = $1;\n" >> source/evasion/evasion.assign
+	
+	# Increment technique counter
+	((NUM_TECHNIQUES=NUM_TECHNIQUES+1))
 }
 
 
@@ -81,9 +88,8 @@ function encode_shellcode() {
 
 # Resets the contents of the techniques.h and shellcode_binding.h files. To be called after payload compilation.
 function cleanup_techniques() {
-	echo "" > source/evasion.h
-	echo "" > source/shellcode_binding.h
+	echo "" > source/evasion/evasion.include
+	echo "" > source/evasion/evasion.assign	
 	echo "" > source/get_shellcode/get_shellcode.include
-	echo "" > source/get_shellcode/get_shellcode.assign
-	echo "" > source/encoding.h
+	echo "" > source/get_shellcode/get_shellcode.assign	
 }
