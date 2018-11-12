@@ -2,4 +2,7 @@
 
 
 // Hides the console window
-ShowWindow(GetConsoleWindow(), SW_HIDE);
+// arg1 is not used and therefore ignored
+void hide_console(char *arg1) {
+    ShowWindow(GetConsoleWindow(), SW_HIDE);
+}
