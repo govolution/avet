@@ -15,6 +15,12 @@ function append_value() {
 }
 
 
+# Enables the PRINT_DEBUG macro in the respective include file.
+# Setting this, the generated executable will generate verbose stdoutput.
+function enable_debug_print() {
+	printf "\n#define PRINT_DEBUG \n" >> source/debug_print/debug_print.include
+}
+
 # Adds an evasion technique to be included in the final avet executable
 #
 # NUM_TECHNIQUES is a counter that keeps track on how many (not necessarily different individual) techniques were added in total.
@@ -116,4 +122,5 @@ function cleanup_techniques() {
 	echo "" > source/decode_shellcode/decode_shellcode.assign
 	echo "" > source/bind_shellcode/bind_shellcode.include
 	echo "" > source/bind_shellcode/bind_shellcode.assign
+	echo "" > source/debug_print/debug_print.include
 }
