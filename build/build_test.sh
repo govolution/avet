@@ -28,6 +28,9 @@ add_evasion gethostbyname_sandbox_evasion
 # set shellcode source
 set_shellcode_source download_powershell
 
+# set key source
+set_key_source none
+
 # encode shellcode
 #encode_shellcode xor 
 

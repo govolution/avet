@@ -40,7 +40,7 @@ function add_evasion() {
 function set_shellcode_source() {
 	printf "\n\n" >> source/get_shellcode/get_shellcode.include	
 	
-	# If retrieval from file, assume that file sc.txt contains shellcode that is already in a c-compatible format
+	# If retrieval from file, assume that file sc.txt contains shellcode that is already in C-compatible format
 	if [ $1 = "static_from_file" ]
 	then
     	cat sc.txt >> source/get_shellcode/get_shellcode.include		
@@ -50,6 +50,22 @@ function set_shellcode_source() {
 	printf "\n#include \"implementations/retrieve_data/$1.h\"\n" >> source/get_shellcode/get_shellcode.include
 	# Write an assignment of the selected function to get_shellcode into the get_shellcode.assign file
 	printf "\nget_shellcode = $1;\n" >> source/get_shellcode/get_shellcode.assign
+}
+
+
+function set_key_source() {
+	printf "\n\n" >> source/get_key/get_key.include	
+	
+	# If retrieval from file, assume that file key.txt contains key that is already in C-compatible format
+	if [ $1 = "static_from_file" ]
+	then
+    	cat key.txt >> source/get_key/get_key.include		
+	fi	
+		
+	# Set include in get_key.include to import the needed data retrieval method
+	printf "\n#include \"implementations/retrieve_data/$1.h\"\n" >> source/get_key/get_key.include
+	# Write an assignment of the selected function to get_shellcode into the get_shellcode.assign file
+	printf "\nget_key = $1;\n" >> source/get_key/get_key.assign
 }
 
 

