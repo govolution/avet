@@ -79,7 +79,9 @@ int main (int argc, char **argv)
 	int key_length = 0;
 	unsigned char *key = get_key(argv[2], &key_length);
 	
-	
+	// Decode shellcode
+	unsigned char* shellcode = (unsigned char *) malloc(shellcode_size);
+	decode_shellcode(encoded_shellcode, shellcode_size, key, key_length, shellcode);
 	
 	return 0;
 }

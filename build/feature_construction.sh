@@ -87,10 +87,10 @@ function shellcode_binding() {
 #
 # First Argument: 	Name of the shellcode decoder (= name of the folder containinig the respective code)
 function set_decoder() {
-	# Assume that encoding.h already exists and is properly set up
-	
-	# Copy the specified decoding function into encoding.h
-	cat source/encoding/$1/$1_decoder.h >> source/encoding.h
+	# Set include in decode_shellcode.include to import the needed decoder method
+	printf "\n#include \"implementations/encoding/$1/$1_decoder.h\"\n" >> source/decode_shellcode/decode_shellcode.include
+	# Write an assignment of the selected function to decode_shellcode into the decode_shellcode.assign
+	printf "\ndecode_shellcode = $1;\n" >> source/decode_shellcode/decode_shellcode.assign	
 }
 
 
@@ -110,4 +110,8 @@ function cleanup_techniques() {
 	echo "" > source/evasion/evasion.assign	
 	echo "" > source/get_shellcode/get_shellcode.include
 	echo "" > source/get_shellcode/get_shellcode.assign	
+	echo "" > source/get_key/get_key.include
+	echo "" > source/get_key/get_key.assign
+	echo "" > source/decode_shellcode/decode_shellcode.include
+	echo "" > source/decode_shellcode/decode_shellcode.assign
 }

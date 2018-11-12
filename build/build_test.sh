@@ -26,7 +26,7 @@ add_evasion gethostbyname_sandbox_evasion
 #add_evasion hide_console
 
 # set shellcode source
-set_shellcode_source download_powershell
+set_shellcode_source from_command_line
 
 # set key source
 set_key_source none
