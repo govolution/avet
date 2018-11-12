@@ -17,7 +17,7 @@ unsigned char *from_command_line(char *arg1, int *data_size) {
 
     // Each data byte is represented by 2 ASCII symbols
     *data_size = input_length / 2;
-    unsigned char *data = (unsigned char *) malloc(data_size);
+    unsigned char *data = (unsigned char *) malloc(*data_size);
 
     // Hex string is of format aabb01cc34...
 	// Each loop iteration handles a 2-character chunk

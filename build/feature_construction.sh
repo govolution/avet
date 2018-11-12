@@ -23,7 +23,7 @@ NUM_TECHNIQUES=0
 # First Argument: 	Name of the technique (= name of the file containing the respective code, without the file suffix)
 function add_evasion() {
 	# Set include in evasion.include to import the selected evasion technique implementation
-	printf "\n#include \"implementations/evasion/$1.h\"\n" >> source/evasion/evasion.include
+	printf "\n#include \"../implementations/evasion/$1.h\"\n" >> source/evasion/evasion.include
 	
 	# Write an assignment of the selected function to the evasion function array into the evasion.assign file
 	printf "\nevasion_functions[$NUM_TECHNIQUES] = $1;\n" >> source/evasion/evasion.assign
@@ -47,7 +47,7 @@ function set_shellcode_source() {
 	fi	
 		
 	# Set include in get_shellcode.include to import the needed data retrieval method
-	printf "\n#include \"implementations/retrieve_data/$1.h\"\n" >> source/get_shellcode/get_shellcode.include
+	printf "\n#include \"../implementations/retrieve_data/$1.h\"\n" >> source/get_shellcode/get_shellcode.include
 	# Write an assignment of the selected function to get_shellcode into the get_shellcode.assign file
 	printf "\nget_shellcode = $1;\n" >> source/get_shellcode/get_shellcode.assign
 }
@@ -66,7 +66,7 @@ function set_key_source() {
 	fi	
 		
 	# Set include in get_key.include to import the needed data retrieval method
-	printf "\n#include \"implementations/retrieve_data/$1.h\"\n" >> source/get_key/get_key.include
+	printf "\n#include \"../implementations/retrieve_data/$1.h\"\n" >> source/get_key/get_key.include
 	# Write an assignment of the selected function to get_shellcode into the get_shellcode.assign file
 	printf "\nget_key = $1;\n" >> source/get_key/get_key.assign
 }
@@ -77,7 +77,7 @@ function set_key_source() {
 # First Argument: 	Name of the shellcode binding technique (= name of the file containinig the respective code, without the file suffix)
 function set_shellcode_binding() {
 	# Set include in bind_shellcode.include to import the implemented binding function
-	printf "\n#include \"implementations/bind_shellcode/$1.h\"\n" >> source/bind_shellcode/bind_shellcode.include
+	printf "\n#include \"../implementations/bind_shellcode/$1.h\"\n" >> source/bind_shellcode/bind_shellcode.include
 	# Write an assignment of the selected function to bind_shellcode into the bind_shellcode.assign file
 	printf "\nbind_shellcode = $1;\n" >> source/bind_shellcode/bind_shellcode.assign
 }
@@ -88,9 +88,9 @@ function set_shellcode_binding() {
 # First Argument: 	Name of the shellcode decoder (= name of the folder containinig the respective code)
 function set_decoder() {
 	# Set include in decode_shellcode.include to import the needed decoder method
-	printf "\n#include \"implementations/encoding/$1/$1_decoder.h\"\n" >> source/decode_shellcode/decode_shellcode.include
+	printf "\n#include \"../implementations/encoding/$1/$1_decoder.h\"\n" >> source/decode_shellcode/decode_shellcode.include
 	# Write an assignment of the selected function to decode_shellcode into the decode_shellcode.assign
-	printf "\ndecode_shellcode = $1;\n" >> source/decode_shellcode/decode_shellcode.assign	
+	printf "\ndecode_shellcode = decode_$1;\n" >> source/decode_shellcode/decode_shellcode.assign	
 }
 
 

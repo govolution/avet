@@ -26,7 +26,7 @@ add_evasion gethostbyname_sandbox_evasion
 #add_evasion hide_console
 
 # set shellcode source
-set_shellcode_source from_command_line
+set_shellcode_source dynamic_from_file
 
 # set key source
 set_key_source none
@@ -38,10 +38,10 @@ set_key_source none
 set_decoder none
 
 # set shellcode binding technique
-shellcode_binding exec_shellcode
+set_shellcode_binding exec_shellcode
 
 # enable debug printing
-append_value PRINT_DEBUG "" source/get_shellcode/get_shellcode.include	
+#append_value PRINT_DEBUG "" source/get_shellcode/get_shellcode.include	
 
 # compile
 $win32_compiler -o output/pwn.exe source/avet.c -lws2_32
