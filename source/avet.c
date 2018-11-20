@@ -38,7 +38,7 @@ Web: https://github.com/govolution/avet
 #include "get_shellcode/get_shellcode.include"
 #include "get_key/get_key.include"
 #include "decode_shellcode/decode_shellcode.include"
-#include "bind_shellcode/bind_shellcode.include"
+#include "shellcode_binder/shellcode_binder.include"
 
 
 // Set how many evasion functions can be used at maximum
@@ -51,7 +51,7 @@ int main (int argc, char **argv)
 	unsigned char *(*get_shellcode) (char *arg1, int *shellcode_size) = NULL;
 	unsigned char *(*get_key) (char *arg1, int *key_length) = NULL;
 	void (*decode_shellcode) (const unsigned char *ciphertext, const int ciphertext_length, const unsigned char *key, const int key_length, unsigned char *plaintext) = NULL;
-	void (*bind_shellcode) (unsigned char *shellcode) = NULL;
+	void (*shellcode_binder) (unsigned char *shellcode) = NULL;
 	
 	// Define array to store multiple evasion functions.
 	// Set static array size of 10 because dynamic size handling in cooperation with build scripts would be too messy.
@@ -69,7 +69,7 @@ int main (int argc, char **argv)
 	#include "get_shellcode/get_shellcode.assign"
 	#include "get_key/get_key.assign"
 	#include "decode_shellcode/decode_shellcode.assign"
-	#include "bind_shellcode/bind_shellcode.assign"
+	#include "shellcode_binder/shellcode_binder.assign"
 		
 	// Execute evasion functions
 	for(int i = 0; i < EVASION_ARRAY_SIZE; i++) {
@@ -91,7 +91,7 @@ int main (int argc, char **argv)
 	decode_shellcode(encoded_shellcode, shellcode_size, key, key_length, shellcode);
 	
 	// Bind and execute shellcode
-	bind_shellcode(shellcode);
+	shellcode_binder(shellcode);
 	
 	return 0;
 }

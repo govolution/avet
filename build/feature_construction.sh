@@ -82,10 +82,10 @@ function set_key_source() {
 #
 # First Argument: 	Name of the shellcode binding technique (= name of the file containinig the respective code, without the file suffix)
 function set_shellcode_binding() {
-	# Set include in bind_shellcode.include to import the implemented binding function
-	printf "\n#include \"../implementations/bind_shellcode/$1.h\"\n" >> source/bind_shellcode/bind_shellcode.include
-	# Write an assignment of the selected function to bind_shellcode into the bind_shellcode.assign file
-	printf "\nbind_shellcode = $1;\n" >> source/bind_shellcode/bind_shellcode.assign
+	# Set include in shellcode_binder.include to import the implemented binding function
+	printf "\n#include \"../implementations/shellcode_binder/$1.h\"\n" >> source/shellcode_binder/shellcode_binder.include
+	# Write an assignment of the selected function to shellcode_binder into the shelcode_binder.assign file
+	printf "\nshellcode_binder = $1;\n" >> source/shellcode_binder/shellcode_binder.assign
 }
 
 
@@ -120,7 +120,7 @@ function cleanup_techniques() {
 	echo "" > source/get_key/get_key.assign
 	echo "" > source/decode_shellcode/decode_shellcode.include
 	echo "" > source/decode_shellcode/decode_shellcode.assign
-	echo "" > source/bind_shellcode/bind_shellcode.include
-	echo "" > source/bind_shellcode/bind_shellcode.assign
+	echo "" > source/shellcode_binder/shellcode_binder.include
+	echo "" > source/shellcode_binder/shellcode_binder.assign
 	echo "" > source/debug_print/debug_print.include
 }
