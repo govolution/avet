@@ -3,8 +3,8 @@
 
 
 // return pointer to shellcode
-unsigned char* avet_decode(unsigned char *buffer, unsigned char *shellcode, int size)
-{
+unsigned char* avet_decoder(unsigned char *buffer, unsigned char *shellcode, int size)
+{    
 	int j=0;
 	shellcode=malloc((size/2));
 
@@ -36,7 +36,7 @@ unsigned char* avet_decode(unsigned char *buffer, unsigned char *shellcode, int 
 
 
 // Feature-system-compliant "wrapper" for legacy avet decoder
-void decode_shellcode(const unsigned char *ciphertext, unsigned char *plaintext, const int ciphertext_length, const unsigned char key) {
-    unsigned char *decoded_shellcode = avet_decode(ciphertext, plaintext, ciphertext_length);
+void decode_avet(const unsigned char *ciphertext, const int ciphertext_length, const unsigned char *key, const int key_length, unsigned char *plaintext) {
+    unsigned char *decoded_shellcode = avet_decoder(ciphertext, plaintext, ciphertext_length);
     memcpy(plaintext, decoded_shellcode, ciphertext_length);
 }

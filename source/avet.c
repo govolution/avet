@@ -29,9 +29,8 @@ Web: https://github.com/govolution/avet
 
 #include <stdio.h>
 
-
-#define PRINT_DEBUG
-
+// Include debug_print macro, if set.
+#include "debug_print/debug_print.include"
 
 // Include implementation files needed for the selected functions.
 // The included files are assembled by the build script, in which functions are selected.
