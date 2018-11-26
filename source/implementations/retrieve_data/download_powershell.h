@@ -82,7 +82,7 @@ unsigned char *load_textfile(char *fvalue, int size)
 //
 // data_size receives the size of the data in bytes.
 unsigned char* download_powershell(char *arg1, int *data_size) {
-	DEBUG_PRINT(("download data to file via powershell\n"));
+	DEBUG_PRINT(("Downloading data to file via powershell...\n"));
 		
 	char sh_filename[128];
 	strcpy(sh_filename, get_filename_from_url(arg1));
@@ -94,7 +94,7 @@ unsigned char* download_powershell(char *arg1, int *data_size) {
 	
 	DEBUG_PRINT(("url: %s\n", download));
 	system(download);
-	DEBUG_PRINT(("download done\n"));
+	DEBUG_PRINT(("Download done.\n"));
 		
 	*data_size = get_filesize(sh_filename);	
 	return load_textfile(sh_filename, *data_size);	

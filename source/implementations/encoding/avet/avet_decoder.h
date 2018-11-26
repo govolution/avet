@@ -6,6 +6,7 @@
 // return pointer to shellcode
 unsigned char* avet_decoder(unsigned char *buffer, unsigned char *shellcode, int size)
 {    
+    DEBUG_PRINT(("This is AVET decoder.\n"));
 	int j=0;
 	shellcode=malloc((size/2));
 
@@ -24,7 +25,7 @@ unsigned char* avet_decoder(unsigned char *buffer, unsigned char *shellcode, int
 		j++;
 	} while(i<size);
 
-	DEBUG_PRINT(("\n "));
+	DEBUG_PRINT(("AVET decoder finished.\n"));
 
 	return shellcode;
 }

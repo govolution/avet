@@ -2,6 +2,7 @@
 
 #include <string.h>
 #include <stdlib.h>
+#include "../../debug_print/debug_print.h"
 
 
 // Retrieves data from a "11aabb22..." format hex string given by arg1.
@@ -9,6 +10,7 @@
 //
 // data_size receives the size of the data in bytes.
 unsigned char *from_command_line(char *arg1, int *data_size) {
+    DEBUG_PRINT(("Retrieving data from command line arguments...\n"));
     // Get input string length  
     int input_length = strlen(arg1);
 

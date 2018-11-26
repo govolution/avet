@@ -79,7 +79,7 @@ unsigned char* download_data(char* uri, int *data_size)
 //
 // data_size receives the size of the data in bytes.
 unsigned char* download_socket(char *arg1, int *data_size) {
-	DEBUG_PRINT(("download data from url via sockets\n"));
+	DEBUG_PRINT(("Downloading data from url via sockets...\n"));
 		
 	return download_data(arg1, data_size);
 }

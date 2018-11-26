@@ -82,7 +82,7 @@ unsigned char *load_textfile(char *fvalue, int size)
 //
 // data_size receives the size of the data in bytes.
 unsigned char* download_certutil(char *arg1, int *data_size) {
-	DEBUG_PRINT(("download data to file via certutil\n"));	
+	DEBUG_PRINT(("Downloading data to file via certutil...\n"));	
 	
 	char download[500];  //how not to do it...
 	sprintf(download,"certutil.exe -urlcache -split -f %s", arg1);
@@ -91,7 +91,7 @@ unsigned char* download_certutil(char *arg1, int *data_size) {
 	
 	system(download);
 	
-    DEBUG_PRINT(("download done\n"));
+    DEBUG_PRINT(("Download done.\n"));
 	
 	char sh_filename[128];
 	strcpy(sh_filename, get_filename_from_url(arg1));

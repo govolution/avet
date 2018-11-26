@@ -6,7 +6,7 @@
 
 
 void exec_shellcode64(unsigned char *shellcode) {
-	DEBUG_PRINT(("exec_shellcode64\n "));
+	DEBUG_PRINT(("exec_shellcode64 called\n"));
 	int size=strlen(shellcode);
 	DEBUG_PRINT(("shellcode size: %d\n", size));
 	

