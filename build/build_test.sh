@@ -23,6 +23,7 @@ LHOST=$GLOBAL_LHOST
 # add evasion techniques
 add_evasion fopen_sandbox_evasion
 add_evasion gethostbyname_sandbox_evasion
+append_value HOSTVALUE "this.that" source/evasion/evasion.include
 #add_evasion hide_console
 
 # set shellcode source

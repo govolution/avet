@@ -49,7 +49,7 @@ function set_shellcode_source() {
 	# If retrieval from file, assume that file sc.txt contains shellcode that is already in C-compatible format
 	if [ $1 = "static_from_file" ]
 	then
-    	cat sc.txt >> source/get_shellcode/get_shellcode.include		
+    	cat $2 >> source/get_shellcode/get_shellcode.include		
 	fi	
 		
 	# Set include in get_shellcode.include to import the needed data retrieval method
@@ -68,7 +68,7 @@ function set_key_source() {
 	# If retrieval from file, assume that file key.txt contains key that is already in C-compatible format
 	if [ $1 = "static_from_file" ]
 	then
-    	cat key.txt >> source/get_key/get_key.include		
+    	cat $2 >> source/get_key/get_key.include		
 	fi	
 		
 	# Set include in get_key.include to import the needed data retrieval method
