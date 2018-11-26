@@ -4,6 +4,7 @@
 #include "WinSock2.h"
 #include "Ws2tcpip.h"
 #include <windows.h>
+#include "../../debug_print/debug_print.h"
 
 
 // Link with -lws2_32 when compiling
@@ -78,9 +79,7 @@ unsigned char* download_data(char* uri, int *data_size)
 //
 // data_size receives the size of the data in bytes.
 unsigned char* download_socket(char *arg1, int *data_size) {
-	#ifdef PRINT_DEBUG
-		printf("download data from url via sockets\n");
-	#endif
-	
+	DEBUG_PRINT(("download data from url via sockets\n"));
+		
 	return download_data(arg1, data_size);
 }

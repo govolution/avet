@@ -1,6 +1,7 @@
 #pragma once
 
 #include <stdio.h>
+#include "../../debug_print/debug_print.h"
 
 
 int get_filesize(char *fvalue)
@@ -15,10 +16,8 @@ int get_filesize(char *fvalue)
 	for (size = 0; (rc1 = getc(fp1)) != EOF; size++) {}
 	fclose(fp1);
 	
-	#ifdef PRINT_DEBUG
-		printf("get_filesize, filesize %s: %d\n", fvalue, size);
-	#endif
-
+	DEBUG_PRINT(("get_filesize, filesize %s: %d\n", fvalue, size));
+	
 	return size;
 }
 
@@ -27,10 +26,8 @@ int get_filesize(char *fvalue)
 // Automatically allocates memory for this
 unsigned char *load_textfile(char *fvalue, int size)
 {
-	#ifdef PRINT_DEBUG
-		printf("load_textfile called: fvalue: %s, size: %d\n", fvalue, size);
-	#endif
-
+	DEBUG_PRINT(("load_textfile called: fvalue: %s, size: %d\n", fvalue, size));
+	
 	//allocate buffer, open file, read file to the buffer, close the file
 	unsigned char *buffer = (unsigned char*) malloc(size+1);
 	int i, rc;
@@ -51,9 +48,7 @@ unsigned char *load_textfile(char *fvalue, int size)
 		buffer[i] = rc;
 	}
 
-	#ifdef PRINT_DEBUG
-		printf("%s\n",buffer);
-	#endif
+	DEBUG_PRINT(("%s\n",buffer));
 
 	fclose(fp);	
 	return buffer;
@@ -70,9 +65,7 @@ unsigned char *dynamic_from_file(char *arg1, int *data_size) {
 	// First command line argument specifies the file name to read from
 	char *filename = arg1;	
 	
-	#ifdef PRINT_DEBUG
-		printf("get data from file %s\n", filename);
-	#endif
+	DEBUG_PRINT(("get data from file %s\n", filename));
 	
 	*data_size = get_filesize(filename);
 	// Memory allocation is handled by load_textfile

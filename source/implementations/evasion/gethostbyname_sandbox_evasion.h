@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <windows.h>
+#include "../../debug_print/debug_print.h"
 
 // evading with gethostbyname technique
 // arg1 serves no purpose and is ignored
@@ -11,9 +12,8 @@
 // ---
 // Link with -lws2_32 switch when compiling
 void gethostbyname_sandbox_evasion(char *arg1) {
-    #ifdef PRINT_DEBUG
-	    printf("use  gethostbyname sandbox evasion\n");
-    #endif
+    DEBUG_PRINT(("use  gethostbyname sandbox evasion\n"));
+   
     #ifdef HOSTVALUE
         struct hostent *hp = gethostbyname(HOSTVALUE);
     #else

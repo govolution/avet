@@ -18,7 +18,7 @@ function append_value() {
 # Enables the PRINT_DEBUG macro in the respective include file.
 # Setting this, the generated executable will generate verbose stdoutput.
 function enable_debug_print() {
-	printf "\n#define PRINT_DEBUG \n" >> source/debug_print/debug_print.include
+	printf "\n#define DEBUG \n" >> source/debug_print/debug_print.include
 }
 
 # Adds an evasion technique to be included in the final avet executable
