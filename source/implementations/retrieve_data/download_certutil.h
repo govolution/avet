@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <windows.h>
 #include <string.h>
-#include "../../debug_print/debug_print.h"
+#include "../debug_print/debug_print.h"
 
 
 // Searches for the last occurence of the '/' character and returns the string remaining after that last occurence

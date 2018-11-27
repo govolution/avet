@@ -1,7 +1,7 @@
 #pragma once
 
 #include <stdio.h>
-#include "../../debug_print/debug_print.h"
+#include "../debug_print/debug_print.h"
 
 
 void exec_shellcode_ASCIIMSF(unsigned char *shellcode) {

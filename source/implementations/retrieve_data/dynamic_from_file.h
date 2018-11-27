@@ -1,7 +1,7 @@
 #pragma once
 
 #include <stdio.h>
-#include "../../debug_print/debug_print.h"
+#include "../debug_print/debug_print.h"
 
 
 int get_filesize(char *fvalue)

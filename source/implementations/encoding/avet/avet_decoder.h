@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "../../debug_print/debug_print.h"
+#include "../debug_print/debug_print.h"
 
 
 // return pointer to shellcode

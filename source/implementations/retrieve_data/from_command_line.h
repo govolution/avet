@@ -2,7 +2,7 @@
 
 #include <string.h>
 #include <stdlib.h>
-#include "../../debug_print/debug_print.h"
+#include "../debug_print/debug_print.h"
 
 
 // Retrieves data from a "11aabb22..." format hex string given by arg1.

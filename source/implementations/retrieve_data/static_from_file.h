@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../../debug_print/debug_print.h"
+#include "../debug_print/debug_print.h"
 
 
 // Static retrieval of data from file.

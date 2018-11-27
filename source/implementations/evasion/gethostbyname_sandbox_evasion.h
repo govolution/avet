@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <windows.h>
-#include "../../debug_print/debug_print.h"
+#include "../debug_print/debug_print.h"
 
 // evading with gethostbyname technique
 // arg1 serves no purpose and is ignored

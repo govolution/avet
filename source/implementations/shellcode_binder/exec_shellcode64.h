@@ -2,7 +2,7 @@
 
 #include <stdio.h>
 #include <windows.h>
-#include "../../debug_print/debug_print.h"
+#include "../debug_print/debug_print.h"
 
 
 void exec_shellcode64(unsigned char *shellcode) {

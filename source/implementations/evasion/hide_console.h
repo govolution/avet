@@ -1,7 +1,7 @@
 #pragma once
 
 #include <windows.h>
-#include "../../debug_print/debug_print.h"
+#include "../debug_print/debug_print.h"
 
 
 // Hides the console window

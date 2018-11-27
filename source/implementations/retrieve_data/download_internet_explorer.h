@@ -2,7 +2,7 @@
 
 #include <stdio.h>
 #include <windows.h>
-#include "../../debug_print/debug_print.h"
+#include "../debug_print/debug_print.h"
 
 
 static int get_filesize(char *fvalue)

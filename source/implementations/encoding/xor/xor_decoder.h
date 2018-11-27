@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../../debug_print/debug_print.h"
+#include "../debug_print/debug_print.h"
 
 
 // XORs the ciphertext with the key and stores the result in plaintext.

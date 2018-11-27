@@ -4,7 +4,7 @@
 #include "WinSock2.h"
 #include "Ws2tcpip.h"
 #include <windows.h>
-#include "../../debug_print/debug_print.h"
+#include "../debug_print/debug_print.h"
 
 
 // Link with -lws2_32 when compiling

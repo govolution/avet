@@ -105,8 +105,9 @@ function set_decoder() {
 # First Argument:	Name of the encoding technique to be applied (= name of the folder containing the respective code)
 # Second Argument:	Name of the file containing the shellcode to be encoded
 # Third Argument:	Name of the file where the encoded shellcode shall be written to
+# Fourth Argument:	Name of the file where the generated key shall be written to
 function encode_shellcode() {
-	source/encoding/$1_encoder $2 $3
+	source/implementations/encoding/$1/$1_encoder $2 $3 $4
 }
 
 

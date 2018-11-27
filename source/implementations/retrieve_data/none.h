@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../../debug_print/debug_print.h"
+#include "../debug_print/debug_print.h"
 
 // Dummy function to handle cases where no actual data is retrieved, e.g. no key needed when no encoding is specified.
 unsigned char *none(char *arg1, int *data_size)  {
