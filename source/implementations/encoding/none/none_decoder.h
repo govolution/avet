@@ -1,7 +1,7 @@
 #pragma once
 
 #include <string.h>
-#include "../debug_print/debug_print.h"
+#include "../../debug_print/debug_print.h"
 
 
 // Dummy function to handle options where no encoding/decoding is applied at all
