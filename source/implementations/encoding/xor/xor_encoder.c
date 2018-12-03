@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-#include "../shellcode_utility.h"
+#include "../../../data_utility.h"
 
 
 // Generates a (non-cryptographically) random byte sequence.
@@ -45,27 +45,31 @@ int main(int argc, char **argv) {
     printf("Starting XOR encoder...\n");
     
 	// Read shellcode from file into memory
-    printf("Reading shellcode from file %s\n", argv[1]);	
-    unsigned char *shellcode =  shellcode_from_file_raw(argv[1], &shellcode_size);
+    printf("Reading shellcode from file %s, expecting raw format.\n", argv[1]);	
+    unsigned char *shellcode =  data_from_file_raw(argv[1], &shellcode_size);
     printf("Shellcode size in bytes is %d\n", shellcode_size);
 
     // Convert key length
     int key_length = strtol(argv[3], NULL, 10);    
 
 	// Generate random encryption key
-    printf("Generating %d byte key:\n", key_length);
-    unsigned char *key = generate_key(key_length);    
+    printf("Generating %d byte key:\t", key_length);
+    unsigned char *key = generate_key(key_length);
+    for(int i = 0; i < key_length; i++) {
+        printf("%02x", key[i]);     
+    }
+    printf("\n");    
 
 	// Encrypt and write ciphertext to file
 	unsigned char *ciphertext = (unsigned char *) malloc(shellcode_size);
     printf("Applying XOR algorithm\n");
 	xor_encode(shellcode, shellcode_size, key, key_length, ciphertext);	
     printf("Writing shellcode to file %s\n", argv[2]);
-	shellcode_to_file_raw(ciphertext, shellcode_size, argv[2]);
+	data_to_file_raw(ciphertext, shellcode_size, argv[2]);
 	
 	// Deliver key in another output file
     printf("Writing key to file %s\n", argv[4]);
-	shellcode_to_file_raw(key, 1, argv[4]);		
+	data_to_file_raw(key, 1, argv[4]);		
 	
 	return 0;
 }
