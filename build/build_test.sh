@@ -31,7 +31,7 @@ append_value HOSTVALUE "this.that" source/evasion/evasion.include
 
 # set shellcode source
 # convert from raw to C format using the built-in tool
-./tools/shellcode_raw_to_c/shellcode_raw_to_c input/scraw.txt input/sc.txt
+./tools/data_raw_to_c/data_raw_to_c input/scraw.txt input/sc.txt buf
 set_shellcode_source static_from_file input/sc.txt
 
 # encode shellcode
