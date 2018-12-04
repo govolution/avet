@@ -69,7 +69,7 @@ int main(int argc, char **argv) {
 	
 	// Deliver key in another output file
     printf("Writing key to file %s\n", argv[4]);
-	data_to_file_raw(key, 1, argv[4]);		
+	data_to_file_raw(key, key_size, argv[4]);		
 	
 	return 0;
 }
