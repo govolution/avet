@@ -79,11 +79,8 @@ void data_to_file_raw(const unsigned char *data, const int data_size, const char
 	fclose(data_file);
 	
 	// Write data to file
-	data_file = fopen(filename, "a");
-	
-	for(int i = 0; i < data_size; i++) {
-		fwrite(data, 1, data_size, data_file);
-	}
+	data_file = fopen(filename, "a");	
+	fwrite(data, 1, data_size, data_file);	
 	
 	fclose(data_file);
 }
