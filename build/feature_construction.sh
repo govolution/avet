@@ -1,20 +1,3 @@
-# Appends a define at the end of a the specified file
-#
-# First argument: 	Name of the define
-# Second argument:  Value of the define
-# Third argument:	Name of the file to append to
-#
-# Example usage:
-# append_value MYDEFINE abcdef techniques.h
-#
-# Writes (appends) #define MYDEFINE "abcdef" into techniques.h
-#
-# BEWARE: Currently only sets strings
-function append_value() {
-	printf "\n#define $1 \"$2\"\n" >> $3
-}
-
-
 # Enables the PRINT_DEBUG macro in the respective include file.
 # Setting this, the generated executable will generate verbose stdoutput.
 function enable_debug_print() {
@@ -46,10 +29,11 @@ function add_evasion() {
 function set_shellcode_source() {
 	printf "\n\n" >> source/get_shellcode/get_shellcode.include	
 	
-	# If retrieval from file, assume that file sc.txt contains shellcode that is already in C-compatible format
+	# If shellcode is included statically, write shellcode data into get_shellcode.include file and set respective define
 	if [ $1 = "static_from_file" ]
 	then
-    	cat $2 >> source/get_shellcode/get_shellcode.include		
+		cat $2 >> source/get_shellcode/get_shellcode.include
+		printf "\n#define STATIC_SHELLCODE \n" >> source/get_shellcode/get_shellcode.include
 	fi	
 		
 	# Set include in get_shellcode.include to import the needed data retrieval method
@@ -65,10 +49,11 @@ function set_shellcode_source() {
 function set_key_source() {
 	printf "\n\n" >> source/get_key/get_key.include	
 	
-	# If retrieval from file, assume that file key.txt contains key that is already in C-compatible format
+	# If key is included statically, write key data into get_key.include file and set respective define
 	if [ $1 = "static_from_file" ]
 	then
-    	cat $2 >> source/get_key/get_key.include		
+    	cat $2 >> source/get_key/get_key.include
+		printf "\n#define STATIC_KEY \n" >> source/get_key/get_key.include
 	fi	
 		
 	# Set include in get_key.include to import the needed data retrieval method

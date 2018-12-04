@@ -39,7 +39,7 @@ set_shellcode_source static_from_file input/sc.txt
 encode_shellcode xor input/scraw.txt input/scenc.txt 4 input/keyraw.txt
 # convert generated key from raw to C
 # array name buf is expected by static_from_file retrieval method
-./tools/data_raw_to_c/data_raw_to_c input/keyraw.txt input key.txt buf
+./tools/data_raw_to_c/data_raw_to_c input/keyraw.txt input/key.txt key
 
 # set key source
 set_key_source static_from_file input/key.txt

