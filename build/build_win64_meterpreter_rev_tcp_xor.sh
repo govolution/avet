@@ -41,6 +41,6 @@ $win64_compiler -o output/output.exe source/avet.c
 strip output/output.exe
 
 # cleanup
-rm input/sc.txt
-rm input/scclean.txt
+#rm input/sc.txt
+#rm input/scclean.txt
 cleanup_techniques

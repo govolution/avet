@@ -31,7 +31,7 @@ set_decoder none
 set_key_source none
 
 # set shellcode binding technique
-set_shellcode_binding exec_shellcode
+set_shellcode_binding exec_shellcode_ASCIIMSF
 
 # enable debug printing
 enable_debug_print
