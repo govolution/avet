@@ -28,6 +28,7 @@ Web: https://github.com/govolution/avet
 
 
 #include <stdio.h>
+#include <stdlib.h>
 
 // Include static data (imported C arrays)
 // Defines for static retrieval are set in this file
