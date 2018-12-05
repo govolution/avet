@@ -3,63 +3,12 @@
 #include <stdio.h>
 #include <windows.h>
 #include "../debug_print/debug_print.h"
-
-
-static int get_filesize(char *fvalue)
-{
-	int size,rc1;
-	FILE *fp1 = fopen(fvalue, "rb");
-	if (fp1 == NULL)
-	{
-		printf("get_filesize, %s not found\n", fvalue);
-		return 0;
-	}
-	for (size = 0; (rc1 = getc(fp1)) != EOF; size++) {}
-	fclose(fp1);
-	
-	DEBUG_PRINT(("get_filesize, filesize %s: %d\n", fvalue, size));
-	
-	return size;
-}
-
-
-// Returns pointer to buffer that contains the file content
-// Automatically allocates memory for this
-unsigned char *load_textfile(char *fvalue, int size)
-{
-	DEBUG_PRINT(("load_textfile called: fvalue: %s, size: %d\n", fvalue, size));
-	
-	//allocate buffer, open file, read file to the buffer, close the file
-	unsigned char *buffer = (unsigned char*) malloc(size+1);
-	int i, rc;
-
-	for (i=0; i<size; i++)
-		buffer[i]=0x0;
-
-	FILE *fp = fopen(fvalue, "rb");
-	if (fp == NULL)
-	{
-		printf("load_textfile, %s not found\n", fvalue);
-		return 0;
-	}
-
-	for (i=0; i<size; i++)
-	{
-		rc = getc(fp);
-		buffer[i] = rc;
-	}
-
-	DEBUG_PRINT(("%s\n",buffer));
-	
-	fclose(fp);	
-	return buffer;
-}
+#include "helper_functions/helper_functions.h"
 
 
 // return pointer to the filename
 // string = url
-char* ie_download(char* string)
-{
+char* ie_download(char* string) {
 	char ie[500];
 	GetEnvironmentVariable("PROGRAMFILES",ie,100);
 	strcat(ie,"\\Internet Explorer\\iexplore.exe");

