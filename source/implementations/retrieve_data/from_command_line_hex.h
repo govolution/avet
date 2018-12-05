@@ -9,8 +9,8 @@
 // Can be used to retrieve data of such format from the command line if arg1 = argv[1].
 //
 // data_size receives the size of the data in bytes.
-unsigned char *from_command_line(char *arg1, int *data_size) {
-    DEBUG_PRINT(("Retrieving data from command line arguments...\n"));
+unsigned char *from_command_line_hex(char *arg1, int *data_size) {
+    DEBUG_PRINT(("Retrieving data from command line arguments, expecting hex format...\n"));
     // Get input string length  
     int input_length = strlen(arg1);
 
