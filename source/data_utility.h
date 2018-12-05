@@ -93,12 +93,12 @@ void data_to_file_raw(const unsigned char *data, const int data_size, const char
 // data_size will be filled with the size of the data in bytes.
 unsigned char *data_from_file(const char *filename, int *data_size) {		
 	// Assume that file only contains array unsigned char buf[] = "\xaa\xbb\xcc...";
-	FILE *data_file = fopen(filename, "r");
-	
+	FILE *data_file = fopen(filename, "r");   
+
 	// Get file size
 	fseek(data_file, 0L, SEEK_END);
 	int file_size = ftell(data_file);
-	rewind(data_file);	
+	rewind(data_file);	   
 	
 	// Allocate memory for string
 	char *file_content = (char *) malloc(file_size + 1);
@@ -111,7 +111,7 @@ unsigned char *data_from_file(const char *filename, int *data_size) {
 	fclose(data_file);	
 	
 	// Search for first occurence of backslash character (marks beginning of data string)
-	char *data_string = strchr(file_content, '\\');	
+	char *data_string = strchr(file_content, '\\');	  
 	
 	// Format data string to make parsing easier:
 	// Search for array end ';' and terminate string after that character
@@ -119,8 +119,8 @@ unsigned char *data_from_file(const char *filename, int *data_size) {
 	// Remove all linebreaks
 	remove_all_chars(data_string, '\n');	
 	// Remove all '"'
-	remove_all_chars(data_string, '"');		
-	
+	remove_all_chars(data_string, '"');		 
+
 	// Parse to get number of data bytes first
 	int i = 0;
 	*data_size = 0;
