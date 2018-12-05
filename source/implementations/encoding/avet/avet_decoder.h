@@ -1,10 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "../../debug_print/debug_print.h"
 
 
 // return pointer to shellcode
-unsigned char* avet_decoder(unsigned char *buffer, unsigned char *shellcode, int size)
+unsigned char* avet_decoder(const unsigned char *buffer, unsigned char *shellcode, int size)
 {    
     DEBUG_PRINT(("This is AVET decoder.\n"));
 	int j=0;
