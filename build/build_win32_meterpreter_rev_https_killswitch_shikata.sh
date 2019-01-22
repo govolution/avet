@@ -42,5 +42,4 @@ $win32_compiler -o output/output.exe source/avet.c -lws2_32
 strip output/output.exe
 
 # cleanup
-rm input/sc.txt
 cleanup_techniques
