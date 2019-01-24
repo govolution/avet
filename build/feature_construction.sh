@@ -63,6 +63,18 @@ function set_key_source() {
 }
 
 
+# Writes to file either a randomy generated or manually preset key.
+#
+# First Argument:	(random|preset)
+#		random:		Generates a random byte sequence. Sequence length in bytes is specified in the second argument.
+#		preset:		Allows to enter a preset key, given in the second argument. Input format is a hex string, such as aabbccdd...
+# Second Argument:	Either specified the key length in bytes, or a preset key as hex string, depending on first argument choice.
+# Third Argument:	Name of the output file to write generated raw key data into.
+function generate_key() {
+	./tools/generate_key/generate_key $1 $2 $3
+}
+
+
 # Specifies how the payload shellcode will be called
 #
 # First Argument: 	Name of the shellcode binding technique (= name of the file containinig the respective code, without the file suffix)
