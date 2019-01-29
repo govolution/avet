@@ -1,9 +1,9 @@
 #pragma once
 
 #include <stdio.h>
+#include <string.h>
 #include "WinSock2.h"
 #include "Ws2tcpip.h"
-#include <windows.h>
 #include "../debug_print/debug_print.h"
 
 
@@ -13,64 +13,120 @@
 // Downloads data from the specified URI, using sockets
 // Returns pointer to data, memory is allocated by the function.
 // data_size receives the size of the data in bytes.
-unsigned char* download_data(char* uri, int *data_size)
-{
-	struct WSAData* wd = (struct WSAData*)malloc(sizeof(struct WSAData));
-	if (WSAStartup(MAKEWORD(2, 0), wd))
-		exit(1);
-	free(wd);
-	SOCKET sock;
-	
-	char c;
-	int i, j;
-	char* file;
-	char* host = uri;
-	struct addrinfo* ai;
+unsigned char *download_data(char *uri, int *data_size) {
+	WSADATA wsa;
+	SOCKET s;
 	struct addrinfo hints;
-	char buf[512];
-
-	//if (argc == 3) file = argv[2]; else 
-	file = strrchr(uri, '/') + 1;
-	if (strstr(uri, "http://") == uri) host += 7;
 	memset(&hints, 0, sizeof(struct addrinfo));
+	struct addrinfo* ai;
+	
+	// Prepare URI strings
+	// URI is expected to be of format http://myserver.net/filename:port
+	// Truncate http prefix and file path to get hostname
+	char server_hostname[256];		
+	if (strstr(uri, "http://") == uri) {
+		strcpy(server_hostname, uri + 7);
+	} else {
+		strcpy(server_hostname, uri);
+	}	
+	*strchr(server_hostname, '/') = '\0';
+	
+	// Truncate after last '/' and before ':'  to get the file name
+	char server_filename[256];
+	strcpy(server_filename, strrchr(uri, '/') + 1);
+	// No ':' means that no port is specified. Avoid access violation.
+	if(strrchr(server_filename, ':') != NULL) {
+		*strrchr(server_filename, ':') = '\0';
+	}
+	
+	// Truncate after last ':' to get the server port as string
+	char server_port_string[256];
+	if(strrchr(uri, ':') != NULL) {
+		strcpy(server_port_string, strrchr(uri, ':') + 1);
+	// No ':' means that no port is specified. In this case, assume port 80.
+	} else {
+		strcpy(server_port_string, "80");
+	}
+		
+	DEBUG_PRINT(("Attempting to download data from target into memory via HTTP request...\n"));
+	DEBUG_PRINT(("\tTarget host:\t%s\n", server_hostname));
+	DEBUG_PRINT(("\tTarget port:\t%s\n", server_port_string));
+	DEBUG_PRINT(("\tRequested file:\t%s\n", server_filename));	
+	
+	// Initialize WSA
+	if(WSAStartup(MAKEWORD(2, 0), &wsa) != 0) {
+		DEBUG_PRINT(("WSA initialization failed!\n"));
+		return NULL;
+	}
+		 
+	// Init server data
+	// Get server IP address
 	hints.ai_family = AF_UNSPEC;
 	hints.ai_socktype = SOCK_STREAM;
-	hints.ai_protocol = IPPROTO_TCP;
-	sprintf(buf, "GET %s HTTP/1.1\r\n", uri);
-	*strchr(host, '/') = '\0';
-	if (i = getaddrinfo(host, "80", &hints, &ai)) exit(1); 
-	sprintf(buf + strlen(buf), "Host: %s\r\n\r\n", host);
-	sock = socket(ai->ai_family, ai->ai_socktype, ai->ai_protocol);
-	if (connect(sock, ai->ai_addr, ai->ai_addrlen))
-		exit(1);
-	freeaddrinfo(ai);
-	i = send(sock, buf, strlen(buf), 0);
-	if (i < strlen(buf) || i == -1) exit(1);
-	while (strcmp(buf, "\r\n")) {
-		for (i = 0; strcmp(buf + i - 2, "\r\n"); i++) { recv(sock, buf + i, 1, 0); buf[i + 1] = '\0'; }
-		if (strstr(buf, "HTTP/") == buf) {
-			if (strcmp(strchr(buf, ' ') + 1, "200 OK\r\n")) exit(1);
+	hints.ai_protocol = IPPROTO_TCP;	   
+	   
+	if(getaddrinfo(server_hostname, server_port_string, &hints, &ai) != 0) {
+		DEBUG_PRINT(("getaddrinfo failed!\n"));
+		return NULL;
+	}	   
+	   
+	// Create socket   
+	if((s = socket(ai->ai_family, ai->ai_socktype, ai->ai_protocol)) == INVALID_SOCKET) {
+		DEBUG_PRINT(("Socket creation failed!\n"));
+		return NULL;
+	}
+	   
+	// Connect to server
+	if(connect(s, ai->ai_addr, ai->ai_addrlen) < 0) {
+		DEBUG_PRINT(("Connection to server failed!\n"));
+		return NULL;
+	}
+	
+	// Free address info struct, no longer needed
+	freeaddrinfo(ai);   
+	   	   
+	// Assemble and send HTTP GET request
+	char request[512];   
+	sprintf(request, "GET %s HTTP/1.1\r\n\r\n", server_filename);
+	sprintf(request + strlen(request), "Host: %s\r\n\r\n", server_hostname);
+	
+	DEBUG_PRINT(("Sending request:\n%s\n", request));   
+	   
+	if(send(s, request, strlen(request), 0) < strlen(request)) {
+		DEBUG_PRINT(("Sending HTTP GET request failed!\n"));
+		return NULL;
+	}
+	   
+	// Parse response header and extract content length
+	char response[512];   
+		   
+	while (strcmp(response, "\r\n")) {
+		for (int i = 0; strcmp(response + i - 2, "\r\n"); i++) {
+			recv(s, response + i, 1, 0); response[i + 1] = '\0';
 		}
-		if (strstr(buf, "Content-Length:") == buf) {
-			*strchr(buf, '\r') = '\0';
-			j = atoi(strchr(buf, ' ') + 1);
+	
+		if (strstr(response, "Content-Length:") == response) {
+			*strchr(response, '\r') = '\0';
+			*data_size = atoi(strchr(response, ' ') + 1);
 		}
 	}
 
-    *data_size = j;
-	unsigned char *sc=(char*)malloc(j * sizeof(char));
+	// Allocate memory of respective size for received data
+	unsigned char *data = (unsigned char *) malloc(*data_size);
 
-	for (i = 0; i < j; i++) 
-	{ 
-		recv(sock, &c, 1, 0); 
-		sc[i]=c;
-		//printf("%c",c);
+	unsigned char current_byte;	   
+	for (int i = 0; i < *data_size; i++) { 
+		recv(s, &current_byte, 1, 0); 
+		data[i] = current_byte;
 	}
 
-	closesocket(sock);
+	// Cleanup
+	closesocket(s);
 	WSACleanup();
+	   
+	DEBUG_PRINT(("Data received, %d bytes.\n", *data_size));   
 
-	return sc;	
+	return data;	   	  
 }
 
 
