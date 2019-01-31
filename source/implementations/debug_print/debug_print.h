@@ -12,7 +12,11 @@
     #ifdef DEBUG_TO_FILE
         #include <stdarg.h>
 
-        #define LOGFILE "C:\\avetdbg.txt"
+        // Definition of LOGFILE should be enforced by enable_debug_output.
+        // Check anyways in case something went wrong.
+        #ifndef LOGFILE
+            #define LOGFILE "C:\\users\\public\\avetdbg.txt"
+        #endif
 
         // Debug output is written to file instead when DEBUG_TO_FILE is set (as in avetsvc)       
         int DEBUG_PRINT(char *format, ...) {

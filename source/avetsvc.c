@@ -42,9 +42,6 @@ Web: https://github.com/govolution/avet
 // Defines for static retrieval are set in this file
 #include "static_data/static_data.include"
 
-// Redirect debugging output to logfile
-#define DEBUG_TO_FILE
-
 // Include debug_print macro, if set.
 #include "debug_print/debug_print.include"
 #include "implementations/debug_print/debug_print.h"

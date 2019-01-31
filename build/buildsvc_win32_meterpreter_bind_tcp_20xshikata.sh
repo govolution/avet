@@ -50,7 +50,7 @@ set_decoder xor
 set_shellcode_binding exec_shellcode
 
 # enable debug printing
-enable_debug_print
+enable_debug_print to_file C:/avetdbg.txt
 
 # compile as service
 $win32_compiler -o output/service.exe source/avetsvc.c -lws2_32

