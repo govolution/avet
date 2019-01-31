@@ -6,9 +6,9 @@
 
 
 void exec_shellcode64(unsigned char *shellcode) {
-	DEBUG_PRINT(("exec_shellcode64 called\n"));
+	DEBUG_PRINT("exec_shellcode64 called\n");
 	int size=strlen(shellcode);
-	DEBUG_PRINT(("shellcode size: %d\n", size));
+	DEBUG_PRINT("shellcode size: %d\n", size);
 	
     // Check for NULL pointer to handle cases where no shellcode data was retrieved
     if(shellcode != NULL) {

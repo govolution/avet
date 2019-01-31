@@ -15,7 +15,7 @@ unsigned char *dynamic_from_file(char *arg1, int *data_size) {
 	// First command line argument specifies the file name to read from
 	char *filename = arg1;	
 	
-	DEBUG_PRINT(("Dynamically retrieving data from file %s...\n", filename));
+	DEBUG_PRINT("Dynamically retrieving data from file %s...\n", filename);
 	
 	*data_size = get_filesize(filename);
 	// Memory allocation is handled by load_textfile

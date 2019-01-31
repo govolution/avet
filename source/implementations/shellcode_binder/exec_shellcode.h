@@ -6,7 +6,7 @@
 
 
 void exec_shellcode(unsigned char *shellcode) {
-	DEBUG_PRINT(("exec_shellcode called.\n"));
+	DEBUG_PRINT("exec_shellcode called.\n");
 	
     // Check for NULL pointer to handle cases where no shellcode data was retrieved
     if(shellcode != NULL) {

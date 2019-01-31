@@ -30,13 +30,13 @@ int get_filesize(char *fvalue) {
 	FILE *fp1 = fopen(fvalue, "rb");
 	if (fp1 == NULL)
 	{
-		DEBUG_PRINT(("get_filesize, %s not found\n", fvalue));
+		DEBUG_PRINT("get_filesize, %s not found\n", fvalue);
 		return 0;
 	}
 	for (size = 0; (rc1 = getc(fp1)) != EOF; size++) {}
 	fclose(fp1);
 	
-	DEBUG_PRINT(("get_filesize, filesize %s: %d\n", fvalue, size));
+	DEBUG_PRINT("get_filesize, filesize %s: %d\n", fvalue, size);
 
 	return size;
 }
@@ -45,7 +45,7 @@ int get_filesize(char *fvalue) {
 // Returns pointer to buffer that contains the file content
 // Automatically allocates memory for this
 unsigned char *load_textfile(char *fvalue, int size) {
-	DEBUG_PRINT(("load_textfile called: fvalue: %s, size: %d\n", fvalue, size));
+	DEBUG_PRINT("load_textfile called: fvalue: %s, size: %d\n", fvalue, size);
 	
 	//allocate buffer, open file, read file to the buffer, close the file
 	unsigned char *buffer = (unsigned char*) malloc(size+1);
@@ -57,7 +57,7 @@ unsigned char *load_textfile(char *fvalue, int size) {
 	FILE *fp = fopen(fvalue, "rb");
 	if (fp == NULL)
 	{
-		DEBUG_PRINT(("load_textfile, %s not found\n", fvalue));
+		DEBUG_PRINT("load_textfile, %s not found\n", fvalue);
 		return 0;
 	}
 
@@ -67,7 +67,7 @@ unsigned char *load_textfile(char *fvalue, int size) {
 		buffer[i] = rc;
 	}
 	
-	DEBUG_PRINT(("%s\n",buffer));	
+	DEBUG_PRINT("%s\n",buffer);	
 
 	fclose(fp);	
 	return buffer;

@@ -12,7 +12,7 @@
 // ---
 // Link with -lws2_32 switch when compiling
 void gethostbyname_sandbox_evasion(char *arg1) {
-    DEBUG_PRINT(("Using gethostbyname sandbox evasion technique...\n"));
+    DEBUG_PRINT("Using gethostbyname sandbox evasion technique...\n");
    
     #ifdef HOSTVALUE
         struct hostent *hp = gethostbyname(HOSTVALUE);

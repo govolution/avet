@@ -11,7 +11,7 @@
 //
 // data_size receives the size of the data in bytes.
 unsigned char *from_command_line_raw(char *arg1, int *data_size) {
-    DEBUG_PRINT(("Retrieving data from command line arguments, expecting raw ASCII format...\n"));
+    DEBUG_PRINT("Retrieving data from command line arguments, expecting raw ASCII format...\n");
     // Get input string length  
     *data_size = strlen(arg1);
 

@@ -5,7 +5,7 @@
 
 
 void exec_shellcode_ASCIIMSF(unsigned char *shellcode) {
-	DEBUG_PRINT(("exec_shellcode_ASCIIMSF called\n"));
+	DEBUG_PRINT("exec_shellcode_ASCIIMSF called\n");
 		
     // Check for NULL pointer to handle cases where no shellcode data was retrieved
     if(shellcode != NULL) {

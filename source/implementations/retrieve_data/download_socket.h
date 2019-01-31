@@ -48,14 +48,14 @@ unsigned char *download_data(char *uri, int *data_size) {
 		strcpy(server_port_string, "80");
 	}
 		
-	DEBUG_PRINT(("Attempting to download data from target into memory via HTTP request...\n"));
-	DEBUG_PRINT(("\tTarget host:\t%s\n", server_hostname));
-	DEBUG_PRINT(("\tTarget port:\t%s\n", server_port_string));
-	DEBUG_PRINT(("\tRequested file:\t%s\n", server_filename));	
+	DEBUG_PRINT("Attempting to download data from target into memory via HTTP request...\n");
+	DEBUG_PRINT("\tTarget host:\t%s\n", server_hostname);
+	DEBUG_PRINT("\tTarget port:\t%s\n", server_port_string);
+	DEBUG_PRINT("\tRequested file:\t%s\n", server_filename);	
 	
 	// Initialize WSA
 	if(WSAStartup(MAKEWORD(2, 0), &wsa) != 0) {
-		DEBUG_PRINT(("WSA initialization failed!\n"));
+		DEBUG_PRINT("WSA initialization failed!\n");
 		return NULL;
 	}
 		 
@@ -66,19 +66,19 @@ unsigned char *download_data(char *uri, int *data_size) {
 	hints.ai_protocol = IPPROTO_TCP;	   
 	   
 	if(getaddrinfo(server_hostname, server_port_string, &hints, &ai) != 0) {
-		DEBUG_PRINT(("getaddrinfo failed!\n"));
+		DEBUG_PRINT("getaddrinfo failed!\n");
 		return NULL;
 	}	   
 	   
 	// Create socket   
 	if((s = socket(ai->ai_family, ai->ai_socktype, ai->ai_protocol)) == INVALID_SOCKET) {
-		DEBUG_PRINT(("Socket creation failed!\n"));
+		DEBUG_PRINT("Socket creation failed!\n");
 		return NULL;
 	}
 	   
 	// Connect to server
 	if(connect(s, ai->ai_addr, ai->ai_addrlen) < 0) {
-		DEBUG_PRINT(("Connection to server failed!\n"));
+		DEBUG_PRINT("Connection to server failed!\n");
 		return NULL;
 	}
 	
@@ -90,10 +90,10 @@ unsigned char *download_data(char *uri, int *data_size) {
 	sprintf(request, "GET %s HTTP/1.1\r\n\r\n", server_filename);
 	sprintf(request + strlen(request), "Host: %s\r\n\r\n", server_hostname);
 	
-	DEBUG_PRINT(("Sending request:\n%s\n", request));   
+	DEBUG_PRINT("Sending request:\n%s\n", request);   
 	   
 	if(send(s, request, strlen(request), 0) < strlen(request)) {
-		DEBUG_PRINT(("Sending HTTP GET request failed!\n"));
+		DEBUG_PRINT("Sending HTTP GET request failed!\n");
 		return NULL;
 	}
 	   
@@ -124,7 +124,7 @@ unsigned char *download_data(char *uri, int *data_size) {
 	closesocket(s);
 	WSACleanup();
 	   
-	DEBUG_PRINT(("Data received, %d bytes.\n", *data_size));   
+	DEBUG_PRINT("Data received, %d bytes.\n", *data_size);   
 
 	return data;	   	  
 }
@@ -135,7 +135,7 @@ unsigned char *download_data(char *uri, int *data_size) {
 //
 // data_size receives the size of the data in bytes.
 unsigned char* download_socket(char *arg1, int *data_size) {
-	DEBUG_PRINT(("Downloading data from url via sockets...\n"));
+	DEBUG_PRINT("Downloading data from url via sockets...\n");
 		
 	return download_data(arg1, data_size);
 }

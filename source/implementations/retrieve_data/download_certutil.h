@@ -12,21 +12,21 @@
 //
 // data_size receives the size of the data in bytes.
 unsigned char* download_certutil(char *arg1, int *data_size) {
-	DEBUG_PRINT(("Downloading data to file via certutil...\n"));	
+	DEBUG_PRINT("Downloading data to file via certutil...\n");	
 	
 	char download[500];  //how not to do it...
 	sprintf(download,"certutil.exe -urlcache -split -f %s", arg1);
 
-	DEBUG_PRINT(("url: %s\n", download));
+	DEBUG_PRINT("url: %s\n", download);
 	
 	system(download);
 	
-    DEBUG_PRINT(("Download done.\n"));
+    DEBUG_PRINT("Download done.\n");
 	
 	char sh_filename[128];
 	strcpy(sh_filename, get_filename_from_url(arg1));
 	
-	DEBUG_PRINT(("sh_filename = %s\n", sh_filename));
+	DEBUG_PRINT("sh_filename = %s\n", sh_filename);
 		
 	*data_size = get_filesize(sh_filename);	
 	return load_textfile(sh_filename, *data_size);	
