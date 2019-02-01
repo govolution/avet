@@ -26,7 +26,7 @@ unsigned char* avet_decoder(const unsigned char *buffer, unsigned char *shellcod
 		j++;
 	} while(i<size);
 
-	DEBUG_PRINT("AVET decoder finished.\n");
+	DEBUG_PRINT("\nAVET decoder finished.\n");
 
 	return shellcode;
 }
