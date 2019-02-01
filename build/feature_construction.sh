@@ -2,13 +2,13 @@
 # Setting this, the generated executable will generate verbose stdoutput.
 # Using the arguments, debug output is written into a file instead, which can be specified.
 #
-# First Argument:	Set as to_file to write debug output into the file specified in argument 2 instead.
-# Second Argument:	Specifies the file to write debug output into.
+# First Argument (optional):	Set as to_file to write debug output into the file specified in argument 2 instead.
+# Second Argument (optional):	Specifies the file to write debug output into.
 #					Use forward dashes:	enable_debug_print to_file C:/path/file.txt
 function enable_debug_print() {
 	printf "\n#define DEBUG \n" >> source/debug_print/debug_print.include
 	
-	if [ $1 = "to_file" ]
+	if [ "$1" = "to_file" ]
 	then
 		printf "\n#define DEBUG_TO_FILE \n" >> source/debug_print/debug_print.include
 		printf "\n#define LOGFILE \"$2\"" >> source/debug_print/debug_print.include
