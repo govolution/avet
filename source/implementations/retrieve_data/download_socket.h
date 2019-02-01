@@ -19,30 +19,36 @@ unsigned char *download_data(char *uri, int *data_size) {
 	struct addrinfo hints;
 	memset(&hints, 0, sizeof(struct addrinfo));
 	struct addrinfo* ai;
-	
+   	
 	// Prepare URI strings
 	// URI is expected to be of format http://myserver.net/filename:port
-	// Truncate http prefix and file path to get hostname
+
+    // Remove http prefix, if set
+    char *uri_short = (char *) malloc(strlen(uri));
+    if(strstr(uri, "http://") == uri) {
+        strcpy(uri_short, uri + 7);
+    } else {
+        strcpy(uri_short, uri);
+    }
+
+    // Extract hostname
 	char server_hostname[256];		
-	if (strstr(uri, "http://") == uri) {
-		strcpy(server_hostname, uri + 7);
-	} else {
-		strcpy(server_hostname, uri);
-	}	
-	*strchr(server_hostname, '/') = '\0';
+    strcpy(server_hostname, uri_short);	
+    *strchr(server_hostname, '/') = '\0';	
 	
 	// Truncate after last '/' and before ':'  to get the file name
 	char server_filename[256];
-	strcpy(server_filename, strrchr(uri, '/') + 1);
+	strcpy(server_filename, strrchr(uri_short, '/') + 1);
 	// No ':' means that no port is specified. Avoid access violation.
 	if(strrchr(server_filename, ':') != NULL) {
 		*strrchr(server_filename, ':') = '\0';
 	}
 	
 	// Truncate after last ':' to get the server port as string
-	char server_port_string[256];
-	if(strrchr(uri, ':') != NULL) {
-		strcpy(server_port_string, strrchr(uri, ':') + 1);
+	char server_port_string[256];   
+
+	if(strrchr(uri_short, ':') != NULL) {
+		strcpy(server_port_string, strrchr(uri_short, ':') + 1);
 	// No ':' means that no port is specified. In this case, assume port 80.
 	} else {
 		strcpy(server_port_string, "80");
