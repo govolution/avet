@@ -6,6 +6,7 @@ Version 2.0
     KNOWN ISSUES
 	- README still antique
 	- downloadexecshellcode_DKMC not working properly. DKMC probably delivers corrupt shellcode, needs further investigation.
+    - when built as a service, debug logging into file does not work. this is probably a permission problem.
 	
 	CHANGES
 	- major folder restructuring, code is now more modular:
