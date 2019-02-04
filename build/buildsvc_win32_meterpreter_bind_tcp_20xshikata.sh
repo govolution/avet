@@ -42,6 +42,9 @@ set_payload_source static_from_file input/scenc_c.txt
 # set key source
 set_key_source static_from_file input/key_c.txt
 
+# set payload info source
+set_payload_info_source none
+
 # set decoder
 set_decoder xor
 

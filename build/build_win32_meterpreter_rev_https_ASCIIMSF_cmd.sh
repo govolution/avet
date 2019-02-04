@@ -27,6 +27,9 @@ set_payload_source from_command_line_raw
 set_decoder none
 set_key_source none
 
+# set payload info source
+set_payload_info_source none
+
 # set shellcode binding technique
 set_payload_execution_method exec_shellcode_ASCIIMSF
 

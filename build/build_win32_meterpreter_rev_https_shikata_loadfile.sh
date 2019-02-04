@@ -34,6 +34,9 @@ set_payload_source dynamic_from_file
 set_decoder avet
 set_key_source none
 
+# set payload info source
+set_payload_info_source none
+
 # set shellcode binding technique
 set_payload_execution_method exec_shellcode
 

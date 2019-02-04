@@ -31,6 +31,9 @@ set_payload_source static_from_file input/sc_c.txt
 set_decoder none
 set_key_source none
 
+# set payload info source
+set_payload_info_source none
+
 #set shellcode binding technique
 set_payload_execution_method exec_shellcode
 
