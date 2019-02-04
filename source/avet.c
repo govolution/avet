@@ -44,7 +44,7 @@ Web: https://github.com/govolution/avet
 #include "get_payload/get_payload.include"
 #include "get_key/get_key.include"
 #include "decode_payload/decode_payload.include"
-#include "payload_execution_method/payload_payload_execution_method.include"
+#include "payload_execution_method/payload_execution_method.include"
 
 
 // Set how many evasion functions can be used at maximum
