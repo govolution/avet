@@ -74,6 +74,28 @@ function set_key_source() {
 }
 
 
+# Specifies where to get the additional payload information from.
+# An example for such additional information would be the PID of the target process to hollow into when performing process hollowing.
+#
+# First Argument: 	Name of the technique (=name of the file containing the respective code, without the file suffix)
+# Second Argument:	Can be used to deliver further data about the source, e.g. the file name when retrieving from a file or the URL when downloading from a URL
+function set_payload_info_source() {
+	printf "\n\n" >> source/get_payload_info/get_payload_info.include
+	
+	# If payload info is included statically, write payload info data into get_payload_info.include file and set the respective define
+	if [ $1 = "static_from_file" ]
+	then
+		cat $2 >> source/static_data/static_data.include
+		printf "\n#define STATIC_PAYLOAD_INFO \n" >> source/static_data/static_data.include
+	fi
+	
+	# Set include in get_payload_info.include to import the needed data retrieval method
+	printf "\n#include \"../implementations/retrieve_data/$1.h\"\n" >> source/get_payload_info/get_payload_info.include
+	# Write an assignment of the selected function to get_payload_info into the get_payload_info.assign file
+	printf "\nget_key = $1;\n" >> source/get_payload_info/get_payload_info.assign
+}
+
+
 # Writes to file either a randomy generated or manually preset key.
 #
 # First Argument:	(random|preset)
