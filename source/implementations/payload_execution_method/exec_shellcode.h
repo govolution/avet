@@ -5,7 +5,8 @@
 #include "../debug_print/debug_print.h"
 
 
-void exec_shellcode(unsigned char *shellcode) {
+// Currently ignores payload_info
+void exec_shellcode(unsigned char *shellcode, char *payload_info) {
 	DEBUG_PRINT("exec_shellcode called.\n");
 	
     // Check for NULL pointer to handle cases where no shellcode data was retrieved

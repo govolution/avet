@@ -62,7 +62,7 @@ int main (int argc, char **argv)
 	unsigned char *(*get_key) (char *arg1, int *key_length) = NULL;
 	unsigned char *(*get_payload_info) (char *arg1, int *payload_info_length) = NULL;
 	void (*decode_payload) (const unsigned char *ciphertext, const int ciphertext_length, const unsigned char *key, const int key_length, unsigned char *plaintext) = NULL;
-	void (*payload_execution_method) (unsigned char *payload) = NULL;
+	void (*payload_execution_method) (unsigned char *payload, char *payload_info) = NULL;
 	
 	// Define array to store multiple evasion functions.
 	// Set static array size of 10 because dynamic size handling in cooperation with build scripts would be too messy.
@@ -161,7 +161,7 @@ int main (int argc, char **argv)
 	
 	// Bind and execute payload
 	DEBUG_PRINT("Calling payload_execution_method...\n");
-	payload_execution_method(payload);
+	payload_execution_method(payload, (char *) payload_info);
 	
 	DEBUG_PRINT("Execution finished.\n");
 	return 0;
