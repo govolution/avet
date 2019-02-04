@@ -13,8 +13,8 @@
 unsigned char *static_from_file(char *arg1, int *data_size) {
     // Deliver address and size of array buf[]
     // If shellcode is retrieved statically, the define is set by the build script to notify this function that array buf[] is declared and known to the compiler.
-    #ifdef STATIC_SHELLCODE
-    if(strcmp(arg1, "static_shellcode") == 0) {
+    #ifdef STATIC_PAYLOAD
+    if(strcmp(arg1, "static_payload") == 0) {
         DEBUG_PRINT("Statically retrieving data from array buf[] in included file...\n");
         *data_size = sizeof(buf) - 1;	
         return buf;

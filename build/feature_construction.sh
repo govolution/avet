@@ -33,24 +33,24 @@ function add_evasion() {
 }
 
 
-# Specifies where to get the shellcode from
+# Specifies where to get the payload from
 #
 # First Argument: 	Name of the technique (= name of the file containing the respective code, without the file suffix)
 # Second Argument:  Can be used to deliver further data about the source, e.g. the file name when retrieving from a file or the URL when downloading from a URL
-function set_shellcode_source() {
-	printf "\n\n" >> source/get_shellcode/get_shellcode.include	
+function set_payload_source() {
+	printf "\n\n" >> source/get_payload/get_payload.include	
 	
-	# If shellcode is included statically, write shellcode data into get_shellcode.include file and set respective define
+	# If payload is included statically, write payload data into get_payload.include file and set respective define
 	if [ $1 = "static_from_file" ]
 	then
 		cat $2 >> source/static_data/static_data.include
-		printf "\n#define STATIC_SHELLCODE \n" >> source/static_data/static_data.include
+		printf "\n#define STATIC_PAYLOAD \n" >> source/static_data/static_data.include
 	fi	
 		
-	# Set include in get_shellcode.include to import the needed data retrieval method
-	printf "\n#include \"../implementations/retrieve_data/$1.h\"\n" >> source/get_shellcode/get_shellcode.include
-	# Write an assignment of the selected function to get_shellcode into the get_shellcode.assign file
-	printf "\nget_shellcode = $1;\n" >> source/get_shellcode/get_shellcode.assign
+	# Set include in get_payload.include to import the needed data retrieval method
+	printf "\n#include \"../implementations/retrieve_data/$1.h\"\n" >> source/get_payload/get_payload.include
+	# Write an assignment of the selected function to get_payload into the get_payload.assign file
+	printf "\nget_payload = $1;\n" >> source/get_payload/get_payload.assign
 }
 
 # Specifies where to get the crypto key from
@@ -69,7 +69,7 @@ function set_key_source() {
 		
 	# Set include in get_key.include to import the needed data retrieval method
 	printf "\n#include \"../implementations/retrieve_data/$1.h\"\n" >> source/get_key/get_key.include
-	# Write an assignment of the selected function to get_shellcode into the get_shellcode.assign file
+	# Write an assignment of the selected function to get_key into the get_key.assign file
 	printf "\nget_key = $1;\n" >> source/get_key/get_key.assign
 }
 
@@ -86,51 +86,51 @@ function generate_key() {
 }
 
 
-# Specifies how the payload shellcode will be called
+# Specifies how the payload will be executed
 #
-# First Argument: 	Name of the shellcode binding technique (= name of the file containinig the respective code, without the file suffix)
-function set_shellcode_binding() {
-	# Set include in shellcode_binder.include to import the implemented binding function
-	printf "\n#include \"../implementations/shellcode_binder/$1.h\"\n" >> source/shellcode_binder/shellcode_binder.include
-	# Write an assignment of the selected function to shellcode_binder into the shelcode_binder.assign file
-	printf "\nshellcode_binder = $1;\n" >> source/shellcode_binder/shellcode_binder.assign
+# First Argument: 	Name of the payload execution method (= name of the file containinig the respective code, without the file suffix)
+function set_payload_execution_method() {
+	# Set include in payload_execution_method.include to import the implemented binding function
+	printf "\n#include \"../implementations/payload_execution_method/$1.h\"\n" >> source/payload_execution_method/payload_execution_method.include
+	# Write an assignment of the selected function to payload_execution_method into the payload_execution_method.assign file
+	printf "\npayload_execution_method = $1;\n" >> source/payload_execution_method/payload_execution_method.assign
 }
 
 
-# Specifies which decoder function should be applied to the shellcode
+# Specifies which decoder function should be applied to the payload
 #
-# First Argument: 	Name of the shellcode decoder (= name of the folder containinig the respective code)
+# First Argument: 	Name of the payload decoder (= name of the folder containinig the respective code)
 function set_decoder() {
-	# Set include in decode_shellcode.include to import the needed decoder method
-	printf "\n#include \"../implementations/encoding/$1/$1_decoder.h\"\n" >> source/decode_shellcode/decode_shellcode.include
-	# Write an assignment of the selected function to decode_shellcode into the decode_shellcode.assign
-	printf "\ndecode_shellcode = decode_$1;\n" >> source/decode_shellcode/decode_shellcode.assign	
+	# Set include in decode_payload.include to import the needed decoder method
+	printf "\n#include \"../implementations/encoding/$1/$1_decoder.h\"\n" >> source/decode_payload/decode_payload.include
+	# Write an assignment of the selected function to decode_payload into the decode_payload.assign
+	printf "\ndecode_payload = decode_$1;\n" >> source/decode_payload/decode_payload.assign	
 }
 
 
-# Encodes the shellcode in the specified file by applying the specified encoding method
+# Encodes the payload in the specified file by applying the specified encoding method
 #
 # First Argument:	Name of the encoding technique to be applied (= name of the folder containing the respective code)
-# Second Argument:	Name of the file containing the shellcode to be encoded
-# Third Argument:	Name of the file where the encoded shellcode shall be written to
+# Second Argument:	Name of the file containing the payload to be encoded
+# Third Argument:	Name of the file where the encoded payload shall be written to
 # Fourth Argument:	Name of the file containing the key to be applied
-function encode_shellcode() {
+function encode_payload() {
 	source/implementations/encoding/$1/$1_encoder $2 $3 $4
 }
 
 
-# Resets the contents of the techniques.h and shellcode_binding.h files. To be called after payload compilation.
+# Resets the contents of the administrativa include and assign files. To be called after payload compilation.
 function cleanup_techniques() {
 	echo "" > source/evasion/evasion.include
 	echo "" > source/evasion/evasion.assign	
-	echo "" > source/get_shellcode/get_shellcode.include
-	echo "" > source/get_shellcode/get_shellcode.assign	
+	echo "" > source/get_payload/get_payload.include
+	echo "" > source/get_payload/get_payload.assign	
 	echo "" > source/get_key/get_key.include
 	echo "" > source/get_key/get_key.assign
-	echo "" > source/decode_shellcode/decode_shellcode.include
-	echo "" > source/decode_shellcode/decode_shellcode.assign
-	echo "" > source/shellcode_binder/shellcode_binder.include
-	echo "" > source/shellcode_binder/shellcode_binder.assign
+	echo "" > source/decode_payload/decode_payload.include
+	echo "" > source/decode_payload/decode_payload.assign
+	echo "" > source/payload_execution_method/payload_execution_method.include
+	echo "" > source/payload_execution_method/payload_execution_method.assign
 	echo "" > source/debug_print/debug_print.include
 	echo "" > source/static_data/static_data.include
 }

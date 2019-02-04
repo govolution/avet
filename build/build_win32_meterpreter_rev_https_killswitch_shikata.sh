@@ -25,14 +25,14 @@ add_evasion gethostbyname_sandbox_evasion
 printf "\n#define HOSTVALUE \"this.that\"\n" >> source/evasion/evasion.include
 
 # set shellcode source
-set_shellcode_source static_from_file input/sc_c.txt
+set_payload_source static_from_file input/sc_c.txt
 
 # set decoder and key source
 set_decoder none
 set_key_source none
 
 # set shellcode binding technique
-set_shellcode_binding exec_shellcode
+set_payload_execution_method exec_shellcode
 
 # enable debug output
 enable_debug_print

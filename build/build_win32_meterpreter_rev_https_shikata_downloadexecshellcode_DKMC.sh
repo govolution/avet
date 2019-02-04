@@ -37,14 +37,14 @@ printf "gen\nset output ../avet/output/sc.bmp\nset shellcode %s\nrun\nexit\nexit
 cd ../avet
 
 # set shellcode source
-set_shellcode_source download_socket
+set_payload_source download_socket
 
 # set decoder and key source
 set_decoder none
 set_key_source none
 
 # set shellcode binding technique
-set_shellcode_binding exec_shellcode
+set_payload_execution_method exec_shellcode
 
 # don't enable debug output because printing the whole bmp payload takes a lot of time
 #enable_debug_print

