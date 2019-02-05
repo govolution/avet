@@ -153,6 +153,8 @@ function cleanup_techniques() {
 	echo "" > source/decode_payload/decode_payload.assign
 	echo "" > source/payload_execution_method/payload_execution_method.include
 	echo "" > source/payload_execution_method/payload_execution_method.assign
+	echo "" > source/get_payload_info/get_payload_info.include
+	echo "" > source/get_payload_info/get_payload_info.assign
 	echo "" > source/debug_print/debug_print.include
 	echo "" > source/static_data/static_data.include
 }
