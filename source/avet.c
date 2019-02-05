@@ -105,9 +105,9 @@ int main (int argc, char **argv)
 	#endif
 	if(encoded_payload != NULL) {
 		DEBUG_PRINT("Retrieved payload data, size is %d bytes.\n", payload_size);
-		for(int i = 0; i < payload_size; i++) {
-			DEBUG_PRINT("%02x ", encoded_payload[i]);
-		}
+		//for(int i = 0; i < payload_size; i++) {
+		//	DEBUG_PRINT("%02x ", encoded_payload[i]);
+		//}
 		DEBUG_PRINT("\n\n");
 	} else {
 		DEBUG_PRINT("No payload retrieved.\n");
@@ -141,9 +141,8 @@ int main (int argc, char **argv)
 	#endif
 	if(payload_info != NULL) {
 		DEBUG_PRINT("Retrieved additional payload info, info data length is %d bytes.\n", payload_info_length);
-		for(int i = 0; i < payload_info_length; i++) {
-			DEBUG_PRINT("%02x ", payload_info[i]);
-		}
+		// Assume that payload info is a C string (at least it should be)
+		DEBUG_PRINT("payload_info: %s", (char *) payload_info);		
 		DEBUG_PRINT("\n\n");
 	} else {
 		DEBUG_PRINT("No additional payload info retrieved.\n");
@@ -154,9 +153,9 @@ int main (int argc, char **argv)
 	DEBUG_PRINT("Calling decode_payload...\n");
 	decode_payload(encoded_payload, payload_size, key, key_length, payload);
 	DEBUG_PRINT("Decoded payload: \n");	
-	for(int i = 0; i < payload_size; i++) {
-		DEBUG_PRINT("%02x ", payload[i]);
-	}
+	//for(int i = 0; i < payload_size; i++) {
+	//	DEBUG_PRINT("%02x ", payload[i]);
+	//}
 	DEBUG_PRINT("\n\n");
 	
 	// Bind and execute payload
