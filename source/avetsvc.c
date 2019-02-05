@@ -226,10 +226,16 @@ void ServiceMain(int argc, char **argv) {
 	#else
 	unsigned char *payload_info = get_payload_info(argv[3], &payload_info_length);
 	#endif
+	
+	char *payload_info_string;
 	if(payload_info != NULL) {
-		DEBUG_PRINT("Retrieved additional payload info, info data length is %d bytes.\n", payload_info_length);
-		// Assume that payload_info is a C string (at least it should be)
-        DEBUG_PRINT("payload_info: %s", (char *) payload_info);
+		// Create C string from payload info data to ease further use
+		payload_info_string = (char *) malloc(payload_info_length + 1);
+		memcpy(payload_info_string, payload_info, payload_info_length);
+		payload_info_string[payload_info_length] = '\0';	
+		
+		DEBUG_PRINT("Retrieved additional payload info, info data length is %d bytes.\n", payload_info_length);		
+		DEBUG_PRINT("payload_info: %s", payload_info_string);		
 		DEBUG_PRINT("\n\n");
 	} else {
 		DEBUG_PRINT("No additional payload info retrieved.\n");
@@ -247,7 +253,7 @@ void ServiceMain(int argc, char **argv) {
 	
 	// Bind and execute payload
 	DEBUG_PRINT("Calling payload_execution_method...\n");
-	payload_execution_method(payload, (char *) payload_info);
+	payload_execution_method(payload, payload_info_string);
 	
 	DEBUG_PRINT("Execution finished.\n");	
 		
