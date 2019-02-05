@@ -35,7 +35,7 @@ function add_evasion() {
 # Resets the evasion technique counter.
 # This is mandatory before each individual compilation when compiling multiple executables in one build script!
 function reset_evasion_technique_counter() {
-	$NUM_TECHNIQUES=0
+	NUM_TECHNIQUES=0
 }
 
 # Specifies where to get the payload from
