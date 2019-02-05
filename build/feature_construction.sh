@@ -97,7 +97,7 @@ function set_payload_info_source() {
 	# Set include in get_payload_info.include to import the needed data retrieval method
 	printf "\n#include \"../implementations/retrieve_data/$1.h\"\n" >> source/get_payload_info/get_payload_info.include
 	# Write an assignment of the selected function to get_payload_info into the get_payload_info.assign file
-	printf "\nget_key = $1;\n" >> source/get_payload_info/get_payload_info.assign
+	printf "\nget_payload_info = $1;\n" >> source/get_payload_info/get_payload_info.assign
 }
 
 
