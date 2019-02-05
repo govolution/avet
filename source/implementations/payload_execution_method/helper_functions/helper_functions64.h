@@ -26,7 +26,7 @@ IMAGE_NT_HEADERS* get_nt_hdrs(BYTE *pe_buffer)
 }
 
 
-IMAGE_DATA_DIRECTORY* get_pe_directory(PVOID pe_buffer, DWORD dir_id)
+IMAGE_DATA_DIRECTORY* get_pe_directory64(PVOID pe_buffer, DWORD dir_id)
 {
     if (dir_id >= IMAGE_NUMBEROF_DIRECTORY_ENTRIES) {		
 		return NULL;
@@ -40,9 +40,9 @@ IMAGE_DATA_DIRECTORY* get_pe_directory(PVOID pe_buffer, DWORD dir_id)
 
     IMAGE_DATA_DIRECTORY* peDir = &(nt_headers->OptionalHeader.DataDirectory[dir_id]);
 	
-	if (((PVOID) peDir->VirtualAddress) == NULL) {
+	if (((PVOID) ((DWORD64) peDir->VirtualAddress)) == NULL) {			
 		return NULL;
-	}		
+	}	
 	
     return peDir;
 }
@@ -70,9 +70,9 @@ typedef struct _BASE_RELOCATION_ENTRY {
 } BASE_RELOCATION_ENTRY;
 
 
-bool has_relocations(BYTE *pe_buffer)
+bool has_relocations64(BYTE *pe_buffer)
 {
-    IMAGE_DATA_DIRECTORY* relocDir = get_pe_directory(pe_buffer, IMAGE_DIRECTORY_ENTRY_BASERELOC);
+    IMAGE_DATA_DIRECTORY* relocDir = get_pe_directory64(pe_buffer, IMAGE_DIRECTORY_ENTRY_BASERELOC);
     if (relocDir == NULL) {
         return false;
     }
@@ -80,7 +80,7 @@ bool has_relocations(BYTE *pe_buffer)
 }
 
 
-bool apply_reloc_block(BASE_RELOCATION_ENTRY *block, SIZE_T entriesNum, DWORD page, ULONGLONG oldBase, ULONGLONG newBase, PVOID modulePtr)
+bool apply_reloc_block64(BASE_RELOCATION_ENTRY *block, SIZE_T entriesNum, DWORD page, ULONGLONG oldBase, ULONGLONG newBase, PVOID modulePtr)
 {
 	DWORD *relocateAddr32;
 	ULONGLONG *relocateAddr64;
@@ -99,6 +99,11 @@ bool apply_reloc_block(BASE_RELOCATION_ENTRY *block, SIZE_T entriesNum, DWORD pa
 				relocateAddr32 = (DWORD*) ((ULONG_PTR) modulePtr + page + offset);
 				(*relocateAddr32) = (DWORD) (*relocateAddr32) - oldBase + newBase;
 				entry = (BASE_RELOCATION_ENTRY*)((ULONG_PTR) entry + sizeof(WORD));	
+				break;
+			case RELOC_64BIT_FIELD:
+				relocateAddr64 = (ULONGLONG*) ((ULONG_PTR) modulePtr + page + offset);
+				(*relocateAddr64) = ((ULONGLONG) (*relocateAddr64)) - oldBase + newBase;
+				entry = (BASE_RELOCATION_ENTRY*)((ULONG_PTR) entry + sizeof(WORD));	
 				break;			
 			default:
 				DEBUG_PRINT("Not supported relocations format at %d: %d\n", (int) i, type);
@@ -111,9 +116,9 @@ bool apply_reloc_block(BASE_RELOCATION_ENTRY *block, SIZE_T entriesNum, DWORD pa
 }
 
 
-bool apply_relocations(ULONGLONG newBase, ULONGLONG oldBase, PVOID modulePtr)
+bool apply_relocations64(ULONGLONG newBase, ULONGLONG oldBase, PVOID modulePtr)
 {
-    IMAGE_DATA_DIRECTORY* relocDir = get_pe_directory(modulePtr, IMAGE_DIRECTORY_ENTRY_BASERELOC);
+    IMAGE_DATA_DIRECTORY* relocDir = get_pe_directory64(modulePtr, IMAGE_DIRECTORY_ENTRY_BASERELOC);
     if (relocDir == NULL) {
         DEBUG_PRINT("Cannot relocate - application have no relocation table!\n");
         return false;
@@ -128,19 +133,20 @@ bool apply_relocations(ULONGLONG newBase, ULONGLONG oldBase, PVOID modulePtr)
         reloc = (IMAGE_BASE_RELOCATION*)(relocAddr + parsedSize + (ULONG_PTR) modulePtr);
         parsedSize += reloc->SizeOfBlock;
 		
-		if ((((DWORD*) reloc->VirtualAddress) == NULL) || (reloc->SizeOfBlock == 0)) {
+		if ((((ULONGLONG*) ((ULONGLONG) reloc->VirtualAddress)) == NULL) || (reloc->SizeOfBlock == 0)) {
 			continue;
-		}
-						
+		}	
+				
         //printf("RelocBlock: %x %x\n", reloc->VirtualAddress, reloc->SizeOfBlock);
         
         size_t entriesNum = (reloc->SizeOfBlock - 2 * sizeof(DWORD))  / sizeof(WORD);
         DWORD page = reloc->VirtualAddress;
 
         BASE_RELOCATION_ENTRY* block = (BASE_RELOCATION_ENTRY*)((ULONG_PTR) reloc + sizeof(DWORD) + sizeof(DWORD));
-        if (apply_reloc_block(block, entriesNum, page, oldBase, newBase, modulePtr) == false) {
+        if (apply_reloc_block64(block, entriesNum, page, oldBase, newBase, modulePtr) == false) {
             return false;
         }
     }
     return true;
 }
+

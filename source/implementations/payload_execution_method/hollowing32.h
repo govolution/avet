@@ -10,7 +10,7 @@
 
 // Instanciates a new process specified by payload_info, cuts out the original image and hollows the specified payload into the new process.
 // TLDR;    Process hollowing with 32-bit processes.
-//string g
+//
 // payload_info format:     targetPath,commandLine
 // The ',' character serves as delimiter. The string is split during the wrapper part of the hollowing32 function.
 void hollowing32(unsigned char *payload, char *payload_info) {
