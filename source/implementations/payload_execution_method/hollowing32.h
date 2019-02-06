@@ -13,7 +13,9 @@
 //
 // payload_info format:     targetPath,commandLine
 // The ',' character serves as delimiter. The string is split during the wrapper part of the hollowing32 function.
-void hollowing32(unsigned char *payload, char *payload_info) {
+// The payload_size argument contains the size of the complete executable payload image and is not required,
+// as the relevant information for the hollowing procedure is seized from the payload image headers.
+void hollowing32(unsigned char *payload, int payload_size, char *payload_info) {
 	// NtUnmapViewOfSection callNtUnmapViewOfSection;
 	STARTUPINFOA targetStartupInfo;
 	PROCESS_INFORMATION targetProcessInfo;

