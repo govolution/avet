@@ -12,7 +12,7 @@ void inject_shellcode(unsigned char *shellcode, int shellcode_size, char *payloa
 
      // Extract PID from payload_info
     DWORD target_pid = strtoul(payload_info, NULL, 0);
-    DEBUG_PRINT("Extracted payload_info::target_pid argument = %ul\n", target_pid);
+    DEBUG_PRINT("Extracted payload_info::target_pid argument = %u\n", target_pid);
 
     if(target_pid == 0) {
         DEBUG_PRINT("Invalid target PID.\n");
