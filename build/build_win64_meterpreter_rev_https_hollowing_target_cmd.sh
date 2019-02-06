@@ -9,7 +9,7 @@
 # print AVET logo
 cat banner.txt
 
-# include stript containing the compiler var $win64_compiler
+# include script containing the compiler var $win64_compiler
 # you can edit the compiler in build/global_win64.sh
 # or enter $win64_compiler="mycompiler" here
 . build/global_win64.sh
