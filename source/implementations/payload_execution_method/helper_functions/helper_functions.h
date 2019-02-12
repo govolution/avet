@@ -1,3 +1,8 @@
+// Modified, but basically taken from https://github.com/hasherezade/demos
+//
+// Big credits go to hasherezade!
+
+
 #pragma once
 
 
