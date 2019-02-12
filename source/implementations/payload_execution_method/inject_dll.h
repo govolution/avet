@@ -10,6 +10,9 @@
 // pid specifies the process ID of the process to inject the DLL into
 // dll_path specifies the path of the DLL that will be injected into the target.
 // This implies that the DLL to be injected must reside on the target's disk.
+//
+// This was sucessfully tested on both 32 ad 64-bit systems.
+// Friendly reminder: only inject 32-bit dlls into 32-bit processes, and 64-bit dlls into 64-bit processes
 void inject_dll(unsigned char *payload, int payload_size, char *payload_info) {
     char *delimiter;
     char *target_pid_string;

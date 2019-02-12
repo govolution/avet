@@ -7,6 +7,8 @@
 
 // payload_info format:     pid
 // pid specifies the process ID of the process to inject the shellcode into.
+//
+// This was successfully tested on both 32 and 64 bit systems
 void inject_shellcode(unsigned char *shellcode, int shellcode_size, char *payload_info) {
     DEBUG_PRINT("Starting inject_shellcode routine...\n");   
 
