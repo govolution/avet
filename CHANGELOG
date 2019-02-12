@@ -3,12 +3,14 @@ CHANGELOG
 
 Version 1.337
 
-    KNOWN ISSUES
+    +++ KNOWN ISSUES +++
 	- README still antique
 	- downloadexecshellcode_DKMC not working properly. DKMC probably delivers corrupt shellcode, needs further investigation.
     - when built as a service, debug logging into file does not work. this is probably a permission problem.
 	
-	CHANGES
+	+++ CHANGES +++
+
+    General rebuild:
 	- major folder restructuring, code is now more modular:
 		* sources are now gathered in the source folder
 		* modularized shellcode binding methods
@@ -36,6 +38,14 @@ Version 1.337
 	- implemented new data retrieval methods
 	- major code commenting offensive
 	- bugfixes
+
+    BFG integration (BFG project:   https://github.com/govolution/bfg)
+    - major renaming from "shellcode" into "payload" in sources and scripts
+    - introduced new data retrieval category get_payload_info, where parameters such as target process PID can be delivered for hollowing, injection etc.  
+    - added reset_evasion_tecnhnique_counter build script function to support compilation of multiple payloads in one build script
+    - integrated process hollowing for 32 and 64 bit targets from BFG, including new build scripts
+    - integrated shellcode injection for 32 and 64 bit targets from BFG, including new build scripts
+    - integrated dll injection for 32 and 64 bit targets from BFG, including new build scripts    
 	
 	For details, consider the commit messages.
 
