@@ -19,14 +19,6 @@ What & Why:
 - the payload can be encrypted with a key, the key can be delivered like payloads
 - this readme applies for Kali 2018.x (64bit) and tdm-gcc
 
-For basics about antivirus evasion, AVET & more information have a look here (most for version 1.3): 
-- https://govolution.wordpress.com/2018/08/07/paper-avet-blackhat-usa-arsenal-2018/
-- https://govolution.wordpress.com/2017/06/11/avet-video/
-- https://govolutionde.files.wordpress.com/2014/05/avevasion_pentestmag.pdf
-- https://deepsec.net/docs/Slides/2014/Why_Antivirus_Fails_-_Daniel_Sauder.pdf
-- https://twitter.com/DanielX4v3r
-
-
 Installation
 ------------
 
@@ -366,3 +358,11 @@ Bye...
 ```
 
 
+More
+====
+For basics about antivirus evasion, AVET & more information have a look here (most for version 1.3): 
+- https://govolution.wordpress.com/2018/08/07/paper-avet-blackhat-usa-arsenal-2018/
+- https://govolution.wordpress.com/2017/06/11/avet-video/
+- https://govolutionde.files.wordpress.com/2014/05/avevasion_pentestmag.pdf
+- https://deepsec.net/docs/Slides/2014/Why_Antivirus_Fails_-_Daniel_Sauder.pdf
+- https://twitter.com/DanielX4v3r
