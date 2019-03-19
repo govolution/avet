@@ -480,3 +480,4 @@ For basics about antivirus evasion, AVET & more information have a look here (mo
 - https://govolutionde.files.wordpress.com/2014/05/avevasion_pentestmag.pdf
 - https://deepsec.net/docs/Slides/2014/Why_Antivirus_Fails_-_Daniel_Sauder.pdf
 - https://twitter.com/DanielX4v3r
+- https://github.com/tacticaljmp
