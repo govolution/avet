@@ -1,5 +1,8 @@
 #!/bin/bash          
-# this is for kaspersky, since meterpreter is recognized by in memory scanner
+# This is (was) for kaspersky, since meterpreter is recognized by in memory scanner.
+
+# print AVET logo
+cat banner.txt
 
 # include script containing the compiler var $win32_compiler
 # you can edit the compiler in build/global_win32.sh

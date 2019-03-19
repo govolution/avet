@@ -14,6 +14,8 @@
 # The executable will then download the shellcode to memory via sockets (no file is dropped on disk).
 # Next, the shellcode is executed.
 
+# print AVET logo
+cat banner.txt
 
 # include script containing the compiler var $win32_compiler
 # you can edit the compiler in build/global_win32.sh

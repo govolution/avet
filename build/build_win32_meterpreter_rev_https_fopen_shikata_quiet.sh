@@ -1,5 +1,8 @@
 #!/bin/bash      
-# example build script
+# Perform fopen sandbox evasion, encode with shikata and hide console window.
+
+# print AVET logo
+cat banner.txt
 
 # include script containing the compiler var $win32_compiler
 # you can edit the compiler in build/global_win32.sh

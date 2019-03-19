@@ -1,5 +1,8 @@
 #!/bin/bash          
-# simple example script for building the .exe file
+# Apply shikata 50 times.
+
+# print AVET logo
+cat banner.txt
 
 # include script containing the compiler var $win32_compiler
 # you can edit the compiler in build/global_win32.sh

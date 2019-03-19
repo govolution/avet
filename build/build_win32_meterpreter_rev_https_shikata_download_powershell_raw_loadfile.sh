@@ -7,6 +7,8 @@
 # The executable will then download the file via powershell and drop it on the target's disk.
 # The downloaded shellcode is then read from the file and executed.
 
+# print AVET logo
+cat banner.txt
 
 # include script containing the compiler var $win32_compiler
 # you can edit the compiler in build/global_win32.sh

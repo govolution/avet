@@ -1,5 +1,8 @@
 #!/bin/bash    
-# example script for building executables with 64bit payload
+# Execute 64-bit shellcode. Uses XOR encoder from metasploit, as well as AVET encoding.
+
+# print AVET logo
+cat banner.txt
 
 # include script containing the compiler var $win64_compiler
 # you can edit the compiler in build/global_win64.sh

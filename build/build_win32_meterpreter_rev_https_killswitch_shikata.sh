@@ -1,5 +1,8 @@
 #!/bin/bash        
-# example build script
+# Apply shikata and perform gethostbyname sandbox evasion.
+
+# print AVET logo
+cat banner.txt
 
 # include script containing the compiler var $win32_compiler
 # you can edit the compiler in build/global_win32.sh

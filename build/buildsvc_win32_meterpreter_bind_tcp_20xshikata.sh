@@ -1,6 +1,8 @@
 #!/bin/bash          
-# simple example script for building the .exe file
-# for use with msf psexec module
+# Designed for use with msf psexec module!
+
+# print AVET logo
+cat banner.txt
 
 # include script containing the compiler var $win32_compiler
 # you can edit the compiler in build/global_win32.sh

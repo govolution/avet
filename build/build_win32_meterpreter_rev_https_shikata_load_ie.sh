@@ -1,5 +1,5 @@
 #!/bin/bash        
-# example build script
+# Download the payload via internet explorer and execute.
 
 # The generated msf shellcode file needs to be hosted on a HTTP server.
 # Call the generated executable like:
@@ -7,6 +7,8 @@
 # The executable will then download the shellcode file via internet explorer and drop the file on disk.
 # The shellcode is then read from the file and executed.
 
+# print AVET logo
+cat banner.txt
 
 # include script containing the compiler var $win32_compiler
 # you can edit the compiler in build/global_win32.sh
