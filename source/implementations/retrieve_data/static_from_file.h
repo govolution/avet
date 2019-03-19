@@ -6,7 +6,7 @@
 
 // Static retrieval of data from file.
 // Static in this context means that the data is statically compiled into the executable and therefore fixed after compilation time.
-// Data must be copied as c-style array buf[] into get_shellcode.h by the build script.
+// Data must be copied as a c-style array into get_shellcode.h by the build script.
 //
 // arg1 specifies which array the data is read from.
 // data_size receives the size of the data in bytes.
