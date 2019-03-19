@@ -5,17 +5,17 @@ AVET is an AntiVirus Evasion Tool, which was developed for making life easier fo
 A lot of things are new in Version 2, for a complete overview have a look at the CHANGELOG file.
 
 Some of the changes in Version 2:
-- internal mechanisms for bulding the executable have been rewritten, new features can be added much easier now
+- internal mechanisms for building the executable have been rewritten, new features can be added much easier now
 - https://github.com/govolution/bfg has been integrated
 
-With the new architecture and features you can now build an executable that is loading an encrypted .exe file via network or file, receiving the key also via network or file, then decrypt in memory and then injected via process hollowing. The same applies also for other payloads like shellcode or dlls and other techniques.
+With the new architecture and features you can, for example, now build an executable that is loading an encrypted .exe file via network or file, receiving the key also via network or file, decrypt in memory and then inject via process hollowing. The same applies also for other payloads like shellcode or dlls and other techniques.
 
 What & Why:
 - when running an exe file made with msfpayload & co, the exe file will often be recognized by the antivirus software
-- avet is a antivirus evasion tool targeting windows machines with executable files
-- different kind of payloads can be used now, shellcode, exe and dlls
-- above evasion techniques more techniques can be used now, such as shellcode injection, process hollowing and more
-- most payloads can be deliverd from a file, the network or sometimes the cmd
+- avet is an antivirus evasion tool targeting windows machines with executable files
+- different kinds of payloads can be used now: shellcode, exe and dlls
+- more techniques can be used now, such as shellcode injection, process hollowing and more
+- most payloads can be deliverd from a file, the network or command line
 - the payload can be encrypted with a key, the key can be delivered like payloads
 - this readme applies for Kali 2018.x (64bit) and tdm-gcc
 
@@ -37,21 +37,21 @@ How to install tdm-gcc with wine:
 [https://govolution.wordpress.com/2017/02/04/using-tdm-gcc-with-kali-2/](https://govolution.wordpress.com/2017/02/04/using-tdm-gcc-with-kali-2/)
 
 
-Important Note
+Important note
 --------------
-Not all techniques will evade every AV engine. If one technique or build script does not work please test another one.
+Not all techniques will evade every AV engine. If one technique or build script does not work, please test another one.
 
 
 How to use 
 ----------
 
-Of course it is possible to run all commands step by step from command line. In the "build" folder you will find preconfigured build scripts for relevant use cases. 
-The build scripts themselves are written so as they have to be called from within the avet directory:
+Of course, it is possible to run all commands step by step from command line. However, in the "build" folder you will find preconfigured build scripts for relevant use cases. 
+The build scripts themselves are expected to be called within the avet directory:
 ```
 root@kalidan:~/tools/avet# ./build/build_win32_meterpreter_rev_https_50xshikata_quiet.sh
 ```
 
-You can define default LHOST and LPORT values for metasploit payloads in the `/build/global_connect_config.sh` file, which are used if you don't redefine.
+You can define default LHOST and LPORT values for metasploit payloads in the `/build/global_connect_config.sh` file, which are used if you don't redefine in your current build script.
 
 
 Usage examples
@@ -60,12 +60,14 @@ Usage examples
 Generate a 32-bit process hollowing executable in two steps (as in build_win32_meterpreter_rev_tcp_hollowing_target_cmd.sh):
 
 First, generate the hollowing payload with AVET:
+
 	- generate meterpreter/reverse_tcp 32-bit shellcode
 	- the meterpreter shellcode will be XOR encrypted with a 5-byte preset key
 	- the shellcode will be compiled into the generated executable
 	- fopen and gethostbyname sandbox evasion environmental checks will be made before executing the shellcode
 	
 Second, build the executable that delivers the first step payload via hollowing:
+
 	- statically compile the first step payload into the executable
 	- the payload will be XOR encrypted with a different 5-byte preset key
 	- again, fopen and gethostbyname sandbox evasion environmental checks will be made before hollowing
@@ -73,19 +75,26 @@ Second, build the executable that delivers the first step payload via hollowing:
 	
 So you get a two-layer environmental checked and encrypted meterpreter payload, hollowed into a process of your choice.
 While the settings in the build script are mostly for demonstration purposes, there is a lot of flexibility to customize your generated executable by making simple modifications to the build script.
+
 You could switch out data retrieval methods: Instead of statically compiling most data into the executable, you could download your hollowing payload via powershell, download the decryption key via sockets, use different encryption or environmental checks, etc.
 Or try to add more evasion layers by doing a third build iteration.
 
 Of course, you can also design more minimalistic builds, like executing unencrypted shellcode with only one environmental check, or maybe 50 iterations of shikata are enough to reach your goal?
+
 Choose/modify the build scripts, suiting your needs.
 
 
 Build scripts
 -------------
-Below, find a list of all currently shipped build scripts. The names should hint at each script's functionality.
+Below, find a list of all currently provided build scripts. The names should hint at each script's functionality.
 For detailed information, consider the comments inside the scripts.
 Feel free to modify/write your own build scripts to build your custom executable!
 
+__Warning__
+
+Before executing build scripts, ensure that your msf database is started up and initialized. If you don't, msfvenom will be hesitant to launch and your build script execution will get stuck!
+
+```
 buildsvc_win32_meterpreter_bind_tcp_20xshikata.sh
 build_win32_exec_calc_injectdll_target_cmd.sh
 build_win32_meterpreter_rev_https_50xshikata_quiet.sh
@@ -113,112 +122,110 @@ build_win64_meterpreter_rev_https_injectshellcode_target_cmd.sh
 build_win64_meterpreter_rev_https_xor_avet.sh
 build_win64_meterpreter_rev_https_xor_downloadexecshellcode.sh
 build_win64_meterpreter_rev_https_xor_fopen.sh
+```
 
 
 Features
 --------
 
-##Data retrieval methods
+### Data retrieval methods
 
-#static_from_file
+##### static_from_file
 The data is retrieved from a file and is statically compiled into the generated executable.
-For this to work, the data must be provided as a c-style array at compilation time, like
-```
-unsigned char buf[] = "\x00\x11\x22\x33";
-```
+For this to work, the data must be provided as a c-style array at compilation time, like `unsigned char buf[] = "\x00\x11\x22\x33";`.
 
-#dynamic_from_file
+##### dynamic_from_file
 The data is read from a file at run time.
 
-#from_command_line_hex
-Retrieves data from a "11aabb22.." format hex string (from the command line).
+##### from_command_line_hex
+Retrieves data from a `11aabb22..` format hex string (from the command line).
 
-#from_command_line_raw
+##### from_command_line_raw
 Retrieves data from a command line argument. The given ASCII string is interpreted as raw byte data.
 
-#download_certutil
-Downloads data from a specified URI, using ```certutil.exe -urlcache -split -f```.
+##### download_certutil
+Downloads data from a specified URI, using `certutil.exe -urlcache -split -f`.
 Drops the downloaded file to disk before reading the data.
 
-#download_internet_explorer
+##### download_internet_explorer
 Downloads data from a specified URL, using Internet Explorer.
 Drops the downloaded file to disk before reading the data.
 
-#download_powershell
+##### download_powershell
 Downloads data from a specified URI via powershell.
 Drops the downloaded file to disk before reading the data.
 
-#download_socket
+##### download_socket
 Downloads the data from a specified URI, using sockets.
 Data is read directly into memory, no file is dropped to disk.
 
 
-##Payload execution methods
+### Payload execution methods
 
-#exec_shellcode
+##### exec_shellcode
 Executes 32-bit shellcode with a C function binding.
 
-#exec_shellcode64
+##### exec_shellcode64
 Executes 64-bit shellcode with a C function binding and VirtualProtect.
 
-#exec_shellcode_ASCIIMSF
+##### exec_shellcode_ASCIIMSF
 Executes ASCIIMSF encoded shellcode via ```call eax```.
 
-#hollowing32
+##### hollowing32
 Instanciates a new process, cuts out the original image and hollows the given payload into the new process.
 The payload is a 32-bit executable image. Works on 32-bit targets.
 
-#hollowing64
+##### hollowing64
 Same as hollowing32, but using 64-bit PE payloads for 64-bit target processes.
 
-#inject_dll
+##### inject_dll
 Injects a dll into a target process, using ```CreateRemoteThread```.
 Injection works for 32-bit payloads into 32-bit processes, and 64-bit payloads into 64-bit processes, respectively.
 
-#inject_shellcode
+##### inject_shellcode
 Injects shellcode into a target process, using ```CreateRemoteThread```.
 Injection work for 32-bit shellcode into 32-bit processes, and 64-bit shellcode into 64-bit processes, respectively.
 
 
-##Encryption/Encoding
+#### Encryption/Encoding
 
-#xor
+##### xor
 Rolling XOR, supporting multi-byte keys.
 
-#AVET
+##### AVET
 Custom encoding, reinterpreting the ASCII format.
 
 
-##Sandbox evasion
+### Sandbox evasion
 
-#fopen
-Checks for the existence of ```C:\windows\system.ini```. If not found, stop execution.
+##### fopen
+Checks for the existence of `C:\windows\system.ini`. If not found, stop execution.
 
-#gethostbyname
-Try to resolve a hostname of your choice. If gethostbyname returns unequals NULL, stop execution.
+##### gethostbyname
+Try to resolve a hostname of your choice. If `gethostbyname` returns unequals `NULL`, stop execution.
 
-#hide_console
+##### hide_console
 Not really an evasion technique, but hides your console window ;)
 
 
-##Helper tools
+### Helper tools
 
-#data_raw_to_c
+##### data_raw_to_c
 Takes raw data as input from a file, converts it into C-array format and writes output to another file.
 This aids in providing the correct format for the static_from_file data retrieval method.
 
-#generate_key
+##### generate_key
 Key generation utility. Generates either a (non-cryptographically) random key or takes a preset key as input,
 and outputs the raw key data into a specified file.
 This aids in providing key material for the AVET encryption feature.
 
-#sh_format
+##### sh_format
 Utility from AVET 1.3 that performs AVET encoding.
 
 
 AVET & metasploit psexec
 ------------------------
-AVET supports metasploits psexec module. The corresponding build scripts looks like:
+AVET supports metasploit's psexec module. The corresponding build script looks like:
 
 ```
 #!/bin/bash          
@@ -340,7 +347,8 @@ Meterpreter : x86/windows
 ```
 
 
-TODO: Rewrite fabric section
+Easier use: avet_fabric.py
+=============
 **However, it is strongly recommended to use the avet_fabric.py! It makes the tool easier to use.**
 
 The fabric provides a more convenient interface on the command line, where you can choose which build script you want to use.
@@ -363,7 +371,7 @@ python3 avet_fabric.py
  ___|  '-'     '    ""       '-'   '-.'    '`      |____
 jgs~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-AVET Fabric by Daniel Sauder
+AVET Fabric by Daniel Sauder, Florian Saager
 
 avet_fabric.py is an assistant for building exe files with shellcode payloads for targeted attacks and antivirus evasion.
 
@@ -442,7 +450,7 @@ Bye...
 
 More
 ====
-For basics about antivirus evasion, AVET & more information have a look here (most for version 1.3): 
+For basics about antivirus evasion, AVET & more information have a look here (most content is for version 1.3): 
 - https://govolution.wordpress.com/2018/08/07/paper-avet-blackhat-usa-arsenal-2018/
 - https://govolution.wordpress.com/2017/06/11/avet-video/
 - https://govolutionde.files.wordpress.com/2014/05/avevasion_pentestmag.pdf
