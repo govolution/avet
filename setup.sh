@@ -4,12 +4,6 @@
 
 echo "+++ Preparing AVET for use..."
 
-echo "+++ Building make_avet executable"
-gcc -o make_avet make_avet.c
-
-echo "+++ Building make_avetsvc executable"
-gcc -o make_avetsvc make_avetsvc.c
-
 echo "+++ Installing wine and wine32"
 # add missing sources for wine32
 echo "deb http://http.kali.org/kali kali-rolling main contrib non-free" >> /etc/apt/sources.list

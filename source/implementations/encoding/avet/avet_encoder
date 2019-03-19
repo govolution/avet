@@ -1,0 +1,6 @@
+#!/bin/bash
+# This path assumes that format.sh is called from the avet folder, as should be the case then executing build scripts
+# $1: Name of the file containing the payload to be encoded
+# $2: Name of the file where the encoded payload shall be written to
+./source/implementations/encoding/avet/sh_format $1 | tr -d "\n" | tr -d "x" | tr -d '\\' | tr -d "\"" | tr -d ";" > $2
+

