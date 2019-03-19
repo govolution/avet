@@ -1,5 +1,5 @@
 /*
-Author: Daniel Sauder
+Authors: Daniel Sauder, Florian Saager
 License: https://www.gnu.org/licenses/gpl.txt or LICENSE file
 Web: https://github.com/govolution/avet
 */
@@ -16,7 +16,6 @@ Web: https://github.com/govolution/avet
 //     "                 ___.--~~~--.__                         \n"
 //     "       ___\\.--~~~              ~~~---.._|/              \n"
 //     "       ~~~\\\"                             /              \n"
-
 //     " ________  ___      ___ _______  _________  \n" 
 //     "|\\   __  \\|\\  \\    /  /|\\  ___ \\|\\___   ___\\ \n"
 //     "\\ \\  \\|\\  \\ \\  \\  /  / | \\   __/\\|___ \\  \\_| \n"
@@ -24,7 +23,7 @@ Web: https://github.com/govolution/avet
 //     "  \\ \\  \\ \\  \\ \\    / /   \\ \\  \\_|\\ \\  \\ \\  \\ \n"
 //     "   \\ \\__\\ \\__\\ \\__/ /     \\ \\_______\\  \\ \\__\\\n"
 //     "    \\|__|\\|__|\\|__|/       \\|_______|   \\|__|\n"
-//         "\n\nAnti Virus Evasion Tool by Daniel Sauder\n"
+//         "\n\nAnti Virus Evasion Tool by Daniel Sauder, Florian Saager\n"
 
 
 #include <stdio.h>
