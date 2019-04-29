@@ -4,6 +4,15 @@
 # The target is specified on execution via the third(!) command line argument, by PID
 
 
+# Usage example of generated output.exe:
+#
+# output.exe first second 480
+#
+# The first and second command line parameters can be arbitrary strings, as they are not used. We hust need the third command line parameter.
+#
+# Use the third parameter to specify the PID of the process you want to inject your payload into.
+
+
 # print AVET logo
 cat banner.txt
 
