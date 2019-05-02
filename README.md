@@ -30,6 +30,8 @@ You can use the setup script:
 This will automatically get you started by installing/configuring wine and installing tdm-gcc.
 You'll shortly have to click through the tdm-gcc installer GUI though - standard settings should be fine.
 
+Should be self explaining, but here is a run through:
+https://danielsauder.com/2018/09/28/avet-setup-sh-script/
 
 If for whatever reason you want to do things manually:
 
