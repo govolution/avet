@@ -19,6 +19,11 @@ What & Why:
 - the payload can be encrypted with a key, the key can be delivered like payloads
 - this readme applies for Kali 2018.x (64bit) and tdm-gcc (should work on other Kali/Linux versions also)
 
+Proudly presented at Blackhat Arsenal:
+[![Arsenal](https://rawgit.com/toolswatch/badges/master/arsenal/asia/2017.svg)](https://www.toolswatch.org/2017/02/the-black-hat-arsenal-asia-2017-great-line-up/)
+[![Arsenal](https://rawgit.com/toolswatch/badges/master/arsenal/usa/2017.svg)](http://www.toolswatch.org/2017/06/the-black-hat-arsenal-usa-2017-phenomenal-line-up-announced/)
+[![Arsenal](https://rawgit.com/toolswatch/badges/master/arsenal/usa/2018.svg)](https://www.toolswatch.org/2018/01/black-hat-arsenal-asia-2018-great-lineup/)
+
 Installation
 ------------
 
