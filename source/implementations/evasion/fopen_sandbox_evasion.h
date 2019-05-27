@@ -5,14 +5,17 @@
 #include "../debug_print/debug_print.h"
 
 
-// Argument arg1 is not used and therefore ignored.
+// Checks if a given file exists on the system. If opening fails, the program exits.
+//
+// arg1:        Specifies the file to check upon.
 void fopen_sandbox_evasion(char *arg1) {
-    // do evading here with fopen technique
     DEBUG_PRINT("Using fopen sandbox evasion technique...\n");
     
-    FILE *fp = fopen("c:\\windows\\system.ini", "rb");
+    FILE *fp = fopen(arg1, "rb");
+
     if (fp == NULL) {
 	    exit(0);	
     }
+
     fclose(fp);
 }
