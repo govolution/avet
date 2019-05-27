@@ -35,7 +35,9 @@ function add_evasion() {
 
     # Write an assignment of the (optional) function argument to the argument array into the evasion.assign file.
     # If $2 is not specified, en empty string will be written to the argument array.
-    printf "\nevasion_function_args[$NUM_TECHNIQUES] = \"%s\";\n" $2 >> source/evasion/evasion.assign
+    # The assignment is not done statically, but via strcpy. This keeps individual assignment operations independent from each other.
+    printf "\n#include <string.h>\n" >> source/evasion/evasion.assign
+    printf "\nstrcpy(evasion_function_args[$NUM_TECHNIQUES], \"%s\");\n" $2 >> source/evasion/evasion.assign
 	
 	# Increment technique counter
 	((NUM_TECHNIQUES=NUM_TECHNIQUES+1))
