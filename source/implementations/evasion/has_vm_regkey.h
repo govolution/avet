@@ -13,7 +13,7 @@
 //              Total search string length is currently limited to 1023.
 void has_vm_regkey(char *arg1) {
     DEBUG_PRINT("Applying has_vm_regkey evasion technique.\n");
-    DEBUG_PRINT("Checking registry for search set %s...\n", arg1);
+    DEBUG_PRINT("Checking registry key SYSTEM\\ControlSet001\\Services\\Disk\\Enum for search set %s...\n", arg1);
 
     HKEY hKey;
     int i;
@@ -35,12 +35,13 @@ void has_vm_regkey(char *arg1) {
         current_search_str = complete_search_str;
 
         // Iterate until no comma delimiter found
-        while((delim = strchr(current_search_str, ',')) != NULL);
+        while((delim = strchr(current_search_str, ',')) != NULL) {
             // Terminate current string at delimiter            
             *delim = '\0';
 
             // Search for current string in registry content. If found, exit.
             if(strstr(szBuffer, current_search_str)) {
+                DEBUG_PRINT("Found %s, exiting...\n", current_search_str);                
                 RegCloseKey(hKey);
                 exit(0);
             }
@@ -51,9 +52,15 @@ void has_vm_regkey(char *arg1) {
 
         // Process last entry
         if(strstr(szBuffer, current_search_str)) {
+            DEBUG_PRINT("Found %s, exiting...\n", current_search_str);            
             RegCloseKey(hKey);
             exit(0);
         }
+        
+        RegCloseKey(hKey);
+    } else {
+        DEBUG_PRINT("Could not open registry key.\n");
+    }
 
-    RegCloseKey(hKey);
+    DEBUG_PRINT("Found none. Proceeding.\n");
 }
