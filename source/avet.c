@@ -50,7 +50,7 @@ Web: https://github.com/govolution/avet
 // Set how many evasion functions can be used at maximum
 #define EVASION_ARRAY_SIZE 10
 // Set the maximum length of an argument passed to the evasion function
-#define EVASION_ARG_MAX_LEN 256
+#define EVASION_ARG_MAX_LEN 1024
 
 
 // argv[1]		Is passed through as an argument to the get_payload function
