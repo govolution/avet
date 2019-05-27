@@ -23,8 +23,8 @@ NUM_TECHNIQUES=0
 #
 # First Argument: 	Name of the technique (= name of the file containing the respective code, without the file suffix)
 # Second Argument:  Specify a value that will be handed to the evasion function.
-#                   The value will be handed over as a C string.
-#                   Don't use extra quotes! Remember to escape special characters!
+#                   The value will be handed over as a C string!
+#                   Put your argument in single quotes, otherwise specify like a C string.
 #                   As an example, you can specify the hostname to use in the gethostbyname evasion technique here.
 function add_evasion() {
  	# Set include in evasion.include to import the selected evasion technique implementation
@@ -35,7 +35,7 @@ function add_evasion() {
 
     # Write an assignment of the (optional) function argument to the argument array into the evasion.assign file.
     # If $2 is not specified, en empty string will be written to the argument array.
-    printf "\nevasion_function_args[$NUM_TECHNIQUES] = \"$2\";\n" >> source/evasion/evasion.assign
+    printf "\nevasion_function_args[$NUM_TECHNIQUES] = \"%s\";\n" $2 >> source/evasion/evasion.assign
 	
 	# Increment technique counter
 	((NUM_TECHNIQUES=NUM_TECHNIQUES+1))
