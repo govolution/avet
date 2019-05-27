@@ -23,7 +23,8 @@ NUM_TECHNIQUES=0
 #
 # First Argument: 	Name of the technique (= name of the file containing the respective code, without the file suffix)
 # Second Argument:  Specify a value that will be handed to the evasion function.
-#                   The value will be handed over as a C string. Don't use extra quotation marks!
+#                   The value will be handed over as a C string.
+#                   Don't use extra quotes! Remember to escape special characters!
 #                   As an example, you can specify the hostname to use in the gethostbyname evasion technique here.
 function add_evasion() {
  	# Set include in evasion.include to import the selected evasion technique implementation
