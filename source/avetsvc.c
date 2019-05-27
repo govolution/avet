@@ -57,6 +57,8 @@ Web: https://github.com/govolution/avet
 
 // Set how many evasion functions can be used at maximum
 #define EVASION_ARRAY_SIZE 10
+// Set the maximum length of an argument passed to the evasion function
+#define EVASION_ARG_MAX_LEN 1024
 
 
 // Service declarations
@@ -159,7 +161,15 @@ void ServiceMain(int argc, char **argv) {
 	for(int i = 0; i < EVASION_ARRAY_SIZE; i++) {
 		evasion_functions[i] = NULL;
 	}
+
+    // Define array to store the argument for each evasion function.
+    // The size of the argument array equals that of the evasion function array above.
+    // The included evasion.assign file will take care of populating the array.
+    // The contents correspond to the evasion funtion array, so that evasion_function_args[0] contains the argument for evasion_functions[0], etc.
+    // The arguments are given as C strings.
+    char evasion_function_args[EVASION_ARRAY_SIZE][EVASION_ARG_MAX_LEN];
 		
+
 	// Assign selected functions to prototypes
 	// Included assignment code is assembled by the build script
 	#include "evasion/evasion.assign"
@@ -177,7 +187,8 @@ void ServiceMain(int argc, char **argv) {
 	for(int i = 0; i < EVASION_ARRAY_SIZE; i++) {
 		if(evasion_functions[i] != NULL) {	
 			DEBUG_PRINT("Executing evasion function %d.\n", i);
-			evasion_functions[i]("");
+            // Use the function arguments from the argument array
+			evasion_functions[i](evasion_function_args[i]);
 		}
 	}	
 	
