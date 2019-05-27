@@ -17,7 +17,7 @@ void get_cpu_cores(char *arg1) {
     long cpu_core_threshold = strtol(arg1, NULL, 10);
 
     DEBUG_PRINT("Applying get_cpu_cores evasion technique.\n");
-    DEBUG_PRINT("Checking if number of cpu cores is lower than %ld...\n", cpu_core_threshold);
+    DEBUG_PRINT("Exiting if number of cpu cores is lower than %ld...\n", cpu_core_threshold);
 
     if (sysinfo.dwNumberOfProcessors < cpu_core_threshold) {
         exit(0);
