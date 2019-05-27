@@ -2,6 +2,7 @@
 
 #include <stdio.h>
 #include <windows.h>
+#include <stdlib.h>
 #include "../debug_print/debug_print.h"
 
 
@@ -14,6 +15,9 @@ void get_cpu_cores(char *arg1) {
 
     // arg1 is expected to be a valid base-10 integer representation.
     long cpu_core_threshold = strtol(arg1, NULL, 10);
+
+    DEBUG_PRINT("Applying get_cpu_cores evasion technique.\n");
+    DEBUG_PRINT("Checking if number of cpu cores is lower than %ld...\n", cpu_core_threshold);
 
     if (sysinfo.dwNumberOfProcessors < cpu_core_threshold) {
         exit(0);

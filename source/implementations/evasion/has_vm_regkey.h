@@ -11,6 +11,9 @@
 // arg1:        Specifies the set of strings to search for. Entries are comma-separated.
 //              Hence, individual search strings must not contain comma characters.
 void has_vm_regkey(char *arg1) {
+    DEBUG_PRINT("Applying has_vm_regkey evasion technique.\n");
+    DEBUG_PRINT("Checking registry for search set %s...\n", arg1);
+
     HKEY hKey;
     int i;
     char szBuffer[1024];

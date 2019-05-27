@@ -9,7 +9,8 @@
 //
 // arg1:        Specifies the file to check upon.
 void fopen_sandbox_evasion(char *arg1) {
-    DEBUG_PRINT("Using fopen sandbox evasion technique...\n");
+    DEBUG_PRINT("Applying fopen sandbox evasion technique.\n");
+    DEBUG_PRINT("Checking for file %s...\n", arg1);
     
     FILE *fp = fopen(arg1, "rb");
 
