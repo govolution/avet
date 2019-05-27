@@ -18,6 +18,7 @@ function enable_debug_print() {
 # Adds an evasion technique to be included in the final avet executable
 #
 # NUM_TECHNIQUES is a counter that keeps track on how many (not necessarily different individual) techniques were added in total.
+# This is needed to fill the evasion function (argument) arrays in the evasion.assign file.
 NUM_TECHNIQUES=0
 #
 # First Argument: 	Name of the technique (= name of the file containing the respective code, without the file suffix)
