@@ -5,21 +5,20 @@
 #include <windows.h>
 #include "../debug_print/debug_print.h"
 
-// evading with gethostbyname technique
-// arg1 serves no purpose and is ignored
-// you can set a define HOSTVALUE to specify which host is used in the gethostbyname call.
-// else the localhost is used.
+
+// gethostbyname evasion technique.
+// Attempts to gather information associated with a specified host.
+// The gethostbyname function is expected to fail (by returning NULL). If it succeeds instead, the program exits.
+//
+// arg1:        Specifies the host name to lookup.
 // ---
 // Link with -lws2_32 switch when compiling
 void gethostbyname_sandbox_evasion(char *arg1) {
     DEBUG_PRINT("Using gethostbyname sandbox evasion technique...\n");
    
-    #ifdef HOSTVALUE
-        struct hostent *hp = gethostbyname(HOSTVALUE);
-    #else
-        struct hostent *hp = gethostbyname("localhost");    
-    #endif
-    if (hp != NULL) { 		
-	    exit(0);
+    struct hostent *hp = gethostbyname(arg1);
+
+    if(hp != NULL) {
+        exit(0);
     }
 }
