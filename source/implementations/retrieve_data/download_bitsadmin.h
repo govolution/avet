@@ -4,7 +4,7 @@
 #include <string.h>
 #include <windows.h>
 #include "../debug_print/debug_print.h"
-#include "helper_function/helper_functions.h"
+#include "helper_functions/helper_functions.h"
 
 
 // Downloads data from the URI specified in arg1 into a file, using the BITSADMIN Windows tool.
