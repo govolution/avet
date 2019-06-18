@@ -42,7 +42,7 @@ set_payload_info_source none
 set_payload_execution_method exec_shellcode
 
 # enable debug output
-enable_debug_print
+enable_debug_print to_file C:/users/public/avetdbg.txt
 
 # compile to output.exe file
 $win32_compiler -o output/output.exe source/avet.c
