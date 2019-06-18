@@ -90,6 +90,27 @@ function set_key_source() {
 }
 
 
+# Specifies where to get the command from
+#
+# First Argument:   Name of the technique (=name of the file containing the respective code, without the file suffix)
+# Second Argument:  Can be used to deliver further data about the source, e.g. the file name when retrieving from a file or the URL when downloading from a URL
+function set_command_source() {
+    printf "\n\n" >> source/get_command/get_command.include
+
+    # If command is included statically, write command into get_command.include file and set respective define
+    if [ $1 = "static_from_file" ]
+	then
+    	cat $2 >> source/static_data/static_data.include
+		printf "\n#define STATIC_COMMAND \n" >> source/get_command/get_command.include
+	fi 
+
+    # Set include in get_command.include to import the needed data retrieval method
+    printf "\n#include \"../implementations/retrieve_data/$1.h\"\n" >> source/get_command/get_command.include
+    # Write an assignment of the selected function to get_command into the get_command.assign file
+    printf "\nget_command = $1;\n" >> source/get_command/get_command.assign
+}
+
+
 # Specifies where to get the additional payload information from.
 # An example for such additional information would be the PID of the target process to hollow into when performing process hollowing.
 #
@@ -173,7 +194,9 @@ function cleanup_techniques() {
 	echo "" > source/evasion/evasion.include
 	echo "" > source/evasion/evasion.assign	
     echo "" > source/command_exec/command_exec.include
-    echo "" > source/command_exec/command_exec.assign   
+    echo "" > source/command_exec/command_exec.assign  
+    echo "" > source/get_command/get_command.include
+    echo "" > source/get_command/get_command.assign 
 	echo "" > source/get_payload/get_payload.include
 	echo "" > source/get_payload/get_payload.assign	
 	echo "" > source/get_key/get_key.include
