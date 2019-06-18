@@ -137,12 +137,23 @@ function set_payload_execution_method() {
 
 # Specifies which decoder function should be applied to the payload
 #
-# First Argument: 	Name of the payload decoder (= name of the folder containinig the respective code)
+# First Argument: 	Name of the payload decoder (= name of the folder containing the respective code)
 function set_decoder() {
 	# Set include in decode_payload.include to import the needed decoder method
 	printf "\n#include \"../implementations/encoding/$1/$1_decoder.h\"\n" >> source/decode_payload/decode_payload.include
 	# Write an assignment of the selected function to decode_payload into the decode_payload.assign
 	printf "\ndecode_payload = decode_$1;\n" >> source/decode_payload/decode_payload.assign	
+}
+
+
+# Specifies which command execution function should be used
+#
+# First Argument:   Name of the execution technique (= name of the folder containing the respective code) 
+function set_command_exec() {
+    # Set include in command_exec.include to import the needed command execution method
+    printf "\n#include \"../implementations/command_exec/$1/$1.h\"\n" >> source/command_exec/command_exec.include
+    # Write an assignment of the selected function to command_exec into the command_exec.assign
+    printf "\ncommand_exec = $1;\n" >> source/command_exec/command_exec.assign
 }
 
 
@@ -161,6 +172,8 @@ function encode_payload() {
 function cleanup_techniques() {
 	echo "" > source/evasion/evasion.include
 	echo "" > source/evasion/evasion.assign	
+    echo "" > source/command_exec/command_exec.include
+    echo "" > source/command_exec/command_exec.assign   
 	echo "" > source/get_payload/get_payload.include
 	echo "" > source/get_payload/get_payload.assign	
 	echo "" > source/get_key/get_key.include
