@@ -29,10 +29,6 @@ set_command_source static_from_here "calc.exe"
 # set command execution method
 set_command_exec exec_via_cmd
 
-# no command preexec
-set_command_source none
-set_command_exec none
-
 # set shellcode source
 set_payload_source static_from_file input/sc_c.txt
 
