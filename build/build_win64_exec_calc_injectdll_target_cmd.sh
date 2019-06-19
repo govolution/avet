@@ -40,6 +40,10 @@ add_evasion fopen_sandbox_evasion 'c:\\windows\\system.ini'
 add_evasion gethostbyname_sandbox_evasion 'this.that'
 reset_evasion_technique_counter
 
+# no command preexec
+set_command_source none
+set_command_exec none
+
 # payload will be downloaded from HTTP source via powershell
 set_payload_source download_powershell
 

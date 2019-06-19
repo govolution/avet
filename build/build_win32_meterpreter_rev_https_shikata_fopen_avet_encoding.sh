@@ -31,6 +31,10 @@ add_evasion fopen_sandbox_evasion 'c:\\windows\\system.ini'
 # convert encoded shellcode file to c array style for static include
 ./tools/data_raw_to_c/data_raw_to_c input/scenc_raw.txt input/scenc_c.txt buf
 
+# no command preexec
+set_command_source none
+set_command_exec none
+
 # set shellcode source
 set_payload_source static_from_file input/scenc_c.txt
 

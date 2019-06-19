@@ -27,6 +27,10 @@ add_evasion fopen_sandbox_evasion 'C:\\windows\\system.ini'
 # enable quiet mode / hide console window
 add_evasion hide_console
 
+# no command preexec
+set_command_source none
+set_command_exec no_command
+
 # set shellcode source
 set_payload_source static_from_file input/sc_c.txt
 
