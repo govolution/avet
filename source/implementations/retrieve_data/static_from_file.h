@@ -46,6 +46,7 @@ unsigned char *static_from_file(char *arg1, int *data_size) {
         *data_size = sizeof(command) - 1;	
         return command;
     }
+    #endif
 
     // Return NULL if arg1 is unrecognized string or defines are not set correctly
     DEBUG_PRINT("Static retrieval from file failed; argument arg1 of function static_from_file not recognized and/or defines not correctly set in included headers?\n");
