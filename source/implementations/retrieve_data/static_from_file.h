@@ -30,14 +30,23 @@ unsigned char *static_from_file(char *arg1, int *data_size) {
     }
     #endif
     // Deliver address and size of array payload_info[] if payload info is requested
-    // If payload info is retrieved statically, the define is set by the build script to notify this function that array payload_info is declared and known to the compiler.
+    // If payload info is retrieved statically, the define is set by the build script to notify this function that array payload_info[] is declared and known to the compiler.
     #ifdef STATIC_PAYLOAD_INFO
     if(strcmp(arg1, "static_payload_info") == 0) {
-        DEBUG_PRINT("Statically retrieving data from array payload_info in included file...\n");
+        DEBUG_PRINT("Statically retrieving data from array payload_info[] in included file...\n");
         *data_size = sizeof(payload_info) - 1;
         return payload_info;
     }   
     #endif
+    // Deliver address and size of array command[] if command is requested
+    // If command is retrieved statically, the define is set by the build script to notify this function that array command[] is declared and known to the compiler.
+    #ifdef STATIC_COMMAND
+    if(strcmp(arg1, "static_command") == 0) {
+        DEBUG_PRINT("Statically retrieving data from array command[] in included file...\n");
+        *data_size = sizeof(command) - 1;	
+        return command;
+    }
+
     // Return NULL if arg1 is unrecognized string or defines are not set correctly
     DEBUG_PRINT("Static retrieval from file failed; argument arg1 of function static_from_file not recognized and/or defines not correctly set in included headers?\n");
     return NULL;
