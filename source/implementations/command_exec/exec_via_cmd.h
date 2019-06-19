@@ -8,11 +8,6 @@
 // Starts cmd.exe and executes the command speficied.
 void exec_via_cmd(const char *command, int command_size) {
     DEBUG_PRINT("exec_via_cmd called.\n");
-       
-    char *cmd_call = "cmd.exe "; 
-    char *system_arg = (char *) malloc(strlen(cmd_call) + command_size + 1);    
-    strcpy(system_arg, cmd_call);
-    strcat(system_arg, command);
-
-    system(system_arg);
+    DEBUG_PRINT("Passing command %s to cmd.exe\n", command);
+    system(command);
 }    
