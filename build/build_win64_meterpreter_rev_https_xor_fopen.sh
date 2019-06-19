@@ -1,5 +1,6 @@
 #!/bin/bash
-# Executes 64-bit shellcode. Uses metasploit XOR encoding. Performs fopen sandbox evasion.
+# Executes 64-bit shellcode.
+# Uses Metasploit's xor encoding. Uses fopen sandbox evasion.
 
 # include script containing the compiler var $win64_compiler
 # you can edit the compiler in build/global_win64.sh
