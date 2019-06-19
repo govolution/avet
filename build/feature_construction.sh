@@ -67,10 +67,9 @@ function set_payload_source() {
     # We don't expect this to be used much, but wanted to align it with the outher set_source functions.
     # This avoids the file inclusion hustle.
     # The specified payload will be statically included in the executable.
-    # This function sets no additional quotes, so you need to set them in argument 2.
     if [ $1 = "static_from_here" ]
 	then
-        printf "\n unsigned char buf[] = $2;\n" >> source/static_data/static_data.include
+        printf "\n unsigned char buf[] = \"$2\";\n" >> source/static_data/static_data.include
 		printf "\n#define STATIC_PAYLOAD \n" >> source/get_payload/get_payload.include
 	fi
 		
@@ -97,10 +96,9 @@ function set_key_source() {
     # Feature to set the key directly in the build script.
     # This avoids the file inclusion hustle.
     # The specified key will be statically included in the executable.
-    # This function sets no additional quotes, so you need to set them in argument 2.
     if [ $1 = "static_from_here" ]
 	then
-        printf "\n unsigned char key[] = $2;\n" >> source/static_data/static_data.include
+        printf "\n unsigned char key[] = \"$2\";\n" >> source/static_data/static_data.include
 		printf "\n#define STATIC_KEY \n" >> source/get_key/get_key.include
 	fi
 		
@@ -128,10 +126,9 @@ function set_command_source() {
     # Feature to set the command directly in the build script.
     # This avoids the file inclusion hustle.
     # The specified command will be statically included in the executable.
-    # This function sets no additional quotes, so you need to set them in argument 2.
     if [ $1 = "static_from_here" ]
 	then
-        printf "\n unsigned char command[] = $2;\n" >> source/static_data/static_data.include
+        printf "\n unsigned char command[] = \"$2\";\n" >> source/static_data/static_data.include
 		printf "\n#define STATIC_COMMAND \n" >> source/get_command/get_command.include
 	fi
 
@@ -160,10 +157,9 @@ function set_payload_info_source() {
     # Feature to set the payload info directly in the build script.
     # This avoids the file inclusion hustle.
     # The specified payload info will be statically included in the executable.
-    # This function sets no additional quotes, so you need to set them in argument 2.
     if [ $1 = "static_from_here" ]
 	then
-        printf "\n unsigned char payload_info[] = $2;\n" >> source/static_data/static_data.include
+        printf "\n unsigned char payload_info[] = \"$2\";\n" >> source/static_data/static_data.include
 		printf "\n#define STATIC_PAYLOAD_INFO \n" >> source/get_payload_info/get_payload_info.include
 	fi
 	
@@ -213,7 +209,7 @@ function set_decoder() {
 # First Argument:   Name of the execution technique (= name of the folder containing the respective code) 
 function set_command_exec() {
     # Set include in command_exec.include to import the needed command execution method
-    printf "\n#include \"../implementations/command_exec/$1/$1.h\"\n" >> source/command_exec/command_exec.include
+    printf "\n#include \"../implementations/command_exec/$1.h\"\n" >> source/command_exec/command_exec.include
     # Write an assignment of the selected function to command_exec into the command_exec.assign
     printf "\ncommand_exec = $1;\n" >> source/command_exec/command_exec.assign
 }
