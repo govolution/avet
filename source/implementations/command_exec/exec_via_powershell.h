@@ -14,5 +14,7 @@ void exec_via_powershell(const char *command, int command_size) {
     strcpy(system_arg, powershell_call);
     strcat(system_arg, command);
 
+    DEBUG_PRINT("Passing argument %s to cmd.exe\n", system_arg);
+
     system(system_arg);
 } 
