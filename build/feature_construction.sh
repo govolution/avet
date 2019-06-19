@@ -62,6 +62,17 @@ function set_payload_source() {
 		cat $2 >> source/static_data/static_data.include
 		printf "\n#define STATIC_PAYLOAD \n" >> source/static_data/static_data.include
 	fi	
+
+    # Feature to set the payload directly in the build script.
+    # We don't expect this to be used much, but wanted to align it with the outher set_source functions.
+    # This avoids the file inclusion hustle.
+    # The specified payload will be statically included in the executable.
+    # This function sets no additional quotes, so you need to set them in argument 2.
+    if [ $1 = "static_from_here" ]
+	then
+        printf "\n unsigned char buf[] = $2;\n" >> source/static_data/static_data.include
+		printf "\n#define STATIC_PAYLOAD \n" >> source/get_payload/get_payload.include
+	fi
 		
 	# Set include in get_payload.include to import the needed data retrieval method
 	printf "\n#include \"../implementations/retrieve_data/$1.h\"\n" >> source/get_payload/get_payload.include
@@ -82,6 +93,16 @@ function set_key_source() {
     	cat $2 >> source/static_data/static_data.include
 		printf "\n#define STATIC_KEY \n" >> source/static_data/static_data.include
 	fi	
+
+    # Feature to set the key directly in the build script.
+    # This avoids the file inclusion hustle.
+    # The specified key will be statically included in the executable.
+    # This function sets no additional quotes, so you need to set them in argument 2.
+    if [ $1 = "static_from_here" ]
+	then
+        printf "\n unsigned char key[] = $2;\n" >> source/static_data/static_data.include
+		printf "\n#define STATIC_KEY \n" >> source/get_key/get_key.include
+	fi
 		
 	# Set include in get_key.include to import the needed data retrieval method
 	printf "\n#include \"../implementations/retrieve_data/$1.h\"\n" >> source/get_key/get_key.include
@@ -134,6 +155,16 @@ function set_payload_info_source() {
 	then
 		cat $2 >> source/static_data/static_data.include
 		printf "\n#define STATIC_PAYLOAD_INFO \n" >> source/static_data/static_data.include
+	fi
+
+    # Feature to set the payload info directly in the build script.
+    # This avoids the file inclusion hustle.
+    # The specified payload info will be statically included in the executable.
+    # This function sets no additional quotes, so you need to set them in argument 2.
+    if [ $1 = "static_from_here" ]
+	then
+        printf "\n unsigned char payload_info[] = $2;\n" >> source/static_data/static_data.include
+		printf "\n#define STATIC_PAYLOAD_INFO \n" >> source/get_payload_info/get_payload_info.include
 	fi
 	
 	# Set include in get_payload_info.include to import the needed data retrieval method
