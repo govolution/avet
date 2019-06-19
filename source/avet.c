@@ -124,7 +124,7 @@ int main (int argc, char **argv)
 	#endif
 	if(command != NULL) {
 		DEBUG_PRINT("Retrieved command, size is %d bytes.\n", command_size);
-		for(int i = 0; i < payload_size; i++) {
+		for(int i = 0; i < command_size; i++) {
 			DEBUG_PRINT("%02x ", command[i]);
 		}
 		DEBUG_PRINT("\n\n");
