@@ -104,6 +104,16 @@ function set_command_source() {
 		printf "\n#define STATIC_COMMAND \n" >> source/get_command/get_command.include
 	fi 
 
+    # Feature to set the command directly in the build script.
+    # This avoids the file inclusion hustle.
+    # The specified command will be statically included in the executable.
+    # This function sets no additional quotes, so you need to set them in argument 2.
+    if [ $1 = "static_from_here" ]
+	then
+        printf "\n unsigned char command[] = $2;\n" >> source/static_data/static_data.include
+		printf "\n#define STATIC_COMMAND \n" >> source/get_command/get_command.include
+	fi
+
     # Set include in get_command.include to import the needed data retrieval method
     printf "\n#include \"../implementations/retrieve_data/$1.h\"\n" >> source/get_command/get_command.include
     # Write an assignment of the selected function to get_command into the get_command.assign file
