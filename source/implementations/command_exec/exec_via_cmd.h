@@ -1,7 +1,6 @@
 #pragma once
 
 #include <stdlib.h>
-#include <string.h>
 #include "../debug_print/debug_print.h"
 
 
