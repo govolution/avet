@@ -50,8 +50,8 @@ encode_payload xor input/sc_raw.txt input/scenc_raw.txt input/key_raw.txt
 ./tools/data_raw_to_c/data_raw_to_c input/scenc_raw.txt input/scenc_c.txt buf
 
 # no command preexec
-set_command_source none
-set_command_exec none
+set_command_source no_data
+set_command_exec no_command
 
 # set shellcode source
 set_payload_source static_from_file input/scenc_c.txt

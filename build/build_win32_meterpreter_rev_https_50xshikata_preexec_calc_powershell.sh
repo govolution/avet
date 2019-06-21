@@ -34,10 +34,10 @@ set_payload_source static_from_file input/sc_c.txt
 
 # set decoder and crypto key source
 set_decoder none
-set_key_source none
+set_key_source no_data
 
 # set payload info source
-set_payload_info_source none
+set_payload_info_source no_data
 
 # set shellcode binding technique
 set_payload_execution_method exec_shellcode

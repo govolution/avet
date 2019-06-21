@@ -49,7 +49,7 @@ set_decoder xor
 set_key_source from_command_line_hex
 
 # set payload info source
-set_payload_info_source none
+set_payload_info_source no_data
 
 # set shellcode binding technique
 set_payload_execution_method exec_shellcode64
