@@ -1,6 +1,7 @@
 #!/bin/bash
 # Example script that uses an executable file as input, here Mimikatz.
-# Converts the exe to shellcode using the pe_to_shellcode tool by Hasherezade.
+# Converts the exe to shellcode using the pe_to_shellcode tool by Hasherezade:
+# https://github.com/hasherezade/pe_to_shellcode
 #
 # This script expects the Mimikatz executable to be at input/mimikatz.exe
 # and the pe_to_shellcode executable to reside in a folder parallel to avet: ../pe_to_shellcode/pe2shc.exe
