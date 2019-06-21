@@ -41,15 +41,15 @@ add_evasion gethostbyname_sandbox_evasion 'this.that'
 reset_evasion_technique_counter
 
 # no command preexec
-set_command_source none
-set_command_exec none
+set_command_source no_data
+set_command_exec no_command
 
 # payload will be downloaded from HTTP source via powershell
 set_payload_source download_powershell
 
 # no encoding, no key
 # encoding/decoding would make no sense here, as the payload itself is not touched or read in by the executable after download
-set_key_source none
+set_key_source no_data
 set_decoder none
 
 # retrieve payload info (target pid, dll path) from command line on execution

