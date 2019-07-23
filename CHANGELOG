@@ -1,6 +1,26 @@
 CHANGELOG
 ---------
 
+
+Version 2.1
+    
+    +++ KNOWN ISSUES +++
+    - DKMC integration still not working properly, probably due to corrupt shellcode.
+    - when built as a service, debug logging into file does not work. this is probably a permission problem.
+
+    +++ CHANGES +++
+    - enacted build script naming reform, so that the most prominent feature is mentioned first in the script name
+    - added RC4 encoder/decoder
+    - pe_to_shellcode integration, which enables using .exe files as input by converting them into callable shellcode
+    - added ability to execute cmd/powershell command payloads at sample startup. these payloads are compatible with the built-in data retrieval methods.
+    - added static_from_here retrieval method to specify static inputs directly in the build script
+    - added ability to supply arguments for evasion techniques directly in the build script, e.g. specifying fopen file target
+    - added bitsadmin data retrieval method
+    - added environmental checks for sandbox evasion: checking VM MAC, number of CPU cores, checking VM registry keys
+    - example build scripts for new features
+    - general bugfixes and improvements
+
+
 Version 2
 
     +++ KNOWN ISSUES +++
