@@ -75,4 +75,4 @@ os.chmod('./build/tmpbuildscript.sh', st.st_mode | stat.S_IEXEC)
 subprocess.check_output(['/bin/bash','./build/tmpbuildscript.sh'], stderr=subprocess.STDOUT)
 os.remove('./build/tmpbuildscript.sh')
 
-print("\nThe output file should be placed in the current directory.\n\nBye...")
+print("\nThe output file should be placed in the output directory.\n\nBye...")
