@@ -619,17 +619,17 @@ Bye...
 More
 ====
 For basics about antivirus evasion, AVET & more information have a look here (most for version 1.3): 
-- https://govolution.wordpress.com/2018/08/07/paper-avet-blackhat-usa-arsenal-2018/
-- https://govolution.wordpress.com/2017/06/11/avet-video/
-- https://govolutionde.files.wordpress.com/2014/05/avevasion_pentestmag.pdf
-- https://deepsec.net/docs/Slides/2014/Why_Antivirus_Fails_-_Daniel_Sauder.pdf
-- https://twitter.com/DanielX4v3r
-- https://github.com/govolution/avetosx
-- https://github.com/tacticaljmp
-- https://github.com/Mr-Un1k0d3r/DKMC
-- https://github.com/m0n0ph1/Basic-File-Crypter
-- https://github.com/hasherezade/pe_to_shellcode
-- https://github.com/hasherezade/demos/
-- https://github.com/a0rtega/pafish
-- https://danielsauder.com
+- [https://govolution.wordpress.com/2018/08/07/paper-avet-blackhat-usa-arsenal-2018/](https://govolution.wordpress.com/2018/08/07/paper-avet-blackhat-usa-arsenal-2018/)
+- [https://govolution.wordpress.com/2017/06/11/avet-video/](https://govolution.wordpress.com/2017/06/11/avet-video/)
+- [https://govolutionde.files.wordpress.com/2014/05/avevasion_pentestmag.pdf](https://govolutionde.files.wordpress.com/2014/05/avevasion_pentestmag.pdf)
+- [https://deepsec.net/docs/Slides/2014/Why_Antivirus_Fails_-_Daniel_Sauder.pdf](https://deepsec.net/docs/Slides/2014/Why_Antivirus_Fails_-_Daniel_Sauder.pdf)
+- [https://twitter.com/DanielX4v3r](https://twitter.com/DanielX4v3r)
+- [https://github.com/govolution/avetosx](https://github.com/govolution/avetosx)
+- [https://github.com/tacticaljmp](https://github.com/tacticaljmp)
+- [https://github.com/Mr-Un1k0d3r/DKMC](https://github.com/Mr-Un1k0d3r/DKMC)
+- [https://github.com/m0n0ph1/Basic-File-Crypter](https://github.com/m0n0ph1/Basic-File-Crypter)
+- [https://github.com/hasherezade/pe_to_shellcode](https://github.com/hasherezade/pe_to_shellcode)
+- [https://github.com/hasherezade/demos/](https://github.com/hasherezade/demos/)
+- [https://github.com/a0rtega/pafish](https://github.com/a0rtega/pafish)
+- [https://danielsauder.com](https://danielsauder.com)
 
