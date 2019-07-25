@@ -1,7 +1,7 @@
 AntiVirus Evasion Tool
 ======================
 
-AVET is an AntiVirus Evasion Tool, which was developed for making life easier for pentesters and for experimenting with antivirus evasion techniques.
+AVET is an AntiVirus Evasion Tool, which was developed for making life easier for pentesters and for experimenting with antivirus evasion techniques, as well as other methods used by malicious software.
 For an overview of new features in **v2.1**, as well as past version increments, have a look at the **CHANGELOG** file.
 
 Version 2 came with a large architectural overhaul, which shifted the specifics for building the output executable from
