@@ -59,8 +59,8 @@ set_payload_execution_method exec_shellcode
 #enable_debug_print
 
 # compile 
-$win32_compiler -s -o output/output.exe source/avet.c -lwsock32 -lWs2_32
-strip output/output.exe
+$win32_compiler -s -o output/dkmc_downloadexecshc_revhttps_win32.exe source/avet.c -lwsock32 -lWs2_32
+strip output/dkmc_downloadexecshc_revhttps_win32.exe
 
 # cleanup
 cleanup_techniques

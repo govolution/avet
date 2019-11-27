@@ -46,8 +46,8 @@ set_payload_execution_method exec_shellcode
 enable_debug_print
 
 # compile
-$win32_compiler -o output/output.exe source/avet.c -lws2_32
-strip output/output.exe
+$win32_compiler -o output/cpucores_revhttps_win32.exe source/avet.c -lws2_32
+strip output/cpucores_revhttps_win32.exe
 
 # cleanup
 cleanup_techniques

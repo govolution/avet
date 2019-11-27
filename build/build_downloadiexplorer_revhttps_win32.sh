@@ -53,8 +53,8 @@ set_payload_execution_method exec_shellcode
 enable_debug_print
 
 # compile 
-$win32_compiler -o output/output.exe source/avet.c
-strip output/output.exe
+$win32_compiler -o output/downloadiexplorer_revhttps_win32.exe source/avet.c
+strip output/downloadiexplorer_revhttps_win32.exe
 
 # cleanup
 cleanup_techniques

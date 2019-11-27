@@ -46,9 +46,9 @@ set_payload_execution_method exec_shellcode
 # enable debug output
 enable_debug_print
 
-# compile to output.exe file
-$win32_compiler -o output/output.exe source/avet.c -lws2_32 -liphlpapi
-strip output/output.exe
+# compile to exe file
+$win32_compiler -o output/hasvmmac_revtcp_win32.exe source/avet.c -lws2_32 -liphlpapi
+strip output/hasvmmac_revtcp_win32.exe
 
 # cleanup
 cleanup_techniques

