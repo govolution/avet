@@ -11,7 +11,7 @@ This makes the configuration process more intuitive overall.
 Furthermore, the underlying code is now more modular, which eases the addition of new features.
 
 With the new architecture and features you are now quite flexible in building your executable.
-You may, for example, download your encrypted paylaod via powershell, while supplying the decryption key via command line argument at execution time, and finally inject your payload into another process, choosing from multiple techniques.
+You may, for example, download your encrypted payload via powershell, while supplying the decryption key via command line argument at execution time, and finally inject your payload into another process, choosing from multiple techniques.
 You may also add initial command executions and environmental sandbox checks.
 Chaining multiple iterations of AVET enables you to add multiple evasion layers, if necessary.
 
