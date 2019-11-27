@@ -75,8 +75,8 @@ set_payload_execution_method inject_shellcode
 enable_debug_print
 
 # compile 
-$win32_compiler -o output/output.exe source/avet.c -lws2_32
-strip output/output.exe
+$win32_compiler -o output/injectshc_targetfromcmd_fopen_gethostbyname_xor_revtcp_win32.exe source/avet.c -lws2_32
+strip output/injectshc_targetfromcmd_fopen_gethostbyname_xor_revtcp_win32.exe
 
 # cleanup
 cleanup_techniques

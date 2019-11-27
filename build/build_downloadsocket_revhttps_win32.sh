@@ -47,9 +47,9 @@ set_payload_execution_method exec_shellcode
 # enable debug output
 enable_debug_print
 
-# compile to pwn.exe file
-$win32_compiler -o output/output.exe source/avet.c -lwsock32 -lWs2_32
-strip output/output.exe
+# compile to exe file
+$win32_compiler -o output/downloadsocket_revhttps_win32.exe source/avet.c -lwsock32 -lWs2_32
+strip output/downloadsocket_revhttps_win32.exe
 
 # cleanup
 cleanup_techniques

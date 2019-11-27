@@ -42,9 +42,9 @@ set_payload_execution_method exec_shellcode_ASCIIMSF
 # enable debug output
 enable_debug_print
 
-# compile to pwn.exe file
-$win32_compiler -ffixed-eax -o output/output.exe source/avet.c
-strip output/output.exe
+# compile to exe file
+$win32_compiler -ffixed-eax -o output/asciimsf_fromcmd_revhttps_win32.exe source/avet.c
+strip output/asciimsf_fromcmd_revhttps_win32.exe
 
 # cleanup
 cleanup_techniques

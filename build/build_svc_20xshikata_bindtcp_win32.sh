@@ -59,9 +59,9 @@ set_payload_execution_method exec_shellcode
 # enable debug printing
 enable_debug_print to_file C:/avetdbg.txt
 
-# compile as service
-$win32_compiler -o output/service.exe source/avetsvc.c -lws2_32
-strip output/service.exe
+# compile
+$win32_compiler -o output/svc_20xshikata_bindtcp_win32.exe source/avetsvc.c -lws2_32
+strip output/svc_20xshikata_bindtcp_win32.exe
 
 # cleanup
 cleanup_techniques

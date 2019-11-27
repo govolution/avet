@@ -64,8 +64,8 @@ set_payload_execution_method exec_shellcode64
 enable_debug_print
 
 # compile final payload
-$win64_compiler -o output/output.exe source/avet.c
-strip output/output.exe
+$win64_compiler -o output/mimikatz_pe2shc_xorfromcmd_win64.exe source/avet.c
+strip output/mimikatz_pe2shc_xorfromcmd_win64.exe
 
 # cleanup
 cleanup_techniques

@@ -44,8 +44,8 @@ set_payload_execution_method exec_shellcode64
 enable_debug_print
 
 # compile
-$win64_compiler -o output/output.exe source/avet.c
-strip output/output.exe
+$win64_compiler -o output/fopen_mtrprtrxor_revhttps_win64.exe source/avet.c
+strip output/fopen_mtrprtrxor_revhttps_win64.exe
 
 # cleanup
 cleanup_techniques
