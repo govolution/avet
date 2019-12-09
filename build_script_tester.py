@@ -44,7 +44,7 @@ for script in build_scripts:
             finding = re.search(".*"+item+".*", output)
             if bool(finding):
                 print(finding.group())
-                failed += "%s:\n" % finding.group()
+                failed += "\t%s:\n" % finding.group()
         
 
     # test if .exe is generated
@@ -52,7 +52,7 @@ for script in build_scripts:
         print("%s executable could be created\n" % current_script)
     else:
         print("%s executable could NOT be created\n" % current_script)
-        failed += "%s executable could NOT be created\n" % current_script
+        failed += "\t%s executable could NOT be created\n" % current_script
     current += 1
 
 
