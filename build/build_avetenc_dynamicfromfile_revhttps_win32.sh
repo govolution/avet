@@ -58,4 +58,5 @@ strip output/avetenc_dynamicfromfile_revhttps_win32.exe
 cleanup_techniques
 
 
-echo "Call the generated executable like:\navetenc_dynamicfromfile_revhttps_win32.exe scenc_raw.txt"
+echo "
+Call the generated executable like:\navetenc_dynamicfromfile_revhttps_win32.exe scenc_raw.txt"

