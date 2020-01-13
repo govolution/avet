@@ -6,7 +6,7 @@
 
 # Usage example of generated output.exe:
 #
-# output.exe first second 480
+# injectshc_targetfromcmd_fopen_gethostbyname_xor_revtcp_win32.exe first second 480
 #
 # The first and second command line parameters can be arbitrary strings, as they are not used. We hust need the third command line parameter.
 #
@@ -80,3 +80,12 @@ strip output/injectshc_targetfromcmd_fopen_gethostbyname_xor_revtcp_win32.exe
 
 # cleanup
 cleanup_techniques
+
+echo "
+# Usage example of generated output.exe:\n
+#\n
+# injectshc_targetfromcmd_fopen_gethostbyname_xor_revtcp_win32.exe first second 480\n
+#\n
+# The first and second command line parameters can be arbitrary strings, as they are not used. We hust need the third command line parameter.\n
+#\n
+# Use the third parameter to specify the PID of the process you want to inject your payload into."

