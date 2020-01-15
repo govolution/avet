@@ -6,7 +6,7 @@ import subprocess
 import re
 
 # get list of build scripts and create directory named testing
-build_scripts = glob.glob('./build/build_*.sh')
+build_scripts = glob.glob('./build/build*.sh')
 count = len(build_scripts)
 
 if not os.path.isdir("./testing"):

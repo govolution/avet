@@ -11,7 +11,7 @@
 # The decryption key is     aabbccddee
 # You need to provide the decryption key as 2nd command line argument.
 # Call generated executable on target like:
-# output.exe 'your mimikatz arguments, probably coffee' aabbccddee
+# mimikatz_pe2shc_xorfromcmd_win64.exe 'your mimikatz arguments, probably coffee' aabbccddee
 
 
 # include script containing the compiler var $win64_compiler
@@ -69,3 +69,7 @@ strip output/mimikatz_pe2shc_xorfromcmd_win64.exe
 
 # cleanup
 cleanup_techniques
+
+echo "
+# Call generated executable on target like:
+# mimikatz_pe2shc_xorfromcmd_win64.exe 'your mimikatz arguments, probably coffee' [key]"

