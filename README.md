@@ -134,7 +134,7 @@ build_injectshc_targetfromcmd_fopen_gethostbyname_xor_revtcp_win32.sh
 build_kaspersky_fopen_shellrevtcp_win32.sh
 build_mimikatz_pe2shc_xorfromcmd_win64.sh
 build_rc4enc_mimikatz_win64.sh
-buildsvc_20xshikata_bindtcp_win32.sh
+build_svc_20xshikata_bindtcp_win32.sh
 ```
 
 Features
