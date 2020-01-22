@@ -1,5 +1,12 @@
 #!/bin/bash
 
+
+#DESCRIPTION_START
+# Executes 64-bit shellcode.
+# Uses Metasploit's xor encoding. Uses fopen sandbox evasion.
+#DESCRIPTION_END
+
+
 # include script containing the compiler var $win64_compiler
 # you can edit the compiler in build/global_win64.sh
 # or enter $win64_compiler="mycompiler" here
@@ -11,11 +18,6 @@
 # import global default lhost and lport values from build/global_connect_config.sh
 . build/global_connect_config.sh
 
-
-#DESCRIPTION_START
-# Executes 64-bit shellcode.
-# Uses Metasploit's xor encoding. Uses fopen sandbox evasion.
-#DESCRIPTION_END
 
 #CONFIGURATION_START
 # override connect-back settings here, if necessary

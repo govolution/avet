@@ -61,7 +61,7 @@ def print_tag(choice, tag):
                 switch = True
 
 
-# Here the user is able to make changes of options which are between the #CONFIGURATION Tags
+# Here, the user is able to make changes of options which are between the #CONFIGURATION Tags
 # The whole Build Script with changes is copied to a temporary script "avet_script_config.sh"
 def build_script_configurator(choice):
     print("\nConfigure the Build Script")
@@ -78,7 +78,15 @@ def build_script_configurator(choice):
                 if line[0:2] == "# ":
                     print("\n"+line.strip())
                 else:
-                    current_line = rlinput("-> " , line.strip())
+                    if "$GLOBAL" in line:
+                        host, port = fetch_global_connect()
+                        if line[0:6] == "LPORT=":
+                            current_line = rlinput("-> " , "LPORT=" + port)
+                        elif line[0:6] == "LHOST=":
+                            current_line = rlinput("-> " , "LHOST=" + host)
+                    else:
+                        current_line = rlinput("-> " , line.strip())
+                    
                     config.write(current_line + "\n")
             else:
                 config.write(line)
@@ -86,6 +94,18 @@ def build_script_configurator(choice):
             if line == '#CONFIGURATION_START\n':
                 switch = True
         print("\nExecutable will be created Shortly please wait.\n")
+
+
+# This fuction opens global_connect_config.sh and return host and port
+def fetch_global_connect():
+    with open("./global_connect_config.sh") as connect:
+        for line in connect:
+            if line[0:13] == "GLOBAL_LHOST=":
+                host = line[13:]
+            if line[0:13] == "GLOBAL_LPORT=":
+                port = line[13:]
+
+    return host.strip(), port.strip()
 
 
 # The tempory script will be executed
@@ -109,7 +129,7 @@ def main():
     build()
     print_tag("./build/" + choice.strip("./"), "USAGE")
 
-    os.remove("./build/avet_script_config.sh")
+    #os.remove("./build/avet_script_config.sh")
 
 if __name__ == "__main__":
     main()

