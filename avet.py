@@ -22,6 +22,7 @@ AVET Fabric by Daniel Sauder, Florian Saager
     print(banner)
     print("\nWelcome to the avet Assistant!\n")
 
+
 # define rlinput (for user input with placeholder)
 def rlinput(prompt, prefill=''):
 	readline.set_startup_hook(lambda: readline.insert_text(prefill))
@@ -31,11 +32,13 @@ def rlinput(prompt, prefill=''):
 		readline.set_startup_hook()
 
 
-# Print avaiable Build Scripts and asks for the users choice
+# Enumerate and print available Build Scripts and asks for a choice
+# also returns the choice
 def print_build_scripts():
     os.chdir("./build")
 
     build_scripts = glob.glob('./build*.sh')
+    build_scripts.sort()
     for i, script in enumerate(build_scripts):
         print("%d : %s" % (i, script.strip("./")))
     
@@ -61,8 +64,8 @@ def print_tag(choice, tag):
                 switch = True
 
 
-# Here, the user is able to make changes of options which are between the #CONFIGURATION Tags
-# The whole Build Script with changes is copied to a temporary script "avet_script_config.sh"
+# Here, the user is able to make changes of the options which are between the #CONFIGURATION Tags
+# The whole Build Script with changes will be copied to a temporary script "avet_script_config.sh"
 def build_script_configurator(choice):
     print("\nConfigure the Build Script")
     with open(choice, 'r') as file:
@@ -78,12 +81,18 @@ def build_script_configurator(choice):
                 if line[0:2] == "# ":
                     print("\n"+line.strip())
                 else:
+                    # Replace host and port Variable with the decimal numbers configured in global_connect_config.sh
                     if "$GLOBAL" in line:
                         host, port = fetch_global_connect()
                         if line[0:6] == "LPORT=":
                             current_line = rlinput("-> " , "LPORT=" + port)
                         elif line[0:6] == "LHOST=":
                             current_line = rlinput("-> " , "LHOST=" + host)
+
+                    # only configure the key, not the raw file
+                    elif "generate_key" in line:
+                        current_line = rlinput("-> " , line[0:-19]) 
+                        current_line += line[-19:]
                     else:
                         current_line = rlinput("-> " , line.strip())
                     
@@ -96,7 +105,7 @@ def build_script_configurator(choice):
         print("\nExecutable will be created Shortly please wait.\n")
 
 
-# This fuction opens global_connect_config.sh and return host and port
+# This fuction opens global_connect_config.sh and returns host and port
 def fetch_global_connect():
     with open("./global_connect_config.sh") as connect:
         for line in connect:
@@ -129,7 +138,7 @@ def main():
     build()
     print_tag("./build/" + choice.strip("./"), "USAGE")
 
-    #os.remove("./build/avet_script_config.sh")
+    os.remove("./build/avet_script_config.sh")
 
 if __name__ == "__main__":
     main()

