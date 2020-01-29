@@ -65,6 +65,6 @@ strip output/avetenc_mtrprtrxor_revhttps_win64.exe
 cleanup_techniques
 
 
-#USAGE_START
-TODO
-#USAGE_END
+echo "
+todo
+"

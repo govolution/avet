@@ -58,7 +58,7 @@ strip output/fopen_mtrprtrxor_revhttps_win64.exe
 # cleanup
 cleanup_techniques
 
-#USAGE_START
+echo "
 # Execute the following command:
 # $ fopen_mtrprtrxor_revhttps_win64.exe
-#USAGE_END
+"

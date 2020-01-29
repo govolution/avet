@@ -12,6 +12,9 @@
 #DESCRIPTION_END
 
 
+# print AVET logo
+cat banner.txt
+
 # include script containing the compiler var $win64_compiler
 # you can edit the compiler in build/global_win64.sh
 # or enter $win64_compiler="mycompiler" here
@@ -31,9 +34,6 @@ set_command_exec no_command
 generate_key preset aabbccdd1122 input/key_raw.txt
 #CONFIGURATION_END
 
-
-# print AVET logo
-cat banner.txt
 
 # convert mimikatz executable into shellcode format
 # Can be of course used with other .exe files
@@ -68,7 +68,10 @@ strip output/rc4enc_mimikatz_win64.exe
 # cleanup
 cleanup_techniques
 
-#USAGE_START
+
+echo "
+# The decryption key is aabbccddee if it has not been changed.
+# You need to provide the decryption key as 2nd command line argument.
 # Call generated executable on target like:
-# rc4enc_mimikatz_win64.exe 'your mimikatz arguments, probably coffee'
-#USAGE_END
+# $ rc4enc_mimikatz_win64.exe [your mimikatz arguments, probably 'coffee']  [decryption key]
+"

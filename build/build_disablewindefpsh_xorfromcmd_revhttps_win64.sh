@@ -71,10 +71,7 @@ strip output/disablewindefpsh_xorfromcmd_revhttps_win64.exe
 cleanup_techniques
 
 echo "
-Call on target like:
-disablewindefpsh_xorfromcmd_revhttps_win64.exe first aabbccddee"
-
-#USAGE_START
-# Call on target like: 
-# disablewindefpsh_xorfromcmd_revhttps_win64.exe first aabbccddee
-#USAGE_END
+# The decryption key is aabbccddee if it has not been changed.
+# Call on target like:
+# disablewindefpsh_xorfromcmd_revhttps_win64.exe first [decryption key]
+"

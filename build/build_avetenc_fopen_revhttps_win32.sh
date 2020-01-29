@@ -67,6 +67,6 @@ strip output/avetenc_fopen_revhttps_win32.exe
 cleanup_techniques
 
 
-#USAGE_START
-TODO
-#USAGE_END
+echo "
+todo
+"

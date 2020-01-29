@@ -63,6 +63,7 @@ strip output/hasvmkey_revhttps_win32.exe
 # cleanup
 cleanup_techniques
 
-#USAGE_START
+
+echo "
 TODO
-#USAGE_END
+"

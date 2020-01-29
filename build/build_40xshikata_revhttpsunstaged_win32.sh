@@ -57,6 +57,6 @@ strip output/40xshikata_revhttpsunstaged_win32.exe
 cleanup_techniques
 
 
-#USAGE_START
-# TODO
-#USAGE_END
+echo "
+todo
+"

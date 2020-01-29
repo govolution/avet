@@ -136,7 +136,6 @@ def main():
     print_tag(choice, "DESCRIPTION")
     build_script_configurator(choice)
     build()
-    print_tag("./build/" + choice.strip("./"), "USAGE")
 
     os.remove("./build/avet_script_config.sh")
 

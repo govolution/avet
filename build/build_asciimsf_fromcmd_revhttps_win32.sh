@@ -57,11 +57,8 @@ strip output/asciimsf_fromcmd_revhttps_win32.exe
 # cleanup
 cleanup_techniques
 
+
 echo "
-Call the generated output.exe on target, delivering the shellcode string in output/sc_alpha_mixed.txt as command line argument"
-
-
-#USAGE_START
-# Call the generated .exe on target, 
-# delivering the shellcode string in output/sc_alpha_mixed.txt as command line argument
-#USAGE_END
+# Call the generated .exe on target delivering the shellcode string in output/sc_alpha_mixed.txt as command line argument:
+# $ asciimsf_fromcmd_revhttps_win32.exe sc_alpha_mixed.txt
+"

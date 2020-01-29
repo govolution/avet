@@ -67,6 +67,7 @@ strip output/kaspersky_fopen_shellrevtcp_win32.exe
 # cleanup
 cleanup_techniques
 
-#USAGE_START
+
+echo "
 TODO
-#USAGE_END
+"

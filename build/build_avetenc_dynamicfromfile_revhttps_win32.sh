@@ -61,11 +61,8 @@ strip output/avetenc_dynamicfromfile_revhttps_win32.exe
 # cleanup
 cleanup_techniques
 
-echo "
-Call the generated executable like:
-avetenc_dynamicfromfile_revhttps_win32.exe scenc_raw.txt"
 
-#USAGE_START
+echo "
 # Call the generated executable like:
-# avetenc_dynamicfromfile_revhttps_win32.exe scenc_raw.txt
-#USAGE_END
+# $ avetenc_dynamicfromfile_revhttps_win32.exe scenc_raw.txt
+"

@@ -61,6 +61,6 @@ strip output/calcfrompowersh_50xshikata_revhttps_win32.exe
 cleanup_techniques
 
 
-#USAGE_START
+echo "
 TODO
-#USAGE_END
+"
