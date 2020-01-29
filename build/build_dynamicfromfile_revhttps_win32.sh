@@ -59,6 +59,6 @@ cleanup_techniques
 
 
 echo "
-Call the generated executable like:
-$ dynamicfromfile_revhttps_win32.exe thepayload.bin
+# Call the generated executable like:
+# $ dynamicfromfile_revhttps_win32.exe thepayload.bin
 "
