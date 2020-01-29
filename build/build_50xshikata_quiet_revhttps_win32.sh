@@ -59,6 +59,8 @@ strip output/50xshikata_quiet_revhttps_win32.exe
 # cleanup
 cleanup_techniques
 
+
 echo "
-todo
+# Execute the following command:
+# $ 50xshikata_quiet_revhttps_win32.exe
 "

@@ -62,5 +62,6 @@ cleanup_techniques
 
 
 echo "
-todo
+# Execute the following command:
+# $ hasvmmac_revtcp_win32.exe
 "

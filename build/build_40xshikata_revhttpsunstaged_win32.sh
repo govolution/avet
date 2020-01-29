@@ -58,5 +58,6 @@ cleanup_techniques
 
 
 echo "
-todo
+# Execute the following command:
+# $ 40xshikata_revhttpsunstaged_win32.exe
 "

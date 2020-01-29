@@ -65,5 +65,6 @@ cleanup_techniques
 
 
 echo "
-TODO
+# Execute the following command:
+# $ hasvmkey_revhttps_win32.exe
 "

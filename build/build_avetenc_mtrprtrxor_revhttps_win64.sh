@@ -66,5 +66,6 @@ cleanup_techniques
 
 
 echo "
-todo
+# Execute the following command:
+# $ avetenc_mtrprtrxor_revhttps_win64.exe
 "

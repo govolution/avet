@@ -68,5 +68,6 @@ cleanup_techniques
 
 
 echo "
-todo
+# Execute the following command:
+# $ avetenc_fopen_revhttps_win32.exe
 "

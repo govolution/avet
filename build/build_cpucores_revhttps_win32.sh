@@ -61,5 +61,6 @@ cleanup_techniques
 
 
 echo "
-todo
+# Execute the following command:
+# $ cpucores_revhttps_win32.exe
 "

@@ -62,5 +62,6 @@ cleanup_techniques
 
 
 echo "
-todo
+# Execute the following command:
+# $ gethostbyname_revhttps_win32.exe
 "

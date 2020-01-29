@@ -62,5 +62,6 @@ cleanup_techniques
 
 
 echo "
-todo
+# Execute the following command:
+# $ calcfromcmd_50xshikata_revhttps_win32.exe
 "

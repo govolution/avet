@@ -69,5 +69,6 @@ cleanup_techniques
 
 
 echo "
-TODO
+# Execute the following command:
+# $ kaspersky_fopen_shellrevtcp_win32.exe
 "

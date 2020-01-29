@@ -74,6 +74,7 @@ strip output/svc_20xshikata_bindtcp_win32.exe
 cleanup_techniques
 
 echo "
-TODO
+# Execute the following command:
+# $ svc_20xshikata_bindtcp_win32.exe
 "
 
