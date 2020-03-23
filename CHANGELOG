@@ -1,6 +1,10 @@
 CHANGELOG
 ---------
 
+Version 2.2
+	+++ CHANGES +++
+	- Generated executables are now named after their buildscripts instead of "output.exe".
+	-
 
 Version 2.1
     
