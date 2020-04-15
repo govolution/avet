@@ -49,21 +49,6 @@ The modified version is executed once, and your executable built.
 
 Here's a quick example (python3 || gtfo):
 ```
-## AVET Fabric
-
-**avet_fabric** is a small Python utility which was designed to assist you in using the tool.
-
-It lists all scripts that are currently present in the build folder. After selecting one, you will be able to step through the script line by line, having the opportunity to modify the contents on the fly.
-
-The latter is especially useful as you can define new LHOST and LPORT variables for msfvenom each time you run a build script via the fabric. 
-You can define default LHOST and LPORT values in the `/build/global_connect_config.sh` file, which are used if you don't redefine.
-
-These modifications are temporary, which means that any changes you made will not persist in the build script on disk.
-The modified version is executed once, and your executable built.
-
-Here's a quick example (python3 || gtfo):
-
-```
 python3 avet_fabric.py 
 
                        .|        ,       +
