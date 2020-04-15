@@ -76,9 +76,7 @@ python3 avet_fabric.py
  ___|  '-'     '    ""       '-'   '-.'    '`      |____
 jgs~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-AVET Fabric by Daniel Sauder, Florian Saager
-
-avet_fabric.py is an assistant for building exe files with shellcode payloads for targeted attacks and antivirus evasion.
+avet.py is an assistant for building exe files with shellcode payloads for targeted attacks and antivirus evasion.
 
 0: build_40xshikata_revhttpsunstaged_win32.sh
 1: build_injectshc_targetfromcmd_fopen_gethostbyname_xor_revhttps_win64.sh
