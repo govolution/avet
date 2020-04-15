@@ -35,6 +35,12 @@ If for whatever reason you want to do things manually:
 How to install tdm-gcc with wine:
 [https://govolution.wordpress.com/2017/02/04/using-tdm-gcc-with-kali-2/](https://govolution.wordpress.com/2017/02/04/using-tdm-gcc-with-kali-2/)
 
+Important Note
+--------------
+Not all techniques will evade every AV engine. If one technique or build script does not work, please test another one.
+Feel free to experiment! After all this is a toolbox - yet you should wield the hammer yourself.
+
+
 ## avet.py
 
 **avet.py** is a small Python utility which was designed to assist you in using the tool.
@@ -182,12 +188,6 @@ The output file should be placed in the output directory.
 Bye...
 
 ```
-
-Important Note
---------------
-Not all techniques will evade every AV engine. If one technique or build script does not work, please test another one.
-Feel free to experiment! After all this is a toolbox - yet you should wield the hammer yourself.
-
 
 How to use 
 ----------
