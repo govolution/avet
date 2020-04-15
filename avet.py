@@ -17,7 +17,6 @@ def print_banner():
  ___|  '-'     '    ""       '-'   '-.'    '`      |____
 jgs~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-AVET Fabric by Daniel Sauder, Florian Saager
 """
     print(banner)
     print("\nWelcome to the avet Assistant!\n")
