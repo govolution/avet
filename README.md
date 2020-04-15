@@ -14,6 +14,7 @@ Some features:
 - Chaining multiple iterations of AVET enables you to add multiple evasion layers, if necessary
 - combination of techniques: download your encrypted payload via powershell, while supplying the decryption key via command line argument at execution time, and finally inject your payload into another process, choosing from multiple techniques
 - basic sandbox checks
+- executie all available build scripts with build_script_tester.py, might also be interesting for researchers for building a set of "malicious" samples using different evasion and injection techniques
 
 
 Installation
@@ -186,7 +187,6 @@ Please stand by...
 The output file should be placed in the output directory.
 
 Bye...
-
 ```
 
 How to use 
@@ -603,9 +603,6 @@ Domain : ARBEITSGRUPPE
 Logged On Users : 2
 Meterpreter : x86/windows
 ```
-
-
-
 
 
 More
