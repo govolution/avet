@@ -2,7 +2,7 @@
 
 
 #DESCRIPTION_START
-# Downloads and executes 64-bit shellcode, using bitsadmin. Applies metasploit XOR encoding.
+# Downloads and executes 64-bit shellcode, using curl. Applies metasploit XOR encoding.
 #DESCRIPTION_END
 
 
