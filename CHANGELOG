@@ -10,6 +10,8 @@ Version 2.2
 	- new build scripts structure with tags(tags are only relevant for avet.py) 
 	- adjust setup to work with Kali 2020.1
 	- updated tdm-gcc to version 9.2.0
+	- added curl as download method
+	
 
 Version 2.1
     
