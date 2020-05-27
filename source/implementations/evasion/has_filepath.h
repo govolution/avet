@@ -1,20 +1,22 @@
 #pragma once
 
 #include <stdio.h>
-#include <io.h>
-#include "shlwapi.h"
-#pragma comment(lib, "Shlwapi.lib")
+#include <stdlib.h>
+#include <sys/stat.h>
 #include "../debug_print/debug_print.h"
 
-void has_filepath(LPCWSTR arg1) {
 
+void has_background_wp(char *arg1) {
+    DEBUG_PRINT("Applying has_recycle_bin evasion technique.\n");
+    DEBUG_PRINT("Exiting if recycle bin does not exists.\n");
 
-    DEBUG_PRINT("Applying has_filepath evasion technique.\n");
-    DEBUG_PRINT("Exiting if given filepath does not exist.\n");
+    struct stat stats;
 
-    if (PathFileExists(arg1)) {
-		DEBUG_PRINT("Proceed!\n")
-	} else {
-		exit(0)
-	}
+    stat(arg1, &stats);
+
+    if (S_ISDIR(stats.st_mode)) {
+        DEBUG_PRINT("Proceed!\n");
+    } else {
+        exit(0);
+    }
 }
