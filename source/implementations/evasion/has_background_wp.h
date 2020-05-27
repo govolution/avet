@@ -14,6 +14,6 @@ void has_background_wp() {
    if( access("%appdata\\Microsoft\\Windows\\Themes\\TranscodedWallpaper", F_OK ) != -1 ) {
        DEBUG_PRINT("Proceed!\n");
     } else {
-    exit(0);
+        exit(0);
     }
 }
