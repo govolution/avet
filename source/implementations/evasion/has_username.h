@@ -5,7 +5,7 @@
 #include <windows>
 #include "../debug_print/debug_print.h"
 
-void has_unsername(char *arg1) {
+void has_username(char *arg1) {
 
     char* username[100];
 
