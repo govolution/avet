@@ -8,8 +8,8 @@
 
 
 void get_bios_info() {
-    DWORD FirmwareTableProviderSignature[500], FirmwareTableID[500], BufferSize[3000];
-    PVOID pFirmwareTableBuffer[3000];
+    DWORD FirmwareTableProviderSignature, FirmwareTableID, BufferSize;
+    PVOID pFirmwareTableBuffer;
 
     
 
@@ -20,6 +20,6 @@ void get_bios_info() {
         DEBUG_PRINT("Print Bios Info:\n%s\n%s\n", FirmwareTableProviderSignature, FirmwareTableID);
         DEBUG_PRINT("Proceed!\n");
     } else {
-        exit(0)
+        exit(0);
     }
 }
