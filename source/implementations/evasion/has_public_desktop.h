@@ -7,7 +7,7 @@
 
 
 
-void has_background_wp() {
+void has_public_desktop() {
     DEBUG_PRINT("Applying has_public_desktop evasion technique.\n");
     DEBUG_PRINT("Exiting if public desktop does not exists.\n");
 

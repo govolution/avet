@@ -7,7 +7,7 @@
 
 
 
-void has_background_wp() {
+void has_recycle_bin() {
     DEBUG_PRINT("Applying has_recycle_bin evasion technique.\n");
     DEBUG_PRINT("Exiting if recycle bin does not exists.\n");
 
