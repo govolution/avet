@@ -5,10 +5,11 @@
 #include <sys/stat.h>
 #include "../debug_print/debug_print.h"
 
-
+// This fuction checks if a folder exists.
+// path must be in unix style, because "\" makes some problems
 void has_folder(char *arg1) {
     DEBUG_PRINT("Applying has_folder evasion technique.\n");
-    DEBUG_PRINT("Exiting if folder does not exists.\n");
+    DEBUG_PRINT("Exiting if %s does not exists.\n", arg1);
 
     struct stat stats;
 
