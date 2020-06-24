@@ -1,8 +1,12 @@
 /* Large parts of the code copied/inspired from https://github.com/a0rtega/pafish
    should work for vmware and VirtualBox */
+#pragma once
 
 #include <stdio.h>
+#include <stdlib.h>
+#include <winsock2.h>
 #include <windows.h>
+#include <iphlpapi.h>
 #include "../debug_print/debug_print.h"
 
 
@@ -45,7 +49,7 @@ void has_vm_mac()
 	*/
 	if (pafish_check_mac_vendor("\x00\x05\x69")) {
         DEBUG_PRINT("MAC VMWare found.\n");
-		exit(0); 
+		exit(0);
     }
 	else if (pafish_check_mac_vendor("\x00\x0C\x29")) {
         DEBUG_PRINT("MAC VMWare found.\n");
@@ -58,11 +62,11 @@ void has_vm_mac()
 	else if (pafish_check_mac_vendor("\x00\x50\x56")) {
         DEBUG_PRINT("MAC VMWare found.\n");
 		exit(0);
-	} 
+	}
 	/* VirtualBox mac starts with 08:00:27 */
 	else if (pafish_check_mac_vendor("\x08\x00\x27")) {
         DEBUG_PRINT("MAC VirtualBox found.\n");
 		exit(0);
-	} 
+	}
 
 }
