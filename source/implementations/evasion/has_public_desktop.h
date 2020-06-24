@@ -6,7 +6,7 @@
 #include "../debug_print/debug_print.h"
 
 
-
+// Check if Public Desktop exists, proceed if this is the case
 void has_public_desktop() {
     DEBUG_PRINT("Applying has_public_desktop evasion technique.\n");
     DEBUG_PRINT("Exiting if public desktop does not exists.\n");

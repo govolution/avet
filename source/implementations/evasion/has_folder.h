@@ -6,7 +6,9 @@
 #include "../debug_print/debug_print.h"
 
 // This fuction checks if a folder exists.
-// path must be in unix style, because "\" makes some problems
+//
+// arg1:  path to folder
+// must be in unix style, because "\" makes problems
 void has_folder(char *arg1) {
     DEBUG_PRINT("Applying has_folder evasion technique.\n");
     DEBUG_PRINT("Exiting if %s does not exists.\n", arg1);

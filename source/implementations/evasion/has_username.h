@@ -6,10 +6,14 @@
 #include <stdlib.h>
 #include "../debug_print/debug_print.h"
 
+
+// Lookup the username of the current user
+//
+// arg1: username, if given username does not match with the fetched username
+// the Program exits
 void has_username(char *arg1) {
 
   char* username = getenv("USERNAME");;
-
 
 
   DEBUG_PRINT("Applying has_username evasion technique.\n");

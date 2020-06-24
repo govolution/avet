@@ -15,6 +15,9 @@ struct RawSMBIOSData
     BYTE    SMBIOSTableData[];
 };
 
+// Checks if it is possible to fetch SMBIOS firmware table
+//
+// Proceed if possible, else exit.
 void get_bios_info() {
   DWORD smBiosDataSize = 0;
   struct RawSMBIOSData *smBiosData = NULL;

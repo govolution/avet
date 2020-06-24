@@ -6,6 +6,9 @@
 #include "../debug_print/debug_print.h"
 
 
+// Fetch Installation date of Windows
+//
+// arg1:    Date in dd/mm/yyyy, If dates doesn't match the program exits.
 void get_install_date(char *arg1) {
   char *cmd = "systeminfo | find /i \"original\"";
   FILE *fp;

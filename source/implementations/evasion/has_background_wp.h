@@ -7,7 +7,7 @@
 #include "../debug_print/debug_print.h"
 
 
-
+// Proceed if a background wallpaper is set, else exits
 void has_background_wp() {
     char * appdata = getenv("APPDATA");
 
