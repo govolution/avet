@@ -7,7 +7,7 @@
 
 
 // Check if Public Desktop exists, proceed if this is the case
-void has_public_desktop() {
+void has_public_desktop(char *arg1) {
     DEBUG_PRINT("Applying has_public_desktop evasion technique.\n");
     DEBUG_PRINT("Exiting if public desktop does not exists.\n");
 

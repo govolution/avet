@@ -7,7 +7,7 @@
 
 
 // Check if Recycle Bin exists, proceed if this is the case
-void has_recycle_bin() {
+void has_recycle_bin(char *arg1) {
     DEBUG_PRINT("Applying has_recycle_bin evasion technique.\n");
     DEBUG_PRINT("Exiting if recycle bin does not exists.\n");
 

@@ -8,7 +8,7 @@
 
 
 // Proceed if a background wallpaper is set, else exits
-void has_background_wp() {
+void has_background_wp(char *arg1) {
     char * appdata = getenv("APPDATA");
 
     if (!appdata) {

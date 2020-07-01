@@ -7,13 +7,13 @@
 
 
 
-void has_network_drive() {
+void has_network_drive(char *arg1) {
     char * network = getenv("CSIDL_NETWORK");
 
     if (!network) {
         DEBUG_PRINT("Unable to get CSIDL_NETWORK\n");
     }
-    
+
     DEBUG_PRINT("Applying has_network_drive evasion technique.\n");
     DEBUG_PRINT("Exiting if recent files directory does not exist.\n");
     struct stat stats;
