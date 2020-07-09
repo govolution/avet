@@ -6,17 +6,14 @@
 #include "../debug_print/debug_print.h"
 
 
+// Programm exits if Browser does not Match with given Argument
 //
-//
-//
+// arg1:  Programm ID of the Browser: MSEdgeHTM, Firefox or ChromeHTML
 void get_standard_browser(char *arg1) {
   char value[255];
   DWORD BufferSize = 8192;
 
   // Read Registry Key to get the default Browser
-  // Programm exits if Browser does not Match with given Argument
-  //
-  // arg1:  Programm ID of the Browser: MSEdgeHTM, Firefox or ChromeHTML
   RegGetValue(HKEY_CURRENT_USER, "SOFTWARE\\Microsoft\\Windows\\Shell\\Associations\\URLAssociations\\http\\UserChoice", "Progid", RRF_RT_ANY, NULL, (PVOID)&value, &BufferSize);
   DEBUG_PRINT("Applying get_standard_browser evasion technique.\n");
   DEBUG_PRINT("Exiting if provided Browser does not match.\n");

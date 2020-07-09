@@ -13,7 +13,7 @@ void has_recent_files() {
     if (!recentFiles) {
         DEBUG_PRINT("Unable to get CSIDL_RECENT\n");
     }
-    
+
     DEBUG_PRINT("Applying has_recent_files evasion technique.\n");
     DEBUG_PRINT("Exiting if recent files directory does not exist.\n");
     struct stat stats;
