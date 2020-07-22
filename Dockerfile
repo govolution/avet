@@ -8,7 +8,7 @@
 # gentilkiwi/mimikatz
 #
 # To build this run:
-# $ sudo docker build -t avet .
+# $ sudo docker build -t avet:v0.1 .
 #
 # To start this:
 # $ sudo docker run -it --net=host --env="DISPLAY" --volume="$HOME/.Xauthority:/root/.Xauthority:rw" -v $(pwd):/tools/avet/output avet /bin/bash
