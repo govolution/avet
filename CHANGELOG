@@ -1,20 +1,26 @@
 CHANGELOG
 ---------
 
+Version 2.3
+	+++CHANGES +++
+	- switch to Mingw-Crosscompiler
+	- add Dockerfile which encapsulates Metasploit and Avet
+
+
 Version 2.2
 	+++ CHANGES +++
 	- Generated executables are now named after their buildscripts instead of "output.exe".
 	- added "build_script_tester.py", a script which executes all build scripts and fetch error messages.
 	- Usage of executables is now echoed to screen
 	- replace "avet_fabric.py" with "avet.py". "avet.py" helps new users to configure and build scripts without changing the orignal build script.
-	- new build scripts structure with tags(tags are only relevant for avet.py) 
+	- new build scripts structure with tags(tags are only relevant for avet.py)
 	- adjust setup to work with Kali 2020.1
 	- updated tdm-gcc to version 9.2.0
 	- added curl as download method
-	
+
 
 Version 2.1
-    
+
     +++ KNOWN ISSUES +++
     - DKMC integration still not working properly, probably due to corrupt shellcode.
     - when built as a service, debug logging into file does not work. this is probably a permission problem.
@@ -37,7 +43,7 @@ Version 2
     +++ KNOWN ISSUES +++
 	- downloadexecshellcode_DKMC not working properly. DKMC probably delivers corrupt shellcode, needs further investigation.
     - when built as a service, debug logging into file does not work. this is probably a permission problem.
-	
+
 	+++ CHANGES +++
 
     General rebuild:
@@ -71,12 +77,12 @@ Version 2
 
     BFG integration (BFG project:   https://github.com/govolution/bfg)
     - major renaming from "shellcode" into "payload" in sources and scripts
-    - introduced new data retrieval category get_payload_info, where parameters such as target process PID can be delivered for hollowing, injection etc.  
+    - introduced new data retrieval category get_payload_info, where parameters such as target process PID can be delivered for hollowing, injection etc.
     - added reset_evasion_tecnhnique_counter build script function to support compilation of multiple payloads in one build script
     - integrated process hollowing for 32 and 64 bit targets from BFG, including new build scripts
     - integrated shellcode injection for 32 and 64 bit targets from BFG, including new build scripts
-    - integrated dll injection for 32 and 64 bit targets from BFG, including new build scripts    
-	
+    - integrated dll injection for 32 and 64 bit targets from BFG, including new build scripts
+
 	For details, consider the commit messages.
 
 
