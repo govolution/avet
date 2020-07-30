@@ -397,11 +397,39 @@ If an unpleasant execution environment is detected (e.g. an AV sandbox), executi
 Currently, you can arbitrarily queue up to 10 checks. Using the same technique multiple times is supported.
 The queue limit *EVASION_ARRAY_SIZE* can however be easily modified in *avet.c*.
 
+##### sleep
+Sleep for certain time before execution. The duration(in milliseconds) can be specified in the build script, like
+
+```
+# sleep for 3 seconds
+add_evasion evasion_by_sleep 3000
+```
+
+##### Username
+Get username and compare with given username. Exit if it does not match.
+
+```
+add_evasion has_username 'IEUser'
+```
+
+##### interactive Messagebox
+Spawn simple Messagebox before execution. If Arithmetic is not solved correctly, the program exits.
+```
+add_evasion interactive_msg_box
+```
+
 ##### fopen
 Checks for the existence of a file. If not found, stop execution.
 The file name can be specified in the build script, like
 ```
 add_evasion fopen_sandbox_evasion 'c:\\windows\\system.ini'
+```
+
+##### bios info
+Checks if it is possible to fetch SMBIOS firmware table. Stop execution if not.
+
+```
+add_evasion get_bios_info
 ```
 
 ##### gethostbyname
@@ -434,6 +462,64 @@ Not really an evasion technique, but hides your console window ;)
 ```
 add_evasion hide_console
 ```
+
+##### Installation Date
+Fetch Installation date of Windows and compare it to the specified one. If the dates do not match, stop execution. The date needs to be specified in format dd/mm/yyyy.
+
+```
+add_evasion get_install_date '24/11/2007'
+```
+
+##### Number of Processes
+Count the number of running Processes. If the number of the processes is smaller than given threshold, stop execution.
+
+```
+add_evasion get_num_processes 50
+```
+
+##### Standard Browser
+Read Registry Key to get the default Browser. If the Browser does not match with given value, stop execution. Possible values are  MSEdgeHTM, Firefox or ChromeHTML.
+
+```
+add_evasion get_standard_browser 'Firefox'
+```
+
+##### Background wallpaper
+Check if background wallpaper is set. Stop execution if not.
+
+```
+add_evasion has_background_wp
+```
+
+##### Folders and more
+Check if Artifact exists, stop execution if not. Paths must be in Unix style.
+
+
+Check for folder:
+```
+add_evasion has_folder 'C:/Users/user/Downloads/'
+```
+
+Check for Public Desktop:
+```
+add_evasion has_public_desktop
+```
+
+Check for Recycle Bin
+```
+add_evasion has_recycle_bin
+```
+
+Check for recent file folder
+```
+add_evasion has_recent_files
+```
+
+Check for network drive
+```
+add_evasion has_network_drive
+```
+
 
 ### Additional command execution
 Grants you the ability to execute an additional cmd/powershell payload directly after the eventual sandbox evasion functions.
