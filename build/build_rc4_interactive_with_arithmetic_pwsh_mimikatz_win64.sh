@@ -34,7 +34,7 @@ set_command_source no_data
 set_command_exec no_command
 
 # powershell open MessageBox with text field and ok button
-add_evasion interactive_msg_box
+add_evasion interaction_msg_box
 
 # convert mimikatz executable into shellcode format
 # Can be of course used with other .exe files

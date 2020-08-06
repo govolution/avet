@@ -405,6 +405,13 @@ Sleep for certain time before execution. The duration(in milliseconds) can be sp
 add_evasion evasion_by_sleep 3000
 ```
 
+##### sleep by ping
+Halt execution of the program for specified seconds by invoking a timed ping command against localhost.
+The program pings once each second.
+```
+add_evasion sleep_by_ping
+```
+
 ##### Username
 Get username and compare with given username. Exit if it does not match.
 
@@ -412,10 +419,22 @@ Get username and compare with given username. Exit if it does not match.
 add_evasion has_username 'IEUser'
 ```
 
-##### interactive Messagebox
+##### Messagebox
 Spawn simple Messagebox before execution. If Arithmetic is not solved correctly, the program exits.
 ```
-add_evasion interactive_msg_box
+add_evasion interaction_msg_box
+```
+
+##### getchar
+Wait until input is delivered using getchar.
+```
+add_evasion interaction_getchar
+```
+
+##### system pause
+Execute system("pause"), causing the spawned cmd (and our main process) to wait for any keypress.
+```
+add_evasion interaction_system_pause
 ```
 
 ##### fopen
@@ -490,6 +509,25 @@ Check if background wallpaper is set. Stop execution if not.
 ```
 add_evasion has_background_wp
 ```
+
+##### Computation
+Fibonacci
+
+Compute specified iterations of the Fibonacci series.
+Will likely produce false results for greater n due to integer boundaries.
+```
+# 10 iterations
+add_evasion computation_fibonacci 10
+```
+
+Timed Fibonacci
+
+Stops Fibonacci computations after approximately specified seconds.
+```
+# Stops computation after 20 seconds
+add_evasion computation_timed_fibonacci 20
+```
+
 
 ##### Folders and more
 Check if Artifact exists, stop execution if not. Paths must be in Unix style.

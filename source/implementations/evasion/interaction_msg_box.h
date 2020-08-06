@@ -6,10 +6,10 @@
 #include "../debug_print/debug_print.h"
 
 
-//
+// Spawn message box with hardcoded arithmetic task which only executes of it is solved correctly.
 // 
-//
-void interactive_msg_box(char *arg1) {
+// No arg
+void interaction_msg_box(char *arg1) {
     DEBUG_PRINT("Applying interactive_msg_box evasion technique.\n");
   
     char *call = "powershell.exe ";
