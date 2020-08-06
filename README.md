@@ -503,6 +503,14 @@ Read Registry Key to get the default Browser. If the Browser does not match with
 add_evasion get_standard_browser 'Firefox'
 ```
 
+##### Domain
+Queries the DNS domain the target is in.
+If the target is not in the expected domain as specified, the program exits.
+```
+add_evasion get_computer_domain 'domain.com'
+```
+
+
 ##### Background wallpaper
 Check if background wallpaper is set. Stop execution if not.
 
