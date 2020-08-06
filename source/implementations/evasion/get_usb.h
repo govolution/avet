@@ -4,6 +4,10 @@
 #include <stdio.h>
 #include "../debug_print/debug_print.h"
 
+
+//
+// WIP
+//
 void get_usb(char *arg1) {
     HKEY hKey;
     DWORD numUsbDevices = 0;
