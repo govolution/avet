@@ -5,6 +5,7 @@ Version 2.3
 	+++CHANGES +++
 	- switch to Mingw-Crosscompiler
 	- add Dockerfile which encapsulates Metasploit and Avet
+	- 22 new Sandbox Evasions
 
 
 Version 2.2
