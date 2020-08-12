@@ -6,7 +6,7 @@
 #include "../debug_print/debug_print.h"
 
 
-
+// Check if Recent Files Folder exists, proceed if this is the case
 void has_recent_files() {
     char * recentFiles = getenv("CSIDL_RECENT");
 

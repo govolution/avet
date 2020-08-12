@@ -6,7 +6,7 @@
 #include "../debug_print/debug_print.h"
 
 
-
+// Check if Network Drive exists, proceed if this is the case
 void has_network_drive(char *arg1) {
     char * network = getenv("CSIDL_NETWORK");
 

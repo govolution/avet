@@ -8,12 +8,12 @@
 
 // Sleep for a specified time
 //
-// arg1:        time in MilliSeconds
+// arg1:        time in Seconds
 void evasion_by_sleep(char *arg1) {
     DEBUG_PRINT("Applying evasion_by_sleep technique.\n");
-    DEBUG_PRINT("Sleeping for %s...\n", arg1);
+    DEBUG_PRINT("Sleeping for %s Seconds...\n", arg1);
 
     int time = atoi(arg1);
-    Sleep(time);
+    Sleep(time * 1000);
     DEBUG_PRINT("Proceed!\n");
 }
