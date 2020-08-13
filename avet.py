@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/python3.9
 
 import os, stat
 import glob
@@ -39,7 +39,7 @@ def print_build_scripts():
     build_scripts = glob.glob('./build*.sh')
     build_scripts.sort()
     for i, script in enumerate(build_scripts):
-        print("%d : %s" % (i, script.strip("./")))
+        print("%d : %s" % (i, script.removeprefix("./")))
     
     print("\nWhich Script would you like to configure and build?")
     choice = int(input("Enter the corresponding number -> "))
@@ -76,6 +76,16 @@ def build_script_configurator(choice):
             if line == '#CONFIGURATION_END\n':
                 switch = False
 
+                # sandbox evasions
+                print("\nDo you want to add sandbox evasions? [y/N]")
+                answer = input("-> ")
+                if answer.lower().strip() == "y" or answer.lower() == "yes":
+                    modules = sandbox_evasions_pick()
+                    
+                for sand in modules:
+                    evasion = rlinput("-> ", "add_evasion %s " % sand)
+                    config.write(evasion + "\n")
+
             if switch:
                 if line[0:2] == "# ":
                     print("\n"+line.strip())
@@ -102,6 +112,28 @@ def build_script_configurator(choice):
             if line == '#CONFIGURATION_START\n':
                 switch = True
         print("\nExecutable will be created Shortly please wait.\n")
+
+
+# In this function the user picks from a list of sandbox evasions.
+# The chosen evasions are returned as a list.
+def sandbox_evasions_pick():
+    sandbox_modules = glob.glob("../source/implementations/evasion/*.h")
+    sandbox_modules.sort()
+    sandbox_modules.insert(0, "Finished Picking, Stop Here")
+    to_add = []
+    while True:
+        for i, module in enumerate(sandbox_modules):
+            print("%d : %s" % (i, module.removeprefix("../source/implementations/evasion/")))
+            
+        print("\nWhich module would you like to add?")
+        choice = int(input("Enter the corresponding number -> "))
+        if choice == 0:
+            break
+        to_add.append(sandbox_modules[choice].removeprefix("../source/implementations/evasion/").removesuffix(".h"))
+        sandbox_modules.pop(choice)
+    
+    return to_add
+
 
 
 # This fuction opens global_connect_config.sh and returns host and port
@@ -136,7 +168,7 @@ def main():
     build_script_configurator(choice)
     build()
 
-    os.remove("./build/avet_script_config.sh")
+    #os.remove("./build/avet_script_config.sh")
 
 if __name__ == "__main__":
     main()
