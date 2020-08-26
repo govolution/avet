@@ -24,30 +24,48 @@ jgs~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 # define rlinput (for user input with placeholder)
 def rlinput(prompt, prefill=''):
-	readline.set_startup_hook(lambda: readline.insert_text(prefill))
-	try:
-		return input(prompt)
-	finally:
-		readline.set_startup_hook()
+    readline.set_startup_hook(lambda: readline.insert_text(prefill))
+    try:
+        return input(prompt)
+    finally:
+        readline.set_startup_hook()
 
 
-# Enumerate and print available Build Scripts and asks for a choice
-# also returns the choice
+# Helper function to remove a prefix from a string.
+# Starting from python 3.9+ removeprefix() can be used instead.
+def remove_prefix(text, prefix):
+    if text.startswith(prefix):
+        return text[len(prefix):]
+    return text 
+
+
+# This fuction opens global_connect_config.sh and returns host and port
+def fetch_global_connect():
+    with open("./global_connect_config.sh") as connect:
+        for line in connect:
+            if line[0:13] == "GLOBAL_LHOST=":
+                host = line[13:].strip()
+            if line[0:13] == "GLOBAL_LPORT=":
+                port = line[13:].strip()
+
+    return host, port
+
+
+# Enumerate and print available build scripts in /build.
+# The user can make choose one of the build scripts to configure.
 def print_build_scripts():
     os.chdir("./build")
 
     build_scripts = glob.glob('./build*.sh')
     build_scripts.sort()
     for i, script in enumerate(build_scripts):
-        print("%d : %s" % (i, script.removeprefix("./")))
-    
+        print("%d : %s" % (i, remove_prefix(script, "./")))
+
     print("\nWhich Script would you like to configure and build?")
-    choice = int(input("Enter the corresponding number -> "))
-
-    return build_scripts[choice]
+    return build_scripts[int(input("Enter the corresponding number -> "))]
 
 
-# Print the information between the #Tags in the Build Script
+# Print the information between the #Tags in the build script
 def print_tag(choice, tag):
     print ("\n%s :" % tag)
     with open(choice, 'r') as file:
@@ -63,8 +81,8 @@ def print_tag(choice, tag):
                 switch = True
 
 
-# Here, the user is able to make changes of the options which are between the #CONFIGURATION Tags
-# The whole Build Script with changes will be copied to a temporary script "avet_script_config.sh"
+# Here, the user is able to make changes in the selected build script between the #CONFIGURATION Tags
+# The whole build script with changes will be copied to a temporary script "avet_script_config.sh"
 def build_script_configurator(choice):
     print("\nConfigure the Build Script")
     with open(choice, 'r') as file:
@@ -78,13 +96,13 @@ def build_script_configurator(choice):
 
                 # sandbox evasions
                 print("\nDo you want to add sandbox evasions? [y/N]")
-                answer = input("-> ")
-                if answer.lower().strip() == "y" or answer.lower() == "yes":
+                answer = input("-> ").lower().strip()
+                if answer == "y" or answer == "yes":
                     modules = sandbox_evasions_pick()
                     
-                for sand in modules:
-                    evasion = rlinput("-> ", "add_evasion %s " % sand)
-                    config.write(evasion + "\n")
+                    for sand in modules:
+                        evasion = rlinput("-> ", "add_evasion %s " % sand)
+                        config.write(evasion + "\n")
 
             if switch:
                 if line[0:2] == "# ":
@@ -123,29 +141,16 @@ def sandbox_evasions_pick():
     to_add = []
     while True:
         for i, module in enumerate(sandbox_modules):
-            print("%d : %s" % (i, module.removeprefix("../source/implementations/evasion/")))
+            print("%d : %s" % (i, remove_prefix(module, "../source/implementations/evasion/")[:-2]))
             
         print("\nWhich module would you like to add?")
         choice = int(input("Enter the corresponding number -> "))
         if choice == 0:
             break
-        to_add.append(sandbox_modules[choice].removeprefix("../source/implementations/evasion/").removesuffix(".h"))
+        to_add.append(remove_prefix(sandbox_modules[choice], "../source/implementations/evasion/")[:-2])
         sandbox_modules.pop(choice)
-    
+
     return to_add
-
-
-
-# This fuction opens global_connect_config.sh and returns host and port
-def fetch_global_connect():
-    with open("./global_connect_config.sh") as connect:
-        for line in connect:
-            if line[0:13] == "GLOBAL_LHOST=":
-                host = line[13:]
-            if line[0:13] == "GLOBAL_LPORT=":
-                port = line[13:]
-
-    return host.strip(), port.strip()
 
 
 # The tempory script will be executed
@@ -168,7 +173,7 @@ def main():
     build_script_configurator(choice)
     build()
 
-    #os.remove("./build/avet_script_config.sh")
+    os.remove("./build/avet_script_config.sh")
 
 if __name__ == "__main__":
     main()
