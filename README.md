@@ -36,6 +36,28 @@ If for whatever reason you want to do things manually:
 How to install tdm-gcc with wine:
 [https://govolution.wordpress.com/2017/02/04/using-tdm-gcc-with-kali-2/](https://govolution.wordpress.com/2017/02/04/using-tdm-gcc-with-kali-2/)
 
+
+Docker Container
+----------------
+If you are not using Kali or don't want to install Metasploit on your system, you can use the Docker Container instead.
+The container encapsulates Metasploit and avet and the samples will be created in your current directory.
+It is also possible to use an graphical text editor like gedit.
+
+Building the container:
+```
+sudo docker build -t avet:v0.1 .
+```
+Usage:
+```
+sudo docker run -it --net=host --env="DISPLAY" --volume="$HOME/.Xauthority:/root/.Xauthority:rw" -v $(pwd):/tools/avet/output avet /bin/bash
+```
+For a better experience it is recommend to alias this.
+
+Put this in your .bash_profile, .bashrc or .bash_aliases:
+```
+alias avet='sudo docker run -it --net=host --env="DISPLAY" --volume="$HOME/.Xauthority:/root/.Xauthority:rw" -v $(pwd):/tools/avet/output avet /bin/bash'
+```
+
 Important Note
 --------------
 Not all techniques will evade every AV engine. If one technique or build script does not work, please test another one.
