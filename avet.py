@@ -1,9 +1,11 @@
 #!/usr/bin/python3.9
 
-import os, stat
+import os
+import stat
 import glob
 import readline
 import subprocess
+
 
 def print_banner():
     banner = """
@@ -36,7 +38,7 @@ def rlinput(prompt, prefill=''):
 def remove_prefix(text, prefix):
     if text.startswith(prefix):
         return text[len(prefix):]
-    return text 
+    return text
 
 
 # This fuction opens global_connect_config.sh and returns host and port
@@ -67,7 +69,7 @@ def print_build_scripts():
 
 # Print the information between the #Tags in the build script
 def print_tag(choice, tag):
-    print ("\n%s :" % tag)
+    print("\n%s :" % tag)
     with open(choice, 'r') as file:
         switch = False
         for line in file:
@@ -75,7 +77,7 @@ def print_tag(choice, tag):
                 switch = False
 
             if switch:
-                print(line, end='')   
+                print(line, end='')
 
             if line == "#%s_START\n" % tag:
                 switch = True
@@ -90,7 +92,7 @@ def build_script_configurator(choice):
     with open("./avet_script_config.sh", 'w') as config:
         switch = False
         for line in script:
-            
+
             if line == '#CONFIGURATION_END\n':
                 switch = False
 
@@ -99,7 +101,7 @@ def build_script_configurator(choice):
                 answer = input("-> ").lower().strip()
                 if answer == "y" or answer == "yes":
                     modules = sandbox_evasions_pick()
-                    
+
                     for sand in modules:
                         evasion = rlinput("-> ", "add_evasion %s " % sand)
                         config.write(evasion + "\n")
@@ -112,21 +114,21 @@ def build_script_configurator(choice):
                     if "$GLOBAL" in line:
                         host, port = fetch_global_connect()
                         if line[0:6] == "LPORT=":
-                            current_line = rlinput("-> " , "LPORT=" + port)
+                            current_line = rlinput("-> ", "LPORT=" + port)
                         elif line[0:6] == "LHOST=":
-                            current_line = rlinput("-> " , "LHOST=" + host)
+                            current_line = rlinput("-> ", "LHOST=" + host)
 
                     # only configure the key, not the raw file
                     elif "generate_key" in line:
-                        current_line = rlinput("-> " , line[0:-19]) 
+                        current_line = rlinput("-> ", line[0:-19])
                         current_line += line[-19:]
                     else:
-                        current_line = rlinput("-> " , line.strip())
-                    
+                        current_line = rlinput("-> ", line.strip())
+
                     config.write(current_line + "\n")
             else:
                 config.write(line)
-        
+
             if line == '#CONFIGURATION_START\n':
                 switch = True
         print("\nExecutable will be created Shortly please wait.\n")
@@ -141,13 +143,15 @@ def sandbox_evasions_pick():
     to_add = []
     while True:
         for i, module in enumerate(sandbox_modules):
-            print("%d : %s" % (i, remove_prefix(module, "../source/implementations/evasion/")[:-2]))
-            
+            print("%d : %s" % (i, remove_prefix(
+                module, "../source/implementations/evasion/")[:-2]))
+
         print("\nWhich module would you like to add?")
         choice = int(input("Enter the corresponding number -> "))
         if choice == 0:
             break
-        to_add.append(remove_prefix(sandbox_modules[choice], "../source/implementations/evasion/")[:-2])
+        to_add.append(remove_prefix(
+            sandbox_modules[choice], "../source/implementations/evasion/")[:-2])
         sandbox_modules.pop(choice)
 
     return to_add
@@ -160,7 +164,8 @@ def build():
     st = os.stat('./build/avet_script_config.sh')
     os.chmod('./build/avet_script_config.sh', st.st_mode | stat.S_IEXEC)
 
-    process = subprocess.run(["./build/avet_script_config.sh"], stdout=subprocess.PIPE)
+    process = subprocess.run(
+        ["./build/avet_script_config.sh"], stdout=subprocess.PIPE)
     output = process.stdout.decode("utf-8")
     print(output)
     print("Your executable should be in the output folder!")
@@ -174,6 +179,7 @@ def main():
     build()
 
     os.remove("./build/avet_script_config.sh")
+
 
 if __name__ == "__main__":
     main()
