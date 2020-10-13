@@ -13,7 +13,7 @@ void get_eventlog(char *arg1) {
     DEBUG_PRINT("Applying get_eventlog evasion technique.\n");
   
     char *call = "powershell.exe ";
-    char *pwsh = "$lines = Get-WinEvent -ListLog * | measure-object -line; echo $lines.Lines";
+    char *pwsh = "$lines = Get-WinEvent -ListLog * ^| measure-object -line; echo $lines.Lines";
     char *command = (char *) malloc(strlen(pwsh) + strlen(call) + 1);
     long num_eventlog_threshold = strtol(arg1, NULL, 10);
 
@@ -34,7 +34,7 @@ void get_eventlog(char *arg1) {
     }
     
     long eventlog_count = strtol(retval, NULL, 10);
-    DEBUG_PRINT("%d", eventlog_count);
+    DEBUG_PRINT("%d\n", eventlog_count);
 
     if (eventlog_count > num_eventlog_threshold) {
         DEBUG_PRINT("Proceed!\n");
