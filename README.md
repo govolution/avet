@@ -1,10 +1,28 @@
-AntiVirus Evasion Tool
-======================
+# AntiVirus Evasion Tool
+
 
 AVET is an AntiVirus Evasion Tool, which was developed for making life easier for pentesters and for experimenting with antivirus evasion techniques, as well as other methods used by malicious software.
-For an overview of new features in **v2.2**, as well as past version increments, have a look at the **CHANGELOG** file.
+For an overview of new features in **v2.3**, as well as past version increments, have a look at the **CHANGELOG** file.
 
-Some features:
+
+## Table of Contents
+- [Installation](#installation)
+- [Docker](#docker)
+- [AVET the easy way](#avet-the-easy-way)
+- [AVET the normal way](#avet-the-normal-way)
+- <details><summary>Documentation (<i>click to expand</i>)</summary>
+
+  - [Data retrieval methods](#data-retrieval-methods)
+  - [Encryption/Encoding](#encryption/encoding)
+  - [Sandbox evasion](#sandbox-evasion)
+  - [Additional command execution](#additional-command-execution)
+  - [Helper tools](#helper-tools)
+  - [AVET & metasploit psexec](#avet-&-metasploit-psexec)
+  </details>
+- [More](#more)
+
+
+### Some features
 - when running a .exe file made with msfpayload & co, the file will often be recognized by antivirus software
 - AVET is an antivirus evasion tool targeting windows machines with executable files
 - different kinds of input payloads can be used now: shellcode, exe and dlls
@@ -14,57 +32,52 @@ Some features:
 - Chaining multiple iterations of AVET enables you to add multiple evasion layers, if necessary
 - combination of techniques: download your encrypted payload via powershell, while supplying the decryption key via command line argument at execution time, and finally inject your payload into another process, choosing from multiple techniques
 - basic sandbox checks
-- executie all available build scripts with build_script_tester.py, might also be interesting for researchers for building a set of "malicious" samples using different evasion and injection techniques
+- execute all available build scripts with build_script_tester.py, might also be interesting for researchers for building a set of "malicious" samples using different evasion and injection techniques
 
 
-Installation
-------------
+### Important Note
 
-__This README applies for Kali 64bit and tdm-gcc!__
+Not all techniques will evade every AV engine. If one technique or build script does not work, please test another one.
+Feel free to experiment! After all this is a toolbox - yet you should wield the hammer yourself.
+
+## Installation
+
+__The Installtion Instruction applies for Kali 64bit and tdm-gcc!__
 
 You can use the setup script:
-```
+```bash
 ./setup.sh
 ```
 
 This should automatically get you started by installing/configuring wine and installing tdm-gcc.
 You'll shortly have to click through the tdm-gcc installer GUI though - standard settings should be fine.
 
-
 If for whatever reason you want to do things manually:
+- [How to install tdm-gcc with wine](https://govolution.wordpress.com/2017/02/04/using-tdm-gcc-with-kali-2/)
 
-How to install tdm-gcc with wine:
-[https://govolution.wordpress.com/2017/02/04/using-tdm-gcc-with-kali-2/](https://govolution.wordpress.com/2017/02/04/using-tdm-gcc-with-kali-2/)
+## Docker
 
-
-Docker Container
-----------------
 If you are not using Kali or don't want to install Metasploit on your system, you can use the Docker Container instead.
 The container encapsulates Metasploit and avet and the samples will be created in your current directory.
 It is also possible to use an graphical text editor like gedit.
 
 Building the container:
-```
+```bash
 sudo docker build -t avet:v0.1 .
 ```
 Usage:
-```
+```bash
 sudo docker run -it --net=host --env="DISPLAY" --volume="$HOME/.Xauthority:/root/.Xauthority:rw" -v $(pwd):/tools/avet/output avet /bin/bash
 ```
 For a better experience it is recommend to alias this.
+```bash
+# In your .bash_profile, .bashrc or .bash_aliases
 
-Put this in your .bash_profile, .bashrc or .bash_aliases:
-```
 alias avet='sudo docker run -it --net=host --env="DISPLAY" --volume="$HOME/.Xauthority:/root/.Xauthority:rw" -v $(pwd):/tools/avet/output avet /bin/bash'
 ```
 
-Important Note
---------------
-Not all techniques will evade every AV engine. If one technique or build script does not work, please test another one.
-Feel free to experiment! After all this is a toolbox - yet you should wield the hammer yourself.
 
-
-## avet.py
+## AVET the easy way
 
 **avet.py** is a small Python utility which was designed to assist you in using the tool.
 
@@ -192,25 +205,22 @@ Final size of c file: 2933 bytes
 Your executable should be in the output folder!
 ```
 
-How to use 
-----------
+## AVET the normal way
 
 Of course it is possible to run all commands step by step from command line. However, in the "build" folder you will find preconfigured build scripts for relevant use cases. 
 The build scripts themselves are written so as they have to be called from within the avet directory:
-```
-root@kalidan:~/tools/avet# ./build/build_fopen_mtrprtrxor_revhttps_win64.sh
+```bash
+kali@kali:~/tools/avet$ ./build/build_fopen_mtrprtrxor_revhttps_win64.sh
 ```
 
 You can define default LHOST and LPORT values for metasploit payloads in the `/build/global_connect_config.sh` file, which are used if you don't redefine.
 
 
-Usage examples
---------------
+### Usage examples
 
 Generate a 32-bit process hollowing executable in two steps (as in build_hollowing_targetfromcmd_doubleenc_doubleev_revhttps_win32.sh):
 
 First, generate the hollowing payload with AVET:
-
 - generate meterpreter/reverse_https 32-bit shellcode
 - the meterpreter shellcode will be XOR encrypted with a 5-byte preset key
 - the shellcode will be compiled into the generated executable
@@ -234,55 +244,68 @@ Of course, you can also design more minimalistic builds, like executing unencryp
 Choose/modify the build scripts, suiting your needs.
 
 
-Build scripts
--------------
+### Build scripts
+
 Below, find a list of all currently shipped build scripts. The names should hint at each script's functionality.
 For detailed information, consider the comments inside the scripts.
 Feel free to modify/write your own build scripts to build your custom executable!
 
-```
-build_40xshikata_revhttpsunstaged_win32.sh
-build_50xshikata_quiet_revhttps_win32.sh
-build_50xshikata_revhttps_win32.sh
-build_asciimsf_fromcmd_revhttps_win32.sh
-build_asciimsf_revhttps_win32.sh
-build_avetenc_dynamicfromfile_revhttps_win32.sh
-build_avetenc_fopen_revhttps_win32.sh
-build_avetenc_mtrprtrxor_revhttps_win64.sh
-build_calcfromcmd_50xshikata_revhttps_win32.sh
-build_calcfrompowersh_50xshikata_revhttps_win32.sh
-build_cpucores_revhttps_win32.sh
-build_disablewindefpsh_xorfromcmd_revhttps_win64.sh
-build_dkmc_downloadexecshc_revhttps_win32.sh
-build_downloadbitsadmin_mtrprtrxor_revhttps_win64.sh
-build_downloadbitsadmin_revhttps_win32.sh
-build_downloadcertutil_revhttps_win32.sh
-build_downloadcurl_mtrprtrxor_revhttps_win64.sh
-build_downloadiexplorer_revhttps_win32.sh
-build_downloadpsh_revhttps_win32.sh
-build_downloadsocket_mtrprtrxor_revhttps_win64.sh
-build_downloadsocket_revhttps_win32.sh
-build_dynamicfromfile_revhttps_win32.sh
-build_fopen_mtrprtrxor_revhttps_win64.sh
-build_fopen_quiet_revhttps_win32.sh
-build_fopen_revhttps_win32.sh
-build_gethostbyname_revhttps_win32.sh
-build_hasvmkey_revhttps_win32.sh
-build_hasvmmac_revtcp_win32.sh
-build_hollowing_targetfromcmd_doubleenc_doubleev_revhttps_win64.sh
-build_hollowing_targetfromcmd_doubleenc_doubleev_revtcp_win32.sh
-build_injectdll_targetfromcmd_execcalc_downloadpsh_fopen_gethostbyname_win32.sh
-build_injectdll_targetfromcmd_execcalc_downloadpsh_fopen_gethostbyname_win64.sh
-build_injectshc_targetfromcmd_fopen_gethostbyname_xor_revhttps_win64.sh
-build_injectshc_targetfromcmd_fopen_gethostbyname_xor_revtcp_win32.sh
-build_kaspersky_fopen_shellrevtcp_win32.sh
-build_mimikatz_pe2shc_xorfromcmd_win64.sh
-build_rc4enc_mimikatz_win64.sh
-buildsvc_20xshikata_bindtcp_win32.sh
-```
+<details>
+<summary><i>Click to expand</i></summary>
 
-Features
---------
+  ```
+  build_40xshikata_revhttpsunstaged_win32.sh
+  build_50xshikata_revhttps_win32.sh
+  build_50xshikata_quiet_revhttps_win32.sh
+  build_asciimsf_fromcmd_revhttps_win32.sh
+  build_asciimsf_revhttps_win32.sh
+  build_avetenc_dynamicfromfile_revhttps_win32.sh
+  build_avetenc_fopen_revhttps_win32.sh
+  build_avetenc_mtrprtrxor_revhttps_win64.sh
+  build_calcfromcmd_50xshikata_revhttps_win32.sh
+  build_calcfrompowersh_50xshikata_revhttps_win32.sh
+  build_cpucores_revhttps_win32.sh
+  build_checkdomain_rc4_mimikatz.sh
+  build_disablewindefpsh_xorfromcmd_revhttps_win64.sh
+  build_dkmc_downloadexecshc_revhttps_win32.sh
+  build_downloadbitsadmin_mtrprtrxor_revhttps_win64.sh
+  build_downloadbitsadmin_revhttps_win32.sh
+  build_downloadcertutil_revhttps_win32.sh
+  build_downloadcurl_mtrprtrxor_revhttps_win64.sh
+  build_downloadiexplorer_revhttps_win32.sh
+  build_downloadpsh_revhttps_win32.sh
+  build_downloadsocket_mtrprtrxor_revhttps_win64.sh
+  build_downloadsocket_revhttps_win32.sh
+  build_dynamicfromfile_revhttps_win32.sh
+  build_fibonacci_rc4_mimikatz.sh
+  build_fopen_mtrprtrxor_revhttps_win64.sh
+  build_fopen_quiet_revhttps_win32.sh
+  build_fopen_revhttps_win32.sh
+  build_getchar_rc4_mimikatz.sh
+  build_gethostbyname_revhttps_win32.sh
+  build_hasvmkey_revhttps_win32.sh
+  build_hasvmmac_revtcp_win32.sh
+  build_hollowing_targetfromcmd_doubleenc_doubleev_revhttps_win64.sh
+  build_hollowing_targetfromcmd_doubleenc_doubleev_revtcp_win32.sh
+  build_injectdll_targetfromcmd_execcalc_downloadpsh_fopen_gethostbyname_win32.sh
+  build_injectdll_targetfromcmd_execcalc_downloadpsh_fopen_gethostbyname_win64.sh
+  build_injectshc_targetfromcmd_fopen_gethostbyname_xor_revhttps_win64.sh
+  build_injectshc_targetfromcmd_fopen_gethostbyname_xor_revtcp_win32.sh
+  build_kaspersky_fopen_shellrevtcp_win32.sh
+  build_mimikatz_pe2shc_xorfromcmd_win64.sh
+  build_pause_rc4_mimikatz.sh
+  build_rc4_interactive_pwsh_mimikatz_win64.sh
+  build_rc4_interactive_with_arithmetic_pwsh_mimikatz_win64.sh
+  build_rc4enc_mimikatz_win64.sh
+  build_sleep_rc4_mimikatz.sh
+  build_sleepbyping_rc4_mimikatz.sh
+  build_timedfibonacci_rc4_mimikatz.sh
+  buildsvc_20xshikata_bindtcp_win32.sh
+  ```
+</details>
+
+
+## Documentation
 
 ### Data retrieval methods
 These methods are compatible with all of AVET's data sources and can be used as such in the build script.
@@ -311,47 +334,47 @@ set_command_source no_data
 set_command_exec no_command
 ```
 
-##### static_from_file
+#### static_from_file
 The data is retrieved from a file and is statically compiled into the generated executable.
 For this to work, the data must be provided as a c-style array at compilation time, like
 ```
 unsigned char buf[] = "\x00\x11\x22\x33";
 ```
 
-##### static_from_here
+#### static_from_here
 The data is statically compiled into the generated executable,
 retrieved from the specified argument in the build script.
 
-##### dynamic_from_file
+#### dynamic_from_file
 The data is read from a file at run time.
 
-##### from_command_line_hex
+#### from_command_line_hex
 Retrieves data from a "11aabb22.." format hex string (from the command line).
 
-##### from_command_line_raw
+#### from_command_line_raw
 Retrieves data from a command line argument. The given ASCII string is interpreted as raw byte data.
 
-##### download_certutil
+#### download_certutil
 Downloads data from a specified URI, using ```certutil.exe -urlcache -split -f```.
 Drops the downloaded file to disk before reading the data.
 
-##### download_curl
+#### download_curl
 Downloads the data using curl.
 Drops the downloaded file to disk before reading the data.
 
-##### download_internet_explorer
+#### download_internet_explorer
 Downloads data from a specified URL, using Internet Explorer.
 Drops the downloaded file to disk before reading the data.
 
-##### download_powershell
+#### download_powershell
 Downloads data from a specified URI via powershell.
 Drops the downloaded file to disk before reading the data.
 
-##### download_socket
+#### download_socket
 Downloads the data from a specified URI, using sockets.
 Data is read directly into memory, no file is dropped to disk.
 
-##### download_bitsadmin
+#### download_bitsadmin
 Downloads the data using the BITSAdmin Windows utility.
 Drops the downloaded file to disk before reading the data.
 
@@ -359,27 +382,27 @@ Drops the downloaded file to disk before reading the data.
 ### Payload execution methods
 How to execute/deliver the payload. The injection/hollowing methods require additional information about the injection target, which can be given via ```set_payload_info_source <the_info>``` (see data retrieval methods).
 
-##### exec_shellcode
+#### exec_shellcode
 Executes 32-bit shellcode with a C function binding.
 
-##### exec_shellcode64
+#### exec_shellcode64
 Executes 64-bit shellcode with a C function binding and VirtualProtect.
 
-##### exec_shellcode_ASCIIMSF
+#### exec_shellcode_ASCIIMSF
 Executes ASCIIMSF encoded shellcode via ```call eax```.
 
-##### hollowing32
+#### hollowing32
 Instanciates a new process, cuts out the original image and hollows the given payload into the new process.
 The payload is a 32-bit executable image. Works on 32-bit targets.
 
-##### hollowing64
+#### hollowing64
 Same as hollowing32, but using 64-bit PE payloads for 64-bit target processes.
 
-##### inject_dll
+#### inject_dll
 Injects a dll into a target process, using ```CreateRemoteThread```.
 Injection works for 32-bit payloads into 32-bit processes, and 64-bit payloads into 64-bit processes, respectively.
 
-##### inject_shellcode
+#### inject_shellcode
 Injects shellcode into a target process, using ```CreateRemoteThread```.
 Injection works for 32-bit shellcode into 32-bit processes, and 64-bit shellcode into 64-bit processes, respectively.
 
@@ -402,13 +425,13 @@ set_key_source no_data
 set_decoder none
 ```
 
-##### xor
+#### xor
 Rolling XOR, supporting multi-byte keys.
 
-##### avet
+#### avet
 Custom encoding, reinterpreting the ASCII format.
 
-##### rc4
+#### rc4
 RC4 encryption/decryption, with flexible key length.
 
 
@@ -599,21 +622,21 @@ set_command_exec exec_via_powershell
 
 ### Helper tools
 
-##### data_raw_to_c
+#### data_raw_to_c
 Takes raw data as input from a file, converts it into C-array format and writes output to another file.
 This aids in providing the correct format for the static_from_file data retrieval method.
 
-##### generate_key
+#### generate_key
 Key generation utility. Generates either a (non-cryptographically) random key or takes a preset key as input,
 and outputs the raw key data into a specified file.
 This aids in providing key material for the AVET encryption feature.
 
-##### sh_format
+#### sh_format
 Utility from AVET 1.3 that performs AVET encoding.
 
 
-AVET & metasploit psexec
-------------------------
+## AVET & metasploit psexec
+
 AVET is compatible to metasploit's psexec module. For that, the generated executable needs to be compiled as a Windows Service, which is implemented by using *avetsvc.c*. Consider the corresponding example build script
 
 *build_svc_20xshikata_bindtcp_win32.sh*:
@@ -742,8 +765,9 @@ Meterpreter : x86/windows
 ```
 
 
-More
-====
+## More
+---
+
 For basics about antivirus evasion, AVET & more information have a look here (most for version 1.3): 
 - [https://govolution.wordpress.com/2018/08/07/paper-avet-blackhat-usa-arsenal-2018/](https://govolution.wordpress.com/2018/08/07/paper-avet-blackhat-usa-arsenal-2018/)
 - [https://govolution.wordpress.com/2017/06/11/avet-video/](https://govolution.wordpress.com/2017/06/11/avet-video/)
