@@ -51,8 +51,16 @@ You can use the setup script:
 
 This should automatically get you started by installing/configuring wine and installing tdm-gcc.
 You'll shortly have to click through the tdm-gcc installer GUI though - standard settings should be fine.
+The script will also ask if you want to install AVET's dependencies, which are needed to use some of the build scripts. The fetched dependencies will be put into separate folders next to the avet folder.
 
-If for whatever reason you want to do things manually:
+
+Dependencies will grab the latest releases of:
+- [pe_to_shellcode](https://github.com/hasherezade/pe_to_shellcode)
+- [mimikatz](https://github.com/gentilkiwi/mimikatz)
+- [DKMC](https://github.com/Mr-Un1k0d3r/DKMC)
+
+
+If for whatever reason you want to install wine and tdm-gcc manually:
 - [How to install tdm-gcc with wine](https://govolution.wordpress.com/2017/02/04/using-tdm-gcc-with-kali-2/)
 
 ## Docker
