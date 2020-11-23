@@ -6,7 +6,7 @@
 
 
 // Computes iterations of the Fibonacci series. Stops computations after approximately arg1 seconds.
-// (Will likely produce false results for greater n due to integer boundaries)
+// (Will likely produce false results for greater n due to modulo reduction inside integer boundaries)
 //
 // arg1:        Number of seconds to run the computation
 void computation_timed_fibonacci(char *arg1) {
