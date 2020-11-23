@@ -11,7 +11,7 @@
 # $ sudo docker build -t avet:v0.1 .
 #
 # To start this:
-# $ sudo docker run -it --net=host --env="DISPLAY" --volume="$HOME/.Xauthority:/root/.Xauthority:rw" -v $(pwd):/tools/avet/output avet /bin/bash
+# $ sudo docker run -it --net=host --env="DISPLAY" --volume="$HOME/.Xauthority:/root/.Xauthority:rw" -v $(pwd):/tools/avet/output avet:v0.1 /bin/bash
 # (alias this)
 #
 # This mounts the Current Working directory as a Docker Volume and attach it to /avet/output.
