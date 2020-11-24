@@ -11,7 +11,7 @@
 # $ sudo docker build -t avet:v0.1 .
 #
 # To start this:
-# $ sudo docker run -it --net=host --env="DISPLAY" --volume="$HOME/.Xauthority:/root/.Xauthority:rw" -v $(pwd):/tools/avet/output avet /bin/bash
+# $ sudo docker run -it --net=host --env="DISPLAY" --volume="$HOME/.Xauthority:/root/.Xauthority:rw" -v $(pwd):/tools/avet/output avet:v0.1 /bin/bash
 # (alias this)
 #
 # This mounts the Current Working directory as a Docker Volume and attach it to /avet/output.
@@ -30,8 +30,10 @@ ARG DEBIAN_FRONTEND=noninteractive
 
 RUN dpkg --add-architecture i386 && apt-get update && apt-get install -y \
 	wget \
+	curl \
 	git \
 	unzip \
+	jq \
 	apt-utils \
 	gnupg2 \
 	vim \
@@ -61,12 +63,18 @@ COPY . .
 
 # For pe2shc
 WORKDIR /tools/pe_to_shellcode
-RUN wget https://github.com/hasherezade/pe_to_shellcode/releases/download/v0.7/pe2shc.exe
+RUN curl -s https://api.github.com/repos/hasherezade/pe_to_shellcode/releases/latest \
+	| jq -r '.assets[].browser_download_url' \
+	| grep 'pe2shc' \
+	| wget -i -
 
 
 # For mimikatz
 WORKDIR /tools/mimikatz
-RUN wget https://github.com/gentilkiwi/mimikatz/releases/download/2.2.0-20200308/mimikatz_trunk.zip \
+RUN curl -s https://api.github.com/repos/gentilkiwi/mimikatz/releases/latest \
+	| jq -r '.assets[].browser_download_url' \
+	| grep .'zip' \
+	| wget -i - \
 	&& unzip mimikatz_trunk.zip \
 	&& cp x64/mimikatz.exe /tools/avet/input
 
@@ -77,7 +85,7 @@ RUN git clone https://github.com/Mr-Un1k0d3r/DKMC.git
 
 
 # configure wine during build
-RUN wine cmd
+RUN winecfg
 
 
 WORKDIR /tools/avet

@@ -5,7 +5,7 @@
 
 
 // Compute arg1 iterations of the Fibonacci series.
-// (Will likely produce false results for greater n due to integer boundaries)
+// (Will likely produce false results for greater n due to modulo reduction inside integer boundaries)
 //
 // arg1:        Number of iterations to compute
 void computation_fibonacci(char *arg1) {
@@ -24,6 +24,6 @@ void computation_fibonacci(char *arg1) {
         i++;
     }
 
-    // Ensure that the computed value is required at the end of the data flow.
+    // Ensure that the computed value is used at the end of the data flow to avoid dead code.
     printf("Number is %u.", c);
 }

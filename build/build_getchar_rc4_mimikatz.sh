@@ -1,6 +1,7 @@
 #!/bin/bash
 
 #DESCRIPTION_START
+# Wait for input via getchar() before executing the payload.
 # RC4-encrypt the payload with a static, preset key.
 # Here, the mimikatz executable is used as payload, converted into shellcode format by pe_to_shellcode.
 # pe_to_shellcode is written by Hasherezade:
@@ -71,8 +72,8 @@ cleanup_techniques
 
 
 echo "
-# The decryption key is aabbccddee if it has not been changed.
+# The decryption key is aabbccdd1122 if it has not been changed.
 # You need to provide the decryption key as 2nd command line argument.
 # Call generated executable on target like:
-# $ rc4enc_mimikatz_win64.exe [your mimikatz arguments, probably 'coffee']  [decryption key]
+# $ getchar_rc4_mimikatz_win64.exe [your mimikatz arguments, probably 'coffee']  [decryption key]
 "
