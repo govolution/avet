@@ -466,12 +466,19 @@ Custom encoding, reinterpreting the ASCII format.
 RC4 encryption/decryption, with flexible key length.
 
 
-### Sandbox evasion
+### Debugger and Sandbox evasion
 These are environmental checks that are performed before eventual encoding and payload execution.
 If an unpleasant execution environment is detected (e.g. an AV sandbox), execution stops.
 
 Currently, you can arbitrarily queue up to 10 checks. Using the same technique multiple times is supported.
 The queue limit *EVASION_ARRAY_SIZE* can however be easily modified in *avet.c*.
+
+#### is debugger present
+Check with isDebuggerPresent() function if a debugger is present.
+Exit if true.
+```
+add_evasion is_debugger_present
+```
 
 #### sleep
 Sleep for certain time before execution. The duration(in Seconds) can be specified in the build script, like
