@@ -495,6 +495,18 @@ The program pings once each second.
 add_evasion sleep_by_ping 4
 ```
 
+#### check fast forwarding
+Check if sandbox utilize fast forwarding to reduce heuristic check time. Local time and sleep is used.
+```
+add_evasion check_fast_forwarding
+```
+
+#### get tickcount
+Check if sandbox utilize fast forwarding to reduce heuristic check time. Uptime and sleep is used.
+```
+add_evasion get_tickcount
+```
+
 #### Username
 Get username and compare with given username. Exit if it does not match.
 
