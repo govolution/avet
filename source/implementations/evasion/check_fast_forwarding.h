@@ -51,7 +51,4 @@ void check_fast_forwarding(char *arg1) {
     } else {
         exit(0);
     }
-
-
-    DEBUG_PRINT("Proceed!\n");
 }

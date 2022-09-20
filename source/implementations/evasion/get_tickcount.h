@@ -28,7 +28,4 @@ void get_tickcount(char *arg1) {
     } else {
         DEBUG_PRINT("Proceed!\n");
     }
-
-
-    DEBUG_PRINT("Proceed!\n");
 }
