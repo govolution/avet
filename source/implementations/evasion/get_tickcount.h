@@ -5,7 +5,6 @@
 #include <windows.h>
 #include "../debug_print/debug_print.h"
 #include <string.h>
-#include <tlhelp32.h>
 
 // Check if sandbox utilize fast forwarding to reduce heuristic check time
 //
@@ -19,6 +18,9 @@ void get_tickcount(char *arg1) {
 
     LARGE_INTEGER delay;
     delay.QuadPart = -10000 * 100000; // 100 seconds
+    typedef NTSTATUS(WINAPI *PNtDelayExecution)(IN BOOLEAN, IN PLARGE_INTEGER);
+    PNtDelayExecution pNtDelayExecution = (PNtDelayExecution)GetProcAddress(GetModuleHandleW(L"ntdll.dll"), "NtDelayExecution");
+
     pNtDelayExecution(FALSE, &delay);
 
     ULONGLONG uptimeAfterSleep = GetTickCount();

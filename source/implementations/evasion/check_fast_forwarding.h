@@ -3,6 +3,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <windows.h>
+#include <string.h>
+#include <time.h>
 #include "../debug_print/debug_print.h"
 
 u_int64 Delta(const SYSTEMTIME st1, const SYSTEMTIME st2) {
@@ -12,13 +14,19 @@ u_int64 Delta(const SYSTEMTIME st1, const SYSTEMTIME st2) {
         ULARGE_INTEGER ul;
     };
 
-    timeunion ft1;
-    timeunion ft2;
+    FILETIME ft1;
+    FILETIME ft2;
 
-    SystemTimeToFileTime(&st1, &ft1.fileTime);
-    SystemTimeToFileTime(&st2, &ft2.fileTime);
+    SystemTimeToFileTime(&st1, &ft1);
+    SystemTimeToFileTime(&st2, &ft2);
 
-    return ft2.ul.QuadPart - ft1.ul.QuadPart;
+    ULARGE_INTEGER u1 = {0};
+    ULARGE_INTEGER u2 = {0};
+
+    memcpy(&u1, &ft1, sizeof(u1));
+    memcpy(&u2, &ft2, sizeof(u2));
+
+    return u2.QuadPart - u1.QuadPart;
 }
 
 // Check if sandbox utilize fast forwarding to reduce heuristic check time
