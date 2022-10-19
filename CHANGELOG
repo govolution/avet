@@ -1,6 +1,12 @@
 CHANGELOG
 ---------
 
+Version 2.4
+	+++ CHANGES +++
+	- 3 new sandbox evasions
+	- new build script to test all current available sandbox evasions
+
+
 Version 2.3
 	+++CHANGES +++
 	- switch to Mingw-Crosscompiler
