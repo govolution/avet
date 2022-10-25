@@ -229,7 +229,7 @@ function gen_adversarial_exe() {
 	if [[ $# -eq 0 ]] ; then
     	echo -e '\033[0;31mError at gen_adversarial_exe: No attack specified\033[0m'
 	else	
-		python3 source/implementations/gen_adversarial_exe/$1.py $2
+		python3 source/implementations/gen_adversarial_exe/$1.py $2 $3
 	fi
 }
 
