@@ -3,27 +3,23 @@ Implementation of Partial DOS proposed in
 Explaining Vulnerabilities of Deep Learning to Adversarial Malware Binaries
 by Demetrio et al.
 
-In this implementation the manipulations are in place and manipulated bytes are random for now. 
+In this implementation a new executable is created and manipulated bytes are random for now. 
 """
 
 import os
 import sys
 
-import lief
 
 exe_path = sys.argv[1]
-print(exe_path)
+print(f"Executing Partial DOS manipulation on: {exe_path}")
 
-exe_object : lief.PE.Binary = lief.parse(exe_path)
-
-print('DOS Header')
-print(exe_object.dos_header)
-
-# 1
-coff_header_offset = exe_object.dos_header.addressof_new_exeheader
+range_to_perturb = list(range(2, 0x3C))
 
 with open(exe_path, 'r+b') as f:
-    # 3
-    for i in range(2, 60):
-        f.seek(i)
-        f.write(os.urandom(1))
+    raw_bytes = bytearray(f.read())
+
+    for i in range_to_perturb:
+        raw_bytes[i] = ord(os.urandom(1))
+
+    with open(f"{exe_path[:-4]}_partial_dos.exe", 'wb') as nf:
+        nf.write(raw_bytes)

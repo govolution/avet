@@ -4,7 +4,7 @@ Adversarial EXEmples: A Survey and Experimental Evaluation of
 Practical Attacks on Machine Learning for Windows Malware Detection
 by Demetrio et al.
 
-In this implementation the manipulations are in place. 
+In this implementation, a new executable is created. 
 """
 
 import os
@@ -13,25 +13,22 @@ import sys
 import lief
 
 exe_path = sys.argv[1]
-print(exe_path)
+print(f"Executing Full DOS manipulation on: {exe_path}")
 
-exe_object : lief.PE.Binary = lief.parse(exe_path)
-
-print('DOS Header')
-print(exe_object.dos_header)
+exe_object: lief.PE.Binary = lief.parse(exe_path)
 
 # 1
-coff_header_offset = exe_object.dos_header.addressof_new_exeheader
+pe_header_offset = exe_object.dos_header.addressof_new_exeheader
+range_to_perturb = list(range(2, 0x3c)) + list(range(0x40, pe_header_offset))
 
 with open(exe_path, 'r+b') as f:
-    # 3
-    for i in range(2, 60):
-        f.seek(i)
-        f.write(os.urandom(1))
-    
-    # 4
-    for i in range(64, coff_header_offset):
-        f.seek(i)
-        f.write(os.urandom(1))
+    # 2
+    raw_bytes = bytearray(f.read())
 
+    # 3 + 4
+    for i in range_to_perturb:
+        raw_bytes[i] = ord(os.urandom(1))
 
+    with open(f"{exe_path[:-4]}_full_dos.exe", 'wb') as nf:
+        # 5
+        nf.write(raw_bytes)
