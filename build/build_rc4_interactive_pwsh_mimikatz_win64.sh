@@ -60,8 +60,8 @@ set_payload_execution_method exec_shellcode64
 
 
 # compile to exe file
-$win64_compiler -o output/rc4enc_mimikatz_win64.exe source/avet.c
-strip output/rc4enc_mimikatz_win64.exe
+$win64_compiler -o output/rc4_interactive_pwsh_mimikatz_win64.exe source/avet.c
+strip output/rc4_interactive_pwsh_mimikatz_win64.exe
 
 # cleanup
 cleanup_techniques

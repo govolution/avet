@@ -64,8 +64,8 @@ set_payload_execution_method exec_shellcode64
 
 
 # compile to exe file
-$win64_compiler -o output/timedfibo_rc4_mimikatz.exe source/avet.c
-strip output/timedfibo_rc4_mimikatz.exe
+$win64_compiler -o output/timedfibonacci_rc4_mimikatz.exe source/avet.c
+strip output/timedfibonacci_rc4_mimikatz.exe
 
 # cleanup
 cleanup_techniques
