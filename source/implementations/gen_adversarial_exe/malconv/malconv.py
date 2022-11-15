@@ -10,7 +10,6 @@ Pre-trained MalConv model trained by EndGame
 from abc import abstractmethod
 import os
 
-import magic
 import numpy as np
 import torch
 import torch.nn.functional as F
@@ -292,7 +291,8 @@ class CClassifierEnd2EndMalware(CClassifierPyTorch):
                 The path of the model, default is None, and it will load the internal default one
         """
 
-        self._model.load_simplified_model("./pretrained_malconv.pth")
+        self._model.load_simplified_model(
+            "source/implementations/gen_adversarial_exe/malconv/pretrained_malconv.pth")
         self._classes = np.array([0, 1])
         self._n_features = 2 ** 20
 
@@ -459,23 +459,3 @@ class MalConv(End2EndModel):
         dense_2 = self.dense_2(dense_1_activation)
         dense_2_activation = torch.sigmoid(dense_2)
         return dense_2_activation
-
-
-net = CClassifierEnd2EndMalware(MalConv())
-net.load_pretrained_model()
-
-folder = "../malware_samples"
-
-for i, f in enumerate(os.listdir(folder)):
-    path = os.path.join(folder, f)
-    if "PE32" not in magic.from_file(path):
-        print("Not a PE32 file")
-        continue
-    with open(path, "rb") as file_handle:
-        code = file_handle.read()
-    x = End2EndModel.bytes_to_numpy(
-        code, net.get_input_max_length(), 256, False
-    )
-    label, confidence = net.predict(x, True)
-
-    print(f, confidence[0, 1].item())
