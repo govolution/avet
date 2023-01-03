@@ -4,7 +4,7 @@ Adversarial EXEmples: A Survey and Experimental Evaluation of
 Practical Attacks on Machine Learning for Windows Malware Detection
 by Demetrio et al.
 
-Creates new Executable with suffix _extend.
+Can be used standalone with random bytes or via genetic optimizer.
 """
 
 import copy
@@ -18,12 +18,18 @@ import lief
 
 
 def extend_on_bytes(exe_bytes: bytearray, section_population, vector_t):
+    """
+    Implementation of Extend practical manipulation. 
+    Intended for use with genetic optimizer.
+
+    Returns the bytes with the practical manipulation applied.
+    """
 
     content = bytearray()
     for i, section in enumerate(section_population):
         content += section[:int(round(len(section) * vector_t[i]))]
 
-    amount = 2048
+    amount = len(content)
 
     exe_object: lief.PE.Binary = lief.parse(exe_bytes)
 
@@ -84,6 +90,12 @@ def extend_on_bytes(exe_bytes: bytearray, section_population, vector_t):
 
 
 def extend(exe_path, amount):
+    """
+    Implementation of Extend practical manipulation.
+    
+    Create an adversarial example with practical manipulation applied.
+    Random bytes are used and new sample has "_extend" as postfix.
+    """
 
     print(f"Executing Extend manipulation on: {exe_path}")
 

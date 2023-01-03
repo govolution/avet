@@ -3,7 +3,8 @@ Implementation of Partial DOS proposed in
 Explaining Vulnerabilities of Deep Learning to Adversarial Malware Binaries
 by Demetrio et al.
 
-In this implementation a new executable is created and manipulated bytes are random for now. 
+Can be used standalone with random bytes or via genetic optimizer.
+This file is not relevant for thesis.
 """
 
 import os

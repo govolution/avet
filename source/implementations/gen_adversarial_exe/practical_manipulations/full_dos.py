@@ -4,7 +4,7 @@ Adversarial EXEmples: A Survey and Experimental Evaluation of
 Practical Attacks on Machine Learning for Windows Malware Detection
 by Demetrio et al.
 
-In this implementation, a new executable is created.
+Can be used standalone with random bytes or via genetic optimizer.
 """
 
 import os
@@ -15,6 +15,12 @@ import lief
 
 
 def full_dos_on_bytes(exe_bytes: bytearray, section_population, vector_t):
+    """
+    Implementation of Full DOS practical manipulation. 
+    Intended for use with genetic optimizer.
+
+    Returns the bytes with the practical manipulation applied.
+    """
 
     content = bytearray()
     for i, section in enumerate(section_population):
@@ -22,15 +28,14 @@ def full_dos_on_bytes(exe_bytes: bytearray, section_population, vector_t):
 
     exe_object: lief.PE.Binary = lief.parse(exe_bytes)
 
-    # 1
+    # get range allowed to perturb
     pe_header_offset = exe_object.dos_header.addressof_new_exeheader
     range_to_perturb = list(range(2, 0x3c)) + \
         list(range(0x40, pe_header_offset))
 
-    # 2
     raw_bytes = copy.deepcopy(exe_bytes)
 
-    # 3 + 4
+    # perturb DOS header
     counter = 0
     for i in range_to_perturb:
         raw_bytes[i] = content[counter % len(content)]
@@ -40,25 +45,31 @@ def full_dos_on_bytes(exe_bytes: bytearray, section_population, vector_t):
 
 
 def full_dos(exe_path):
+    """
+    Implementation of Full DOS practical manipulation.
+
+    Create an adversarial example with practical manipulation applied.
+    Random bytes are used and new sample has "_full_dos" as postfix.
+    """
+
     print(f"Executing Full DOS manipulation on: {exe_path}")
 
     exe_object: lief.PE.Binary = lief.parse(exe_path)
 
-    # 1
+    # get range allowed to perturb
     pe_header_offset = exe_object.dos_header.addressof_new_exeheader
     range_to_perturb = list(range(2, 0x3c)) + \
         list(range(0x40, pe_header_offset))
 
     with open(exe_path, 'r+b') as f:
-        # 2
         raw_bytes = bytearray(f.read())
 
-        # 3 + 4
+        # perturb DOS header
         for i in range_to_perturb:
             raw_bytes[i] = ord(os.urandom(1))
 
         with open(f"{exe_path[:-4]}_full_dos.exe", 'wb') as nf:
-            # 5
+            # create executable
             nf.write(raw_bytes)
 
 

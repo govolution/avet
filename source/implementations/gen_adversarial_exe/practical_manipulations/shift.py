@@ -4,7 +4,7 @@ Adversarial EXEmples: A Survey and Experimental Evaluation of
 Practical Attacks on Machine Learning for Windows Malware Detection
 by Demetrio et al.
 
-Creates new Executable with suffix _shift.
+Can be used standalone with random bytes or via genetic optimizer.
 """
 
 import math
@@ -17,12 +17,18 @@ import lief
 
 
 def shift_on_bytes(exe_bytes: bytearray, section_population, vector_t):
+    """
+    Implementation of Shift practical manipulation. 
+    Intended for use with genetic optimizer.
+
+    Returns the bytes with the practical manipulation applied.
+    """
 
     content = bytearray()
     for i, section in enumerate(section_population):
         content += section[:int(round(len(section) * vector_t[i]))]
 
-    amount = 2048
+    amount = len(content)
 
     exe_object: lief.PE.Binary = lief.parse(exe_bytes)
 
@@ -64,6 +70,12 @@ def shift_on_bytes(exe_bytes: bytearray, section_population, vector_t):
 
 
 def shift(exe_path, amount):
+    """
+    Implementation of Shift practical manipulation.
+
+    Create an adversarial example with practical manipulation applied.
+    Random bytes are used and new sample has "_shift" as postfix.
+    """
 
     print(f"Executing Shift manipulation on: {exe_path}")
 

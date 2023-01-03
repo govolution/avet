@@ -3,7 +3,7 @@ Implementation of Section Injection practical manipulation from
 Functionality-Preserving Black-Box Optimization of Adversarial Windows Malware
 by Demetrio et al.
 
-Creates new Executable with suffix _section_injection.
+Can be used standalone with random bytes or via genetic optimizer.
 """
 
 import os
@@ -15,6 +15,12 @@ import lief
 
 
 def section_injection_on_bytes(exe_bytes: bytearray, section_population, vector_t):
+    """
+    Implementation of Section Injection practical manipulation. 
+    Intended for use with genetic optimizer.
+
+    Returns the bytes with the practical manipulation applied.
+    """
 
     content = bytearray()
     for i, section in enumerate(section_population):
@@ -36,6 +42,13 @@ def section_injection_on_bytes(exe_bytes: bytearray, section_population, vector_
 
 
 def section_injection(exe_path, amount):
+    """
+    Implementation of Section Injection practical manipulation.
+
+    Create an adversarial example with practical manipulation applied.
+    Random bytes are used and new sample has "_section_injection" as postfix.
+    """
+
     print(f"Executing Section Injection manipulation on: {exe_path}")
 
     exe_object: lief.PE.Binary = lief.parse(exe_path)

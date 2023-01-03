@@ -29,7 +29,9 @@ def create_population_from_benign_sections(goodware_folder="input/goodware_sampl
 
     goodware_list = os.listdir(goodware_folder)
 
-    for fn in goodware_list:
+    random_sections = random.sample(goodware_list, population_size)
+
+    for fn in random_sections:
         file_path = os.path.join(goodware_folder, fn)
         if "PE" not in magic.from_file(file_path):
             continue
@@ -41,10 +43,11 @@ def create_population_from_benign_sections(goodware_folder="input/goodware_sampl
                 #section_population.append((bytearray(section.content), fn))
                 section_population.append(bytearray(section.content))
 
-    return random.sample(section_population, population_size)
+    return section_population
 
 
 def classifier_score_from_file(classifier: CClassifierEnd2EndMalware, path_to_file):
+    """Return malware score from file path"""
 
     if "PE32" not in magic.from_file(path_to_file):
         print("Not a PE32 file")
@@ -61,6 +64,8 @@ def classifier_score_from_file(classifier: CClassifierEnd2EndMalware, path_to_fi
 
 
 def classifier_score_from_bytes(classifier: CClassifierEnd2EndMalware, adv_bytes: bytearray):
+    """Return malware score from bytes"""
+
     x = End2EndModel.bytes_to_numpy(
         adv_bytes, classifier.get_input_max_length(), 256, False
     )
@@ -70,6 +75,7 @@ def classifier_score_from_bytes(classifier: CClassifierEnd2EndMalware, adv_bytes
 
 
 def size_of_payload(candidate):
+    """Return size of the payload"""
     size = 0
 
     for s, t in zip(*candidate):
@@ -78,6 +84,8 @@ def size_of_payload(candidate):
 
 
 def objective_function(classifier: CClassifierEnd2EndMalware, adv_bytes: bytearray, penalty_regularizer, candidate):
+    """Return score from objective function"""
+
     score = classifier_score_from_bytes(classifier, adv_bytes)
 
     penalty_term = penalty_regularizer * size_of_payload(candidate)
@@ -86,15 +94,17 @@ def objective_function(classifier: CClassifierEnd2EndMalware, adv_bytes: bytearr
 
 
 def apply_practical_manipulation(adv_bytes: bytearray, section_population, vector_t, practical_manipulation):
+    """Apply the chosen practical manipulation and Returns new bytes with the practical manipulation applied"""
 
     return practical_manipulation(adv_bytes, section_population, vector_t)
 
 
 def crossover(old_gen: list, population_size):
+    """Return new list of solution candidates through crossover"""
 
     offsprings = []
     while len(offsprings) != population_size:
-        # pick randomly two parents
+        # pick two parents randomly
         p1 = random.choice(old_gen)
         p2 = random.choice(old_gen)
 
@@ -106,6 +116,9 @@ def crossover(old_gen: list, population_size):
 
 
 def mutation(candidate, mutation_probability):
+    """
+    Applies mutation with the specified probability.
+    """
 
     for i in range(len(candidate[1])):
         if random.random() < mutation_probability:
@@ -173,12 +186,19 @@ def main():
     sec_pop = create_population_from_benign_sections(
         population_size=section_size)
 
+    print(f"Using Genetic Optimizer with {pop_size} candidates")
+
     candidates = []
     for _ in range(pop_size):
         candidates.append(
             (sec_pop, np.random.random_sample(size=len(sec_pop))))
 
+    # track minimum
+    min_counter = 0
+    previous_score = 0
+
     for i in range(max_iteration):
+
         # rank canditates
         rank = []
         for candidate in candidates:
@@ -191,9 +211,22 @@ def main():
         rank.sort(key=lambda tup: tup[0])
 
         print(f"=== Gen {i} best solution_candidates ===")
-        print(rank[0][0], rank[0][2], size_of_payload(rank[0][1]))
-        with open(f"{file_name[:-4]}_adv_{i}.exe", 'wb') as w:
-            w.write(rank[0][3])
+        print(
+            f"OF: {rank[0][0]}, MS: {rank[0][2]}, PS: {size_of_payload(rank[0][1])}")
+
+        # check if best candidate did not change for 5 generation.
+        # Proceed if still not evaded.
+        if i == max_iteration-1 or (min_counter >= 3 and rank[0][2] < 0.5):
+            with open(f"{file_name[:-4]}_adv.exe", 'wb') as w:
+                w.write(rank[0][3])
+                break
+
+        if previous_score == rank[0][0]:
+            min_counter += 1
+        else:
+            min_counter = 0
+
+        previous_score = rank[0][0]
 
         candidates = []
 
@@ -215,7 +248,7 @@ def main():
         for m in mut:
             mutation(m, 0.5)
 
-        # new candidates
+        # new generation
         candidates += copy.deepcopy(mut)
 
 
