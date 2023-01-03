@@ -233,6 +233,8 @@ function gen_adversarial_exe() {
 	fi
 }
 
+genetic_optimizer="python3 source/implementations/gen_adversarial_exe/genetic_optimizer.py"
+
 
 # Resets the contents of the administrativa include and assign files. To be called after payload compilation.
 function cleanup_techniques() {
