@@ -13,11 +13,12 @@ For an overview of new features in **v2.3**, as well as past version increments,
 - <details><summary>Documentation (<i>click to expand</i>)</summary>
 
   - [Data retrieval methods](#data-retrieval-methods)
-  - [Encryption/Encoding](#encryption/encoding)
+  - [Encryption and Encoding](#encryption-and-encoding)
   - [Sandbox evasion](#sandbox-evasion)
   - [Additional command execution](#additional-command-execution)
   - [Helper tools](#helper-tools)
   - [AVET & metasploit psexec](#avet-&-metasploit-psexec)
+  - [Adversarial Examples](#adversarial-examples)
   </details>
 - [More](#more)
 
@@ -438,7 +439,7 @@ Injects shellcode into a target process, using ```CreateRemoteThread```.
 Injection works for 32-bit shellcode into 32-bit processes, and 64-bit shellcode into 64-bit processes, respectively.
 
 
-### Encryption/Encoding
+### Encryption and Encoding
 AVET provides encoders for each scheme, which can be applied on the payload before compilation/delivery.
 On execution, the specified decoder then again deobfuscates the payload at runtime.
 
@@ -794,7 +795,46 @@ Domain : ARBEITSGRUPPE
 Logged On Users : 2
 Meterpreter : x86/windows
 ```
+## Adversarial Examples
+Adversarial examples are specifically crafted inputs with the purpose of leading machine learning models to misclassification.
 
+To use this method, please create a virtual environment and install the needed dependencies from `requirements.txt`.
+
+### Practical Manipulations
+Five functionality-preserving manipulations for PE files are available:
+
+![Practical Manipulations](images/pm.png)
+
+To apply the practical manipulation to the malware with random bytes injected, use the `gen_adversarial_exe` command followed by name of the practical manipulation and the path to the file as parameters.
+Available manipulations are `full_dos`, `extend`, `shift`, `padding`, `section_injection`
+
+For example:
+```sh
+gen_adversarial_exe section_injection output/rc4enc_mimikatz_adversarial_win64.exe
+```
+
+### Genetic Optimizing
+Instead of injecting random content, it is possible to optimize the content, to achieve higher probability of evasion.
+The optimizer extracts benign sections from goodware and uses a genetic algorithm to optimize the injected content.
+The content is optimized against MalConv, which is a static machine learning-based detector based on a convolutional neural network.
+The used MalConv implementation is from the SecMl Malware library.
+
+
+A sufficient quantity of goodware is required and should be put into the `input/goodware_samples` folder.
+
+To use the optimizer, use the `$genetic_optimizer` command:
+```sh
+$genetic_optimizer -pm $practical_manipulation -p $population_size output/rc4enc_mimikatz_adversarial_win64.exe
+```
+Possible Options:
+```
+-p, --population_size, default=50
+-e, --elitsm, default=10
+-i, --iteration, default=10
+-pr, --penalty_regularizer, default=1e-6
+-ss, --section_size, default=10
+-pm, --practical_manipulation, default=section_injection
+```
 
 ## More
 ---
