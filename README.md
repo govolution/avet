@@ -836,6 +836,12 @@ Possible Options:
 -pm, --practical_manipulation, default=section_injection
 ```
 
+More about adversarial examples, genetic optimizing and MalConv can be read here:
+- [Adversarial EXEmples: A Survey and Experimental Evaluation of Practical Attacks on Machine Learning for Windows Malware Detection](https://arxiv.org/abs/2008.07125)
+- [Functionality-preserving Black-box Optimization of Adversarial Windows Malware](https://arxiv.org/abs/2003.13526)
+- [Malware Detection by Eating a Whole EXE](https://arxiv.org/abs/1710.09435)
+
+
 ## More
 ---
 
