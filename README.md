@@ -806,7 +806,7 @@ Five functionality-preserving manipulations for PE files are available:
 ![Practical Manipulations](images/pm.png)
 
 To apply the practical manipulation to the malware with random bytes injected, use the `gen_adversarial_exe` command followed by name of the practical manipulation and the path to the file as parameters.
-Available manipulations are `full_dos`, `extend`, `shift`, `padding`, `section_injection`
+Available manipulations are `full_dos`, `extend`, `shift`, `padding`, `section_injection`.
 
 For example:
 ```sh
@@ -817,10 +817,10 @@ gen_adversarial_exe section_injection output/rc4enc_mimikatz_adversarial_win64.e
 Instead of injecting random content, it is possible to optimize the content, to achieve higher probability of evasion.
 The optimizer extracts benign sections from goodware and uses a genetic algorithm to optimize the injected content.
 The content is optimized against MalConv, which is a static machine learning-based detector based on a convolutional neural network.
-The used MalConv implementation is from the SecMl Malware library.
+The used MalConv implementation is from the [SecML Malware](https://github.com/pralab/secml_malware) library.
 
-
-A sufficient quantity of goodware is required and should be put into the `input/goodware_samples` folder.
+Goodware is required and should be put into the `input/goodware_samples` folder.
+The [DikeDataset](https://github.com/iosifache/DikeDataset) for example is a good source to get benign executable files. The more, the better, but 100 is sufficient for testing purposes.
 
 To use the optimizer, use the `$genetic_optimizer` command:
 ```sh
