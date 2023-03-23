@@ -26,7 +26,7 @@ cat banner.txt
 LPORT=$GLOBAL_LPORT
 LHOST=$GLOBAL_LHOST
 # no command preexec
-set_command_source none
+set_command_source no_data
 set_command_exec no_command
 # enable debug printing
 enable_debug_print
