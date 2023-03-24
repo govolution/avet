@@ -2,7 +2,7 @@
 
 
 AVET is an AntiVirus Evasion Tool, which was developed for making life easier for pentesters and for experimenting with antivirus evasion techniques, as well as other methods used by malicious software.
-For an overview of new features in **v2.3**, as well as past version increments, have a look at the **CHANGELOG** file.
+For an overview of new features in **v2.4**, as well as past version increments, have a look at the **CHANGELOG** file.
 
 
 ## Table of Contents
@@ -33,6 +33,7 @@ For an overview of new features in **v2.3**, as well as past version increments,
 - Chaining multiple iterations of AVET enables you to add multiple evasion layers, if necessary
 - combination of techniques: download your encrypted payload via powershell, while supplying the decryption key via command line argument at execution time, and finally inject your payload into another process, choosing from multiple techniques
 - basic sandbox checks
+- generation of adversarial examples against static detectors based on machine learning
 - execute all available build scripts with build_script_tester.py, might also be interesting for researchers for building a set of "malicious" samples using different evasion and injection techniques
 
 

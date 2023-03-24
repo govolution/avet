@@ -3,8 +3,10 @@ CHANGELOG
 
 Version 2.4
 	+++ CHANGES +++
+	- added adversarial examples vs. static machine learning detectors (credits go to Thund3rPat)
 	- 3 new sandbox evasions
 	- new build script to test all current available sandbox evasions
+	- minor bug fixes
 
 
 Version 2.3
