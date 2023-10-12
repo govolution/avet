@@ -1,5 +1,10 @@
 CHANGELOG
 ---------
+Version 2.4.1
+	+++ CHANGES +++
+	- added has_process_exit
+	- added quick and dirty support for compiling with c++
+
 
 Version 2.4
 	+++ CHANGES +++
